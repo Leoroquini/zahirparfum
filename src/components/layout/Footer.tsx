@@ -7,6 +7,7 @@ const NAVIGATE = [
   { href: "/comparador", label: "Árabe × Designer" },
   { href: "/curadorias", label: "Curadorias" },
   { href: "/decants", label: "Decants — teste antes" },
+  { href: "/notas", label: "Notas-assinatura" },
   { href: "/manifesto", label: "Manifesto" },
 ];
 

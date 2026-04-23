@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { CATALOGO } from "@/data/catalogo";
 import { CURADORIAS } from "@/data/curadorias";
+import { NOTAS } from "@/data/notas";
 
 const BASE = "https://zahirparfums.com.br";
 
@@ -11,6 +12,7 @@ const SECOES_DEDICADAS = [
   "comparador",
   "curadorias",
   "decants",
+  "notas",
   "manifesto",
 ];
 
@@ -62,5 +64,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [home, ...secoes, ...institucionais, ...perfumes, ...curadoriasIndividuais];
+  const notasIndividuais = NOTAS.map((n) => ({
+    url: `${BASE}/nota/${n.id}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
+  return [
+    home,
+    ...secoes,
+    ...institucionais,
+    ...perfumes,
+    ...curadoriasIndividuais,
+    ...notasIndividuais,
+  ];
 }
