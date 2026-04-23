@@ -11,6 +11,8 @@ import {
   type Perfil,
 } from "@/data/quiz";
 import type { Perfume } from "@/data/catalogo";
+import { addItem } from "@/lib/lista-store";
+import { events } from "@/lib/track";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
@@ -457,12 +459,27 @@ function ResultadoView({
         )}
       </motion.div>
 
+      {/* Captura de email com cupom 10% */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 2.3 }}
+      >
+        <CapturaEmailRitual
+          perfil={perfil}
+          perfumes={perfumes}
+          onAddLista={() => {
+            perfumes.forEach((p) => addItem(p, "frasco"));
+          }}
+        />
+      </motion.div>
+
       {/* Ações finais */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 2.5 }}
-        className="mt-6 flex flex-col items-center gap-3 md:flex-row md:justify-center md:gap-5"
+        transition={{ duration: 1, delay: 2.7 }}
+        className="mt-4 flex flex-col items-center gap-3 md:flex-row md:justify-center md:gap-5"
       >
         <button
           type="button"
@@ -474,11 +491,153 @@ function ResultadoView({
         <button
           type="button"
           onClick={onFechar}
-          className="rounded-full bg-amber px-7 py-3 text-[11px] font-sans uppercase tracking-[0.3em] text-ink transition-all hover:bg-amber-bright"
+          className="rounded-full border border-cream/10 px-7 py-3 text-[11px] font-sans uppercase tracking-[0.3em] text-cream/60 transition-all hover:text-cream"
         >
           Voltar ao site
         </button>
       </motion.div>
     </motion.div>
+  );
+}
+
+/* ---------------- Captura de email com cupom ---------------- */
+
+function CapturaEmailRitual({
+  perfil,
+  perfumes,
+  onAddLista,
+}: {
+  perfil: Perfil;
+  perfumes: Perfume[];
+  onAddLista: () => void;
+}) {
+  const [email, setEmail] = useState("");
+  const [state, setState] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [error, setError] = useState("");
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmed = email.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      setError("E-mail não parece válido");
+      setState("error");
+      return;
+    }
+
+    setState("submitting");
+    await new Promise((r) => setTimeout(r, 700));
+
+    try {
+      const existing = JSON.parse(
+        localStorage.getItem("zahir-interest") ?? "[]"
+      );
+      localStorage.setItem(
+        "zahir-interest",
+        JSON.stringify([
+          ...existing,
+          {
+            email: trimmed,
+            perfil: perfil.tituloPerfil,
+            perfumes: perfumes.map((p) => p.id),
+            at: Date.now(),
+          },
+        ])
+      );
+    } catch {
+      // silent
+    }
+
+    events.ritualEmailCapturado();
+    setState("success");
+  };
+
+  if (state === "success") {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6, ease: EASE_OUT }}
+        className="mt-6 rounded-sm border border-amber/50 bg-amber/10 p-6 text-center md:p-8"
+      >
+        <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber">
+          Seu perfil está a caminho
+        </span>
+        <p className="mt-3 font-display text-xl font-light italic text-cream md:text-2xl">
+          Use o cupom{" "}
+          <span className="not-italic font-normal text-amber tracking-wider">
+            RITUAL10
+          </span>{" "}
+          na primeira compra.
+        </p>
+        <p className="mt-3 text-sm italic leading-relaxed text-cream/70">
+          Mande o cupom junto com a reserva no Instagram — a gente aplica em
+          frasco cheio ou decant.
+        </p>
+        <button
+          type="button"
+          onClick={onAddLista}
+          className="mt-5 text-[10px] font-sans uppercase tracking-[0.3em] text-amber underline underline-offset-4 transition-colors hover:text-amber-bright"
+        >
+          Adicionar as 3 sugestões à minha lista
+        </button>
+      </motion.div>
+    );
+  }
+
+  return (
+    <form
+      onSubmit={onSubmit}
+      className="mt-6 rounded-sm border border-cream/10 bg-ink/40 p-5 backdrop-blur-sm md:p-7"
+    >
+      <div className="flex flex-col gap-2 text-center">
+        <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber">
+          Leve seu perfil
+        </span>
+        <p className="font-display text-lg font-light italic text-cream md:text-xl">
+          Receba seu perfil + cupom de{" "}
+          <span className="not-italic font-normal text-amber">
+            10% na primeira compra
+          </span>
+        </p>
+      </div>
+
+      <div className="mt-5 flex flex-col gap-2 sm:flex-row">
+        <input
+          type="email"
+          required
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (state === "error") setState("idle");
+          }}
+          disabled={state === "submitting"}
+          placeholder="seu@email.com"
+          className="flex-1 rounded-full border border-cream/15 bg-ink/60 px-5 py-3 text-sm text-cream placeholder:text-cream/40 focus:border-amber focus:outline-none disabled:opacity-50"
+        />
+        <button
+          type="submit"
+          disabled={state === "submitting"}
+          className="group inline-flex items-center justify-center gap-2 rounded-full bg-amber px-6 py-3 text-[11px] font-sans uppercase tracking-[0.3em] text-ink transition-all hover:bg-amber-bright disabled:opacity-70"
+        >
+          {state === "submitting" ? "Enviando…" : "Receber cupom"}
+          {state !== "submitting" && (
+            <span className="transition-transform duration-500 group-hover:translate-x-1">
+              →
+            </span>
+          )}
+        </button>
+      </div>
+
+      {state === "error" && (
+        <p className="mt-2 text-xs italic" style={{ color: "#d88b8f" }}>
+          {error}
+        </p>
+      )}
+      {state === "idle" && (
+        <p className="mt-3 text-center text-[10px] italic text-cream/40">
+          Sem spam. A gente avisa só quando sair novidade relevante.
+        </p>
+      )}
+    </form>
   );
 }

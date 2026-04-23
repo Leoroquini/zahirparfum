@@ -5,6 +5,7 @@ import { Ritual } from "@/components/sections/Ritual";
 import { ComparadorArabeDesigner } from "@/components/sections/ComparadorArabeDesigner";
 import { CuradoriasSection } from "@/components/sections/Curadorias";
 import { Decants } from "@/components/sections/Decants";
+import { KitDescobridor } from "@/components/sections/KitDescobridor";
 import { Manifesto } from "@/components/sections/Manifesto";
 import { Newsletter } from "@/components/sections/Newsletter";
 
@@ -18,6 +19,7 @@ export default function HomePage() {
       <ComparadorArabeDesigner />
       <CuradoriasSection />
       <Decants />
+      <KitDescobridor />
       <Manifesto />
       <Newsletter />
     </>

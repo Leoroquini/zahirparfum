@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "motion/react";
 import type { Perfume } from "@/data/catalogo";
+import { addItem, useLista } from "@/lib/lista-store";
 
 /**
  * Gradient placeholder por família olfativa.
@@ -47,6 +48,30 @@ function gradientForFamily(familia: string | null): string {
   return "linear-gradient(135deg, #1a0a0e 0%, #3d1a22 50%, #8c6b26 100%)";
 }
 
+type Destaque = NonNullable<Perfume["destaque"]>;
+
+const DESTAQUE_LABELS: Record<Destaque, string> = {
+  "mais-pedido": "Mais pedido",
+  novidade: "Novidade",
+  "ultimas-unidades": "Últimas unidades",
+  curadoria: "Escolha da curadoria",
+};
+
+function DestaqueBadge({ destaque }: { destaque: Destaque }) {
+  const isUrgente = destaque === "ultimas-unidades";
+  return (
+    <span
+      className={`rounded-full border px-2 py-0.5 text-[9px] font-sans uppercase tracking-[0.28em] backdrop-blur-sm ${
+        isUrgente
+          ? "border-wine/80 bg-wine/30 text-cream"
+          : "border-amber bg-amber/20 text-amber"
+      }`}
+    >
+      {DESTAQUE_LABELS[destaque]}
+    </span>
+  );
+}
+
 function formatPrice(n: number | null): string {
   if (n === null) return "—";
   return n.toLocaleString("pt-BR", {
@@ -69,6 +94,8 @@ export function PerfumeCard({ perfume, index = 0 }: Props) {
     ? perfume.cloneDe.length - 1
     : 0;
   const isPending = !perfume.marca;
+  const lista = useLista();
+  const jaNaLista = lista.some((i) => i.perfumeId === perfume.id);
 
   return (
     <motion.div
@@ -109,10 +136,11 @@ export function PerfumeCard({ perfume, index = 0 }: Props) {
         />
 
         {/* Número do catálogo */}
-        <div className="absolute left-5 top-5 z-10">
+        <div className="absolute left-5 top-5 z-10 flex flex-col items-start gap-2">
           <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber/80">
             Nº {String(perfume.numero).padStart(2, "0")}
           </span>
+          {perfume.destaque && <DestaqueBadge destaque={perfume.destaque} />}
         </div>
 
         {/* Concentração ou badge "em breve" */}
@@ -177,6 +205,33 @@ export function PerfumeCard({ perfume, index = 0 }: Props) {
           </div>
         </div>
       </Link>
+
+      {/* Botão "+" pra adicionar à lista — fora do Link pra não disparar navegação */}
+      {!isPending && perfume.precoVenda !== null && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            addItem(perfume, "frasco");
+          }}
+          disabled={jaNaLista}
+          aria-label={
+            jaNaLista
+              ? `${perfume.nome} já está na sua lista`
+              : `Adicionar ${perfume.nome} à lista`
+          }
+          className={`absolute right-4 top-4 z-20 flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur-sm transition-all duration-400 ${
+            jaNaLista
+              ? "border-amber bg-amber text-ink"
+              : "border-cream/20 bg-ink/70 text-cream/80 hover:border-amber hover:bg-amber hover:text-ink"
+          }`}
+        >
+          <span className="text-base font-light leading-none">
+            {jaNaLista ? "✓" : "+"}
+          </span>
+        </button>
+      )}
     </motion.div>
   );
 }

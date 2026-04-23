@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/layout/PageHero";
 import { Decants } from "@/components/sections/Decants";
+import { KitDescobridor } from "@/components/sections/KitDescobridor";
 
 export const metadata: Metadata = {
   title: "Decants",
@@ -61,6 +62,9 @@ export default function DecantsPage() {
       </section>
 
       <Decants hideIntro />
+
+      {/* Kit Descobridor */}
+      <KitDescobridor />
 
       {/* CTA final */}
       <section className="border-t border-cream/5 bg-ink px-6 py-20 md:px-12 md:py-28">

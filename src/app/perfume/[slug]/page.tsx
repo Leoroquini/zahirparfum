@@ -4,6 +4,9 @@ import { notFound } from "next/navigation";
 import { CATALOGO, getBySlug, type Perfume } from "@/data/catalogo";
 import { BRAND } from "@/lib/brand";
 import { PerfumePyramid } from "@/components/ui/PerfumePyramid";
+import { ReservaCard } from "@/components/ui/ReservaCard";
+import { StickyReservaBar } from "@/components/ui/StickyReservaBar";
+import { Breadcrumb } from "@/components/layout/Breadcrumb";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -75,13 +78,14 @@ export default async function PerfumePage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* Link voltar */}
-      <Link
-        href="/#catalogo"
-        className="inline-flex items-center gap-2 text-[10px] font-sans uppercase tracking-[0.35em] text-cream/50 transition-colors hover:text-amber"
-      >
-        <span>←</span> Voltar ao catálogo
-      </Link>
+      {/* Breadcrumb */}
+      <Breadcrumb
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Catálogo", href: "/catalogo" },
+          { label: perfume.nome },
+        ]}
+      />
 
       {/* Header */}
       <header className="mt-10 border-b border-cream/5 pb-10">
@@ -202,42 +206,13 @@ export default async function PerfumePage({ params }: Props) {
         </section>
       )}
 
-      {/* Preço + CTA WhatsApp */}
-      <section className="mt-20 flex flex-col items-start gap-8 border-t border-cream/5 pt-10 md:flex-row md:items-end md:justify-between md:gap-12">
-        <div className="flex flex-col gap-1">
-          <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-cream/40">
-            Na {BRAND.name}
-          </span>
-          <span className="font-display text-5xl font-light leading-none text-cream md:text-6xl">
-            {formatPrice(perfume.precoVenda)}
-          </span>
-          {perfume.precoMercado && (
-            <span className="mt-1 text-xs text-cream/50">
-              Referência de mercado:{" "}
-              <span className="line-through">
-                {formatPrice(perfume.precoMercado)}
-              </span>
-            </span>
-          )}
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <a
-            href={`https://instagram.com/${BRAND.handles.instagram}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-3 rounded-full bg-amber px-8 py-4 text-[11px] font-sans uppercase tracking-[0.3em] text-ink transition-all duration-500 hover:bg-amber-bright"
-          >
-            <span>Reservar via Instagram</span>
-            <span className="transition-transform duration-500 group-hover:translate-x-1">
-              →
-            </span>
-          </a>
-          <span className="text-center text-[10px] italic text-cream/40 md:text-right">
-            WhatsApp em breve
-          </span>
-        </div>
+      {/* Card de reserva com seletor decant/frasco */}
+      <section className="mt-20">
+        <ReservaCard perfume={perfume} />
       </section>
+
+      {/* Sticky bar mobile */}
+      <StickyReservaBar perfume={perfume} />
 
       {/* Rodapé — outros da mesma família olfativa */}
       {perfume.familia && <RelacionadosPorFamilia perfume={perfume} />}

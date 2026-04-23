@@ -14,6 +14,16 @@ const SECOES_DEDICADAS = [
   "manifesto",
 ];
 
+const INSTITUCIONAIS = [
+  "como-comprar",
+  "entrega",
+  "trocas-e-devolucoes",
+  "faq",
+  "contato",
+  "termos",
+  "privacidade",
+];
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
@@ -31,6 +41,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9,
   }));
 
+  const institucionais = INSTITUCIONAIS.map((s) => ({
+    url: `${BASE}/${s}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.5,
+  }));
+
   const perfumes = CATALOGO.map((p) => ({
     url: `${BASE}/perfume/${p.id}`,
     lastModified: now,
@@ -45,5 +62,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [home, ...secoes, ...perfumes, ...curadoriasIndividuais];
+  return [home, ...secoes, ...institucionais, ...perfumes, ...curadoriasIndividuais];
 }

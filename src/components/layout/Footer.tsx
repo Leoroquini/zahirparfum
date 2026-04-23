@@ -16,7 +16,7 @@ export function Footer() {
       className="relative border-t border-cream/5 bg-ink px-6 py-20 md:px-12"
     >
       <div className="mx-auto max-w-[1440px]">
-        <div className="grid grid-cols-1 gap-14 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-14 sm:grid-cols-2 md:grid-cols-4">
           <div>
             <h3 className="font-display text-3xl font-light tracking-tight text-cream">
               {BRAND.name}
@@ -47,7 +47,28 @@ export function Footer() {
 
           <div className="flex flex-col gap-3 text-sm text-cream/60">
             <span className="mb-1 text-[10px] font-sans uppercase tracking-[0.4em] text-cream/40">
+              Ajuda
+            </span>
+            <a href="/como-comprar" className="transition-colors hover:text-amber">
+              Como comprar
+            </a>
+            <a href="/entrega" className="transition-colors hover:text-amber">
+              Entrega e frete
+            </a>
+            <a href="/trocas-e-devolucoes" className="transition-colors hover:text-amber">
+              Trocas e devoluções
+            </a>
+            <a href="/faq" className="transition-colors hover:text-amber">
+              FAQ
+            </a>
+            <a href="/contato" className="transition-colors hover:text-amber">
               Contato
+            </a>
+          </div>
+
+          <div className="flex flex-col gap-3 text-sm text-cream/60">
+            <span className="mb-1 text-[10px] font-sans uppercase tracking-[0.4em] text-cream/40">
+              Siga
             </span>
             <a
               href={`https://instagram.com/${BRAND.handles.instagram}`}
@@ -65,9 +86,15 @@ export function Footer() {
             >
               TikTok · @{BRAND.handles.tiktok}
             </a>
-            <span className="text-cream/40 text-xs mt-2">
-              Atendimento em breve via WhatsApp
+            <span className="mt-3 text-[10px] font-sans uppercase tracking-[0.4em] text-cream/40">
+              Legal
             </span>
+            <a href="/termos" className="transition-colors hover:text-amber">
+              Termos de uso
+            </a>
+            <a href="/privacidade" className="transition-colors hover:text-amber">
+              Privacidade
+            </a>
           </div>
         </div>
 

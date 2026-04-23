@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CURADORIAS, getCuradoria, perfumesDa } from "@/data/curadorias";
 import { PerfumeCard } from "@/components/ui/PerfumeCard";
+import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { BRAND } from "@/lib/brand";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -55,14 +56,15 @@ export default async function CuradoriaPage({ params }: Props) {
         />
 
         <div className="relative mx-auto w-full max-w-[1440px]">
-          <Link
-            href="/#curadorias"
-            className="mb-8 inline-flex items-center gap-2 text-[10px] font-sans uppercase tracking-[0.35em] text-cream/70 transition-colors hover:text-amber"
-          >
-            ← Voltar
-          </Link>
+          <Breadcrumb
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Curadorias", href: "/curadorias" },
+              { label: curadoria.titulo },
+            ]}
+          />
 
-          <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
+          <span className="mt-8 block text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
             {curadoria.subtitulo} · Curadoria
           </span>
           <h1 className="mt-4 font-display text-5xl font-light leading-[1] tracking-tight text-cream md:text-7xl lg:text-8xl">

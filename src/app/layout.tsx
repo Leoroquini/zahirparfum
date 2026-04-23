@@ -5,7 +5,11 @@ import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { GrainOverlay } from "@/components/motion/GrainOverlay";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { TrustBar } from "@/components/layout/TrustBar";
 import { Analytics } from "@/components/analytics/Analytics";
+import { CookieBanner } from "@/components/analytics/CookieBanner";
+import { UtmCapture } from "@/components/analytics/UtmCapture";
+import { ListaDrawer } from "@/components/ui/ListaDrawer";
 import { BRAND } from "@/lib/brand";
 
 const fraunces = Fraunces({
@@ -23,7 +27,11 @@ const inter = Inter({
   display: "swap",
 });
 
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://zahirparfums.com.br";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: `${BRAND.fullName} — ${BRAND.tagline}`,
     template: `%s · ${BRAND.fullName}`,
@@ -66,9 +74,13 @@ export default function RootLayout({
         <SmoothScroll>
           <Navbar />
           <main className="relative">{children}</main>
+          <TrustBar />
           <Footer />
         </SmoothScroll>
         <GrainOverlay />
+        <ListaDrawer />
+        <CookieBanner />
+        <UtmCapture />
         <Analytics />
       </body>
     </html>

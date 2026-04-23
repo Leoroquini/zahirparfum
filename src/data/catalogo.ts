@@ -45,6 +45,10 @@ export type Perfume = {
   perfumista?: string;           // "Quentin Bisch" etc
   genero?: "masculino" | "unissex" | "feminino";  // default: masculino
   status?: string;               // "dados pendentes" para SKUs incompletos
+  /** Badge de destaque visível no card (curadoria editorial) */
+  destaque?: "mais-pedido" | "novidade" | "ultimas-unidades" | "curadoria";
+  /** Se decant deste SKU está disponível pra reserva (default true; marcar false quando não rola) */
+  decantDisponivel?: boolean;
 };
 
 export const CATALOGO: Perfume[] = [
@@ -68,6 +72,7 @@ export const CATALOGO: Perfume[] = [
       coracao: ["rosa", "jasmim", "bétula"],
       fundo: ["baunilha", "âmbar", "musk", "patchouli"],
     },
+    destaque: "mais-pedido",
   },
   {
     id: "club-de-nuit-iconic-blue",
@@ -155,6 +160,7 @@ export const CATALOGO: Perfume[] = [
       coracao: ["praliné", "frutas cristalizadas", "flores brancas"],
       fundo: ["baunilha", "café", "tonka", "benjoim", "musk"],
     },
+    destaque: "curadoria",
   },
   {
     id: "khamrah-preto-teriaq",
@@ -177,6 +183,7 @@ export const CATALOGO: Perfume[] = [
       fundo: ["âmbar", "tonka", "benjoim"],
     },
     perfumista: "Quentin Bisch",
+    destaque: "novidade",
   },
   {
     id: "al-noble-sabaen",
@@ -571,6 +578,7 @@ export const CATALOGO: Perfume[] = [
       coracao: ["pimenta de Sichuan", "lavanda", "anis estrelado", "noz-moscada"],
       fundo: ["ambroxan", "baunilha"],
     },
+    destaque: "mais-pedido",
   },
   {
     id: "salvo-elixir",

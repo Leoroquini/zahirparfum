@@ -88,8 +88,26 @@ export function Navbar() {
             ))}
           </nav>
 
-          {/* Right side: Instagram link (desktop) + Hamburger (mobile) */}
-          <div className="flex items-center gap-5">
+          {/* Right side: Busca + Instagram link + Hamburger (mobile) */}
+          <div className="flex items-center gap-4 md:gap-5">
+            <Link
+              href="/buscar"
+              aria-label="Buscar"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-cream/15 text-cream/75 transition-all hover:border-amber hover:text-amber"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+              >
+                <circle cx="6" cy="6" r="4.5" />
+                <line x1="9.5" y1="9.5" x2="12.5" y2="12.5" />
+              </svg>
+            </Link>
             <a
               href={`https://instagram.com/${BRAND.handles.instagram}`}
               target="_blank"

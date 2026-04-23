@@ -54,10 +54,26 @@ const PRECO_FAIXAS = [
   { key: "premium", label: "R$220+", min: 220, max: Infinity },
 ] as const;
 
+type Ordenacao =
+  | "relevancia"
+  | "preco-asc"
+  | "preco-desc"
+  | "novos"
+  | "destaques";
+
+const ORDENACOES: { key: Ordenacao; label: string }[] = [
+  { key: "relevancia", label: "Relevância" },
+  { key: "destaques", label: "Destaques" },
+  { key: "preco-asc", label: "Preço ↑" },
+  { key: "preco-desc", label: "Preço ↓" },
+  { key: "novos", label: "Mais recentes" },
+];
+
 export function CatalogoGrid({ hideIntro = false }: { hideIntro?: boolean } = {}) {
   const [selFamilias, setSelFamilias] = useState<string[]>([]);
   const [selOcasioes, setSelOcasioes] = useState<string[]>([]);
   const [selPreco, setSelPreco] = useState<string[]>([]);
+  const [ordenacao, setOrdenacao] = useState<Ordenacao>("relevancia");
 
   const toggle = (key: string, list: string[]): string[] =>
     list.includes(key) ? list.filter((k) => k !== key) : [...list, key];
@@ -69,7 +85,7 @@ export function CatalogoGrid({ hideIntro = false }: { hideIntro?: boolean } = {}
   };
 
   const filtered = useMemo(() => {
-    return CATALOGO.filter((p) => {
+    const base = CATALOGO.filter((p) => {
       // Família
       if (selFamilias.length > 0) {
         if (!p.familia || !selFamilias.includes(p.familia)) return false;
@@ -102,7 +118,31 @@ export function CatalogoGrid({ hideIntro = false }: { hideIntro?: boolean } = {}
 
       return true;
     });
-  }, [selFamilias, selOcasioes, selPreco]);
+
+    // Ordenação
+    const sorted = [...base];
+    if (ordenacao === "preco-asc") {
+      sorted.sort((a, b) => (a.precoVenda ?? 999) - (b.precoVenda ?? 999));
+    } else if (ordenacao === "preco-desc") {
+      sorted.sort((a, b) => (b.precoVenda ?? 0) - (a.precoVenda ?? 0));
+    } else if (ordenacao === "novos") {
+      sorted.sort((a, b) => b.numero - a.numero);
+    } else if (ordenacao === "destaques") {
+      const destaquePrio: Record<string, number> = {
+        "mais-pedido": 4,
+        curadoria: 3,
+        novidade: 2,
+        "ultimas-unidades": 1,
+      };
+      sorted.sort(
+        (a, b) =>
+          (destaquePrio[b.destaque ?? ""] ?? 0) -
+          (destaquePrio[a.destaque ?? ""] ?? 0)
+      );
+    }
+    // "relevancia" = ordem default (por numero)
+    return sorted;
+  }, [selFamilias, selOcasioes, selPreco, ordenacao]);
 
   const hasFilters =
     selFamilias.length + selOcasioes.length + selPreco.length > 0;
@@ -186,7 +226,7 @@ export function CatalogoGrid({ hideIntro = false }: { hideIntro?: boolean } = {}
             onToggle={(k) => setSelPreco((prev) => toggle(k, prev))}
           />
 
-          <div className="flex items-center justify-between gap-4 pt-2">
+          <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
             <span className="text-xs text-cream/60">
               {filtered.length === CATALOGO.length
                 ? `Mostrando toda a coleção`
@@ -194,14 +234,35 @@ export function CatalogoGrid({ hideIntro = false }: { hideIntro?: boolean } = {}
                     filtered.length === 1 ? "fragrância" : "fragrâncias"
                   } encontrada${filtered.length === 1 ? "" : "s"}`}
             </span>
-            {hasFilters && (
-              <button
-                onClick={limpar}
-                className="text-[10px] font-sans uppercase tracking-[0.35em] text-amber transition-colors hover:text-amber-bright"
-              >
-                Limpar filtros ×
-              </button>
-            )}
+
+            <div className="flex items-center gap-4">
+              {/* Ordenação */}
+              <div className="flex items-center gap-2">
+                <span className="hidden text-[10px] font-sans uppercase tracking-[0.35em] text-cream/40 md:inline">
+                  Ordenar
+                </span>
+                <select
+                  value={ordenacao}
+                  onChange={(e) => setOrdenacao(e.target.value as Ordenacao)}
+                  className="rounded-full border border-cream/15 bg-ink-soft px-4 py-1.5 text-xs text-cream/85 transition-colors hover:border-amber/50 focus:border-amber focus:outline-none"
+                >
+                  {ORDENACOES.map((o) => (
+                    <option key={o.key} value={o.key} className="bg-ink">
+                      {o.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {hasFilters && (
+                <button
+                  onClick={limpar}
+                  className="text-[10px] font-sans uppercase tracking-[0.35em] text-amber transition-colors hover:text-amber-bright"
+                >
+                  Limpar ×
+                </button>
+              )}
+            </div>
           </div>
         </motion.div>
 
