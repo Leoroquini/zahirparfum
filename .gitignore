@@ -36,6 +36,7 @@ yarn-error.log*
 
 # local references (Gemini images + source .md — não versionar)
 /informações novas/
+/fotos dos perfumes/
 
 # dev server log local
 .dev.log

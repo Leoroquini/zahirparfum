@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "motion/react";
 import type { Perfume } from "@/data/catalogo";
 import { addItem, useLista } from "@/lib/lista-store";
+import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
 
 /**
  * Gradient placeholder por família olfativa.
@@ -112,27 +114,38 @@ export function PerfumeCard({ perfume, index = 0 }: Props) {
         href={`/perfume/${perfume.id}`}
         className="group relative block aspect-[3/4] overflow-hidden rounded-sm border border-cream/5 bg-ink-soft transition-all duration-700 hover:border-amber/40 hover:shadow-[0_0_50px_rgba(200,155,60,0.12)]"
       >
-        {/* Background gradient da família olfativa */}
-        <div
-          aria-hidden
-          className="absolute inset-0 transition-transform duration-[1500ms] group-hover:scale-105"
-          style={{ background: gradient }}
-        />
-
-        {/* Textura sutil pra quebrar o flat do gradient */}
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-40 mix-blend-overlay"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.12), transparent 60%), radial-gradient(circle at 70% 80%, rgba(0,0,0,0.4), transparent 60%)",
-          }}
-        />
+        {/* Foto real do perfume (ou gradient fallback) */}
+        {hasFoto(perfume) ? (
+          <>
+            <Image
+              src={fotoSrc(perfume)}
+              alt={`Frasco de ${perfume.nome}`}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              className="object-cover transition-transform duration-[1500ms] group-hover:scale-105"
+            />
+            {/* Vinheta âmbar no hover pra destacar */}
+            <div
+              aria-hidden
+              className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              style={{
+                background:
+                  "radial-gradient(ellipse at 50% 40%, transparent 50%, rgba(200,155,60,0.18) 100%)",
+              }}
+            />
+          </>
+        ) : (
+          <div
+            aria-hidden
+            className="absolute inset-0 transition-transform duration-[1500ms] group-hover:scale-105"
+            style={{ background: gradient }}
+          />
+        )}
 
         {/* Darkening gradient no rodapé pra contraste do texto */}
         <div
           aria-hidden
-          className="absolute inset-x-0 bottom-0 h-[70%] bg-gradient-to-t from-ink/95 via-ink/65 to-transparent"
+          className="absolute inset-x-0 bottom-0 h-[70%] bg-gradient-to-t from-ink/95 via-ink/70 to-transparent"
         />
 
         {/* Número do catálogo */}

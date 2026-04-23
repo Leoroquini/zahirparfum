@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import {
   useLista,
@@ -13,6 +14,7 @@ import {
 import { CATALOGO } from "@/data/catalogo";
 import { mensagemLista, linkInstagram } from "@/lib/reserva-dm";
 import { events } from "@/lib/track";
+import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
@@ -225,15 +227,33 @@ function ListaItemRow({ item }: { item: ItemLista }) {
   if (!perfume) return null;
 
   return (
-    <li className="group relative flex items-start gap-4 rounded-sm border border-cream/10 bg-ink/40 p-4 transition-colors hover:border-amber/40">
-      <div className="flex min-w-0 flex-1 flex-col gap-1">
+    <li className="group relative flex items-start gap-4 rounded-sm border border-cream/10 bg-ink/40 p-3 transition-colors hover:border-amber/40">
+      {/* Thumb */}
+      {hasFoto(perfume) && (
+        <Link
+          href={`/perfume/${perfume.id}`}
+          className="relative block h-20 w-20 shrink-0 overflow-hidden rounded-sm border border-cream/10 bg-ink"
+          aria-hidden
+          tabIndex={-1}
+        >
+          <Image
+            src={fotoSrc(perfume)}
+            alt=""
+            fill
+            sizes="80px"
+            className="object-cover"
+          />
+        </Link>
+      )}
+
+      <div className="flex min-w-0 flex-1 flex-col gap-1 pt-0.5">
         <span className="text-[9px] font-sans uppercase tracking-[0.35em] text-amber/80">
           Nº {String(perfume.numero).padStart(2, "0")} ·{" "}
           {labelDa(item.variante)}
         </span>
         <Link
           href={`/perfume/${perfume.id}`}
-          className="font-display text-lg font-light leading-tight text-cream transition-colors hover:text-amber"
+          className="font-display text-base font-light leading-tight text-cream transition-colors hover:text-amber md:text-lg"
         >
           {perfume.nome}
         </Link>
@@ -242,14 +262,14 @@ function ListaItemRow({ item }: { item: ItemLista }) {
         )}
       </div>
 
-      <div className="flex shrink-0 flex-col items-end gap-2">
-        <span className="font-display text-xl font-light text-cream">
+      <div className="flex shrink-0 flex-col items-end gap-1.5 pt-0.5">
+        <span className="font-display text-lg font-light text-cream md:text-xl">
           R$ {item.precoSnapshot}
         </span>
         <button
           type="button"
           onClick={() => removeItem(item.perfumeId, item.variante)}
-          className="text-[10px] font-sans uppercase tracking-[0.3em] text-cream/40 transition-colors hover:text-wine"
+          className="text-[9px] font-sans uppercase tracking-[0.3em] text-cream/40 transition-colors hover:text-wine"
           aria-label={`Remover ${perfume.nome} da lista`}
         >
           Remover

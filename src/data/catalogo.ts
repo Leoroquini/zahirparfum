@@ -49,6 +49,12 @@ export type Perfume = {
   destaque?: "mais-pedido" | "novidade" | "ultimas-unidades" | "curadoria";
   /** Se decant deste SKU está disponível pra reserva (default true; marcar false quando não rola) */
   decantDisponivel?: boolean;
+  /**
+   * Arquétipo de persona — frase editorial curta que humaniza o perfume.
+   * Padrão: "Usado pelo cara que…" + comportamento concreto.
+   * Foca em cena/atitude, não em adjetivo vago.
+   */
+  arquetipo?: string;
 };
 
 export const CATALOGO: Perfume[] = [

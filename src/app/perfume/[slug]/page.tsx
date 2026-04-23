@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { CATALOGO, getBySlug, type Perfume } from "@/data/catalogo";
 import { BRAND } from "@/lib/brand";
@@ -7,6 +8,9 @@ import { PerfumePyramid } from "@/components/ui/PerfumePyramid";
 import { ReservaCard } from "@/components/ui/ReservaCard";
 import { StickyReservaBar } from "@/components/ui/StickyReservaBar";
 import { Breadcrumb } from "@/components/layout/Breadcrumb";
+import { PerfumeHeroShot } from "@/components/ui/PerfumeHeroShot";
+import { EvolucaoTimeline } from "@/components/ui/EvolucaoTimeline";
+import { arquetipoDe } from "@/data/arquetipos";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -88,7 +92,7 @@ export default async function PerfumePage({ params }: Props) {
       />
 
       {/* Header */}
-      <header className="mt-10 border-b border-cream/5 pb-10">
+      <header className="mt-10">
         <div className="flex items-baseline gap-4">
           <span className="font-display text-2xl italic text-amber/70">
             Nº {String(perfume.numero).padStart(2, "0")}
@@ -128,6 +132,28 @@ export default async function PerfumePage({ params }: Props) {
             {perfume.status}
           </span>
         </div>
+      )}
+
+      {/* Hero do produto — foto + reserva lado a lado */}
+      <section className="mt-12 grid gap-8 border-b border-cream/5 pb-12 md:gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-14 lg:pb-16">
+        <PerfumeHeroShot perfume={perfume} />
+        <ReservaCard perfume={perfume} />
+      </section>
+
+      {/* Arquétipo — humaniza o perfume com cena editorial */}
+      {arquetipoDe(perfume.id) && (
+        <section className="mt-16 md:mt-20">
+          <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
+            <span className="mr-3 inline-block h-px w-8 align-middle bg-amber" />
+            Arquétipo
+          </span>
+          <blockquote className="mt-6 max-w-4xl border-l-2 border-amber/50 pl-6 font-display text-2xl font-light italic leading-[1.35] text-cream md:pl-8 md:text-3xl lg:text-4xl">
+            {arquetipoDe(perfume.id)}
+          </blockquote>
+          <p className="mt-4 text-[10px] font-sans uppercase tracking-[0.4em] text-cream/40">
+            Curadoria editorial ZAHIR
+          </p>
+        </section>
       )}
 
       {/* Ficha técnica — grid 2 colunas */}
@@ -176,6 +202,17 @@ export default async function PerfumePage({ params }: Props) {
         </section>
       )}
 
+      {/* "Cheiro na pele" — evolução ao longo do dia */}
+      {hasNotes && (
+        <section className="mt-20">
+          <EvolucaoTimeline
+            topo={perfume.notas.topo}
+            coracao={perfume.notas.coracao}
+            fundo={perfume.notas.fundo}
+          />
+        </section>
+      )}
+
       {/* Card de inspiração editorial (quando há clone de designer) */}
       {perfume.cloneDe && perfume.cloneDe.length > 0 && (
         <InspirationCard perfume={perfume} />
@@ -206,13 +243,25 @@ export default async function PerfumePage({ params }: Props) {
         </section>
       )}
 
-      {/* Card de reserva com seletor decant/frasco */}
-      <section className="mt-20">
-        <ReservaCard perfume={perfume} />
-      </section>
-
       {/* Sticky bar mobile */}
       <StickyReservaBar perfume={perfume} />
+
+      {/* CTA comparar */}
+      <section className="mt-20 flex flex-col items-center gap-3 rounded-sm border border-cream/10 bg-ink-soft/40 p-8 text-center md:p-10">
+        <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
+          Em dúvida?
+        </span>
+        <p className="max-w-xl font-display text-xl font-light italic text-cream md:text-2xl">
+          Compara esse perfume com outro{" "}
+          <span className="not-italic text-amber">lado a lado.</span>
+        </p>
+        <Link
+          href={`/compare?a=${perfume.id}`}
+          className="mt-3 rounded-full border border-amber px-6 py-3 text-[10px] font-sans uppercase tracking-[0.35em] text-amber transition-all hover:bg-amber hover:text-ink"
+        >
+          Comparar 2 a 2
+        </Link>
+      </section>
 
       {/* Rodapé — outros da mesma família olfativa */}
       {perfume.familia && <RelacionadosPorFamilia perfume={perfume} />}
@@ -400,17 +449,28 @@ function RelacionadosPorMarca({ perfume }: { perfume: Perfume }) {
           <li key={o.id}>
             <Link
               href={`/perfume/${o.id}`}
-              className="group flex flex-col gap-1 rounded-sm border border-cream/5 bg-ink-soft p-4 transition-all hover:border-amber/40"
+              className="group flex flex-col gap-3 rounded-sm border border-cream/5 bg-ink-soft transition-all hover:border-amber/40"
             >
-              <span className="text-[9px] font-sans uppercase tracking-[0.35em] text-amber/70">
-                Nº {String(o.numero).padStart(2, "0")}
-              </span>
-              <span className="font-display text-lg text-cream transition-colors group-hover:text-amber/90">
-                {o.nome}
-              </span>
-              <span className="mt-1 text-xs italic text-cream/50">
-                {o.familia ?? "—"}
-              </span>
+              <div className="relative aspect-square overflow-hidden rounded-t-sm">
+                <Image
+                  src={`/perfumes/${o.id}.png`}
+                  alt={o.nome}
+                  fill
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              </div>
+              <div className="flex flex-col gap-1 px-4 pb-4">
+                <span className="text-[9px] font-sans uppercase tracking-[0.35em] text-amber/70">
+                  Nº {String(o.numero).padStart(2, "0")}
+                </span>
+                <span className="font-display text-base font-light text-cream transition-colors group-hover:text-amber/90 md:text-lg">
+                  {o.nome}
+                </span>
+                <span className="text-xs italic text-cream/50">
+                  {o.familia ?? "—"}
+                </span>
+              </div>
             </Link>
           </li>
         ))}

@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import type { Perfume } from "@/data/catalogo";
 import { precoDa } from "@/lib/lista-store";
 import { linkInstagram, mensagemPerfume } from "@/lib/reserva-dm";
+import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
 
 /**
  * Barra fixa no rodapé do mobile com preço do frasco + CTA reservar.
@@ -42,8 +44,19 @@ export function StickyReservaBar({ perfume }: { perfume: Perfume }) {
           transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
           className="fixed inset-x-0 bottom-0 z-30 border-t border-cream/10 bg-ink/95 px-4 py-3 backdrop-blur-xl lg:hidden"
         >
-          <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-3">
-            <div className="flex min-w-0 flex-col">
+          <div className="mx-auto flex max-w-[1440px] items-center gap-3">
+            {hasFoto(perfume) && (
+              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-sm border border-cream/10 bg-ink-soft">
+                <Image
+                  src={fotoSrc(perfume)}
+                  alt=""
+                  fill
+                  sizes="48px"
+                  className="object-cover"
+                />
+              </div>
+            )}
+            <div className="flex min-w-0 flex-1 flex-col">
               <span className="truncate text-[10px] font-sans uppercase tracking-[0.3em] text-amber/80">
                 {perfume.nome}
               </span>

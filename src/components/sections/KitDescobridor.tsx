@@ -2,9 +2,11 @@
 
 import { useMemo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "motion/react";
 import { CATALOGO } from "@/data/catalogo";
 import { addItem } from "@/lib/lista-store";
+import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
@@ -114,16 +116,25 @@ export function KitDescobridor() {
               >
                 <Link
                   href={`/perfume/${p.id}`}
-                  className="group flex items-center gap-5 rounded-sm border border-amber/20 bg-ink/50 p-5 transition-all hover:border-amber hover:bg-ink-muted"
+                  className="group flex items-center gap-4 rounded-sm border border-amber/20 bg-ink/50 p-4 transition-all hover:border-amber hover:bg-ink-muted md:gap-5 md:p-5"
                 >
-                  <span className="font-display text-3xl font-light italic text-amber/60">
-                    0{i + 1}
-                  </span>
+                  {/* Thumb real da foto */}
+                  {hasFoto(p) && (
+                    <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-sm border border-cream/10 md:h-20 md:w-20">
+                      <Image
+                        src={fotoSrc(p)}
+                        alt=""
+                        fill
+                        sizes="80px"
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                    </div>
+                  )}
                   <div className="flex min-w-0 flex-1 flex-col gap-1">
                     <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-amber/80">
-                      {p.marca} · {p.familia}
+                      0{i + 1} · {p.marca}
                     </span>
-                    <span className="font-display text-xl font-light text-cream transition-colors group-hover:text-amber/95">
+                    <span className="font-display text-lg font-light leading-tight text-cream transition-colors group-hover:text-amber/95 md:text-xl">
                       {p.nome}
                     </span>
                     {p.cloneDe?.[0] && (
