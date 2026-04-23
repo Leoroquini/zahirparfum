@@ -124,9 +124,6 @@ export function Hero() {
           ZAHIR · 2026
         </span>
       </div>
-
-      {/* Coluna lateral direita — notas olfativas protagonistas */}
-      <NotesSidebar />
     </section>
   );
 }
@@ -209,91 +206,3 @@ function DarkeningOverlay() {
   );
 }
 
-/* ---------------- Sidebar de notas olfativas (lado direito) ---------------- */
-
-type Note = {
-  id: string;
-  label: string;
-  image: string;       // caminho em /public
-  alt: string;
-};
-
-const HERO_NOTES: Note[] = [
-  {
-    id: "oud",
-    label: "Oud",
-    image: "/hero/note-oud.png",
-    alt: "Madeira de oud envelhecida com brilhos âmbar",
-  },
-  {
-    id: "amber",
-    label: "Âmbar",
-    image: "/hero/note-amber.png",
-    alt: "Pedra de âmbar translúcida iluminada por trás",
-  },
-  {
-    id: "orchid",
-    label: "Orquídea Brasileira",
-    image: "/hero/note-orchid.png",
-    alt: "Orquídea Cattleya violeta com miolo dourado",
-  },
-  {
-    id: "rose",
-    label: "Rosa Damascena",
-    image: "/hero/note-rose.png",
-    alt: "Rosa damascena vinho com bordas douradas",
-  },
-];
-
-function NotesSidebar() {
-  return (
-    <aside className="pointer-events-none absolute right-4 top-1/2 hidden -translate-y-1/2 flex-col gap-6 lg:flex xl:right-8">
-      {HERO_NOTES.map((note, i) => (
-        <NoteThumb key={note.id} note={note} index={i} />
-      ))}
-    </aside>
-  );
-}
-
-function NoteThumb({ note, index }: { note: Note; index: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: 24 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{
-        duration: 0.9,
-        delay: 2.3 + index * 0.15,
-        ease: EASE_OUT,
-      }}
-      className="pointer-events-auto group flex flex-col items-center gap-2.5"
-    >
-      <div className="relative h-16 w-16 overflow-hidden rounded-full border border-cream/10 bg-ink-soft transition-all duration-500 group-hover:scale-110 group-hover:border-amber/70 group-hover:shadow-[0_0_40px_rgba(231,182,89,0.35)]">
-        <Image
-          src={note.image}
-          alt={note.alt}
-          fill
-          sizes="64px"
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
-          priority={index < 2}
-        />
-        {/* Vinheta dourada no hover — intensifica a iluminação da imagem */}
-        <div
-          aria-hidden
-          className="absolute inset-0 rounded-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-          style={{
-            background:
-              "radial-gradient(circle at 50% 50%, transparent 55%, rgba(200,155,60,0.25) 100%)",
-          }}
-        />
-        {/* Inner ring dourado no hover */}
-        <div
-          aria-hidden
-          className="absolute inset-0 rounded-full ring-1 ring-inset ring-transparent transition-all duration-500 group-hover:ring-amber/50"
-        />
-      </div>
-      <span className="max-w-[96px] text-center text-[9px] font-sans uppercase tracking-[0.22em] text-cream/70 transition-colors duration-500 group-hover:text-amber">
-        {note.label}
-      </span>
-    </motion.div>
-  );
-}

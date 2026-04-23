@@ -1,6 +1,6 @@
 import { Hero } from "@/components/sections/Hero";
 import { CatalogoHighlight } from "@/components/sections/CatalogoHighlight";
-import { CuradoriasSection } from "@/components/sections/Curadorias";
+import { CuradoriasHighlight } from "@/components/sections/CuradoriasHighlight";
 import { Ritual } from "@/components/sections/Ritual";
 import { KitDescobridor } from "@/components/sections/KitDescobridor";
 import { Decants } from "@/components/sections/Decants";
@@ -18,8 +18,8 @@ export default function HomePage() {
       {/* 2. Catálogo — 4 destaques + CTA */}
       <CatalogoHighlight />
 
-      {/* 3. Curadorias — entrada alternativa pra indeciso */}
-      <CuradoriasSection />
+      {/* 3. Curadorias — 3 destaques + CTA ver todas */}
+      <CuradoriasHighlight />
 
       {/* 4. O Ritual — quiz olfativo */}
       <Ritual />

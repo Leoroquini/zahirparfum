@@ -10,7 +10,6 @@ const NAV_LINKS = [
   { href: "/catalogo", label: "Catálogo" },
   { href: "/mapa", label: "Mapa" },
   { href: "/ritual", label: "O Ritual" },
-  { href: "/comparador", label: "Compare" },
   { href: "/curadorias", label: "Curadorias" },
   { href: "/decants", label: "Decants" },
 ];
