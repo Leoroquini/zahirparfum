@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "motion/react";
 import { CURADORIAS, countOf, type Curadoria } from "@/data/curadorias";
 
@@ -69,29 +70,31 @@ function CuradoriaCard({
     >
       <Link
         href={`/curadoria/${curadoria.id}`}
-        className="group relative flex aspect-[4/5] flex-col justify-between overflow-hidden rounded-sm border border-cream/10 p-7 transition-all duration-700 hover:border-amber/50 hover:shadow-[0_0_60px_rgba(200,155,60,0.12)] md:p-8"
+        className="group relative flex aspect-[4/5] flex-col justify-between overflow-hidden rounded-sm border border-cream/10 p-7 transition-all duration-700 hover:border-amber/50 hover:shadow-[0_0_60px_rgba(200,155,60,0.15)] md:p-8"
       >
-        {/* Background gradient */}
-        <div
-          aria-hidden
-          className="absolute inset-0 transition-transform duration-[1500ms] group-hover:scale-105"
-          style={{ background: curadoria.gradient }}
+        {/* Foto de capa */}
+        <Image
+          src={curadoria.foto}
+          alt={`Curadoria ${curadoria.titulo}`}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover transition-transform duration-[1500ms] group-hover:scale-105"
         />
 
-        {/* Texture */}
+        {/* Vinheta pra destacar o texto */}
         <div
           aria-hidden
-          className="absolute inset-0 opacity-50 mix-blend-overlay"
+          className="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/35 to-ink/50 transition-opacity duration-500 group-hover:via-ink/25 group-hover:to-ink/30"
+        />
+
+        {/* Glow âmbar no hover */}
+        <div
+          aria-hidden
+          className="absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
           style={{
-            backgroundImage:
-              "radial-gradient(circle at 25% 25%, rgba(255,255,255,0.15), transparent 60%), radial-gradient(circle at 75% 75%, rgba(0,0,0,0.5), transparent 60%)",
+            background:
+              "radial-gradient(ellipse at 50% 70%, rgba(200,155,60,0.15) 0%, transparent 60%)",
           }}
-        />
-
-        {/* Darkening */}
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/20 to-ink/30"
         />
 
         {/* Top — número + subtítulo */}

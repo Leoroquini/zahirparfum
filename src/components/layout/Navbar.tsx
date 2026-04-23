@@ -13,7 +13,6 @@ const NAV_LINKS = [
   { href: "/comparador", label: "Compare" },
   { href: "/curadorias", label: "Curadorias" },
   { href: "/decants", label: "Decants" },
-  { href: "/manifesto", label: "Manifesto" },
 ];
 
 export function Navbar() {

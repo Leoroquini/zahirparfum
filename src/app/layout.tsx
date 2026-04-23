@@ -6,6 +6,8 @@ import { GrainOverlay } from "@/components/motion/GrainOverlay";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { TrustBar } from "@/components/layout/TrustBar";
+import { ManifestoFloat } from "@/components/layout/ManifestoFloat";
+import { AjudaFloat } from "@/components/layout/AjudaFloat";
 import { Analytics } from "@/components/analytics/Analytics";
 import { CookieBanner } from "@/components/analytics/CookieBanner";
 import { UtmCapture } from "@/components/analytics/UtmCapture";
@@ -79,6 +81,8 @@ export default function RootLayout({
         </SmoothScroll>
         <GrainOverlay />
         <ListaDrawer />
+        <ManifestoFloat />
+        <AjudaFloat />
         <CookieBanner />
         <UtmCapture />
         <Analytics />

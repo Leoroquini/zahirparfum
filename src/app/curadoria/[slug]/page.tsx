@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { CURADORIAS, getCuradoria, perfumesDa } from "@/data/curadorias";
 import { PerfumeCard } from "@/components/ui/PerfumeCard";
@@ -35,24 +36,23 @@ export default async function CuradoriaPage({ params }: Props) {
     <article className="relative">
       {/* Hero da curadoria */}
       <section
-        className="relative flex min-h-[50vh] items-end overflow-hidden border-b border-cream/5 px-6 pb-12 pt-32 md:min-h-[60vh] md:px-12 md:pb-16 md:pt-40"
+        className="relative flex min-h-[55vh] items-end overflow-hidden border-b border-cream/5 px-6 pb-12 pt-32 md:min-h-[65vh] md:px-12 md:pb-16 md:pt-40"
       >
-        <div
-          aria-hidden
-          className="absolute inset-0"
-          style={{ background: curadoria.gradient }}
+        <Image
+          src={curadoria.foto}
+          alt={`Curadoria ${curadoria.titulo}`}
+          fill
+          sizes="100vw"
+          priority
+          className="object-cover object-center"
         />
         <div
           aria-hidden
-          className="absolute inset-0 opacity-40 mix-blend-overlay"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15), transparent 60%), radial-gradient(circle at 75% 80%, rgba(0,0,0,0.5), transparent 60%)",
-          }}
+          className="absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/50 to-ink/40"
         />
         <div
           aria-hidden
-          className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink via-ink/60 to-transparent"
+          className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink via-ink/75 to-transparent"
         />
 
         <div className="relative mx-auto w-full max-w-[1440px]">
