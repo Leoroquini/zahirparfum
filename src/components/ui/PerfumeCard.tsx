@@ -1,0 +1,182 @@
+"use client";
+
+import Link from "next/link";
+import { motion } from "motion/react";
+import type { Perfume } from "@/data/catalogo";
+
+/**
+ * Gradient placeholder por família olfativa.
+ * Substituir por imagens reais de frasco quando chegarem as fotos de produto.
+ */
+function gradientForFamily(familia: string | null): string {
+  if (!familia)
+    return "linear-gradient(135deg, #1a0a0e 0%, #3d1a22 50%, #8c6b26 100%)";
+  const f = familia.toLowerCase();
+  if (f.includes("aquátic") || f.includes("marinh"))
+    return "linear-gradient(135deg, #0a1a25 0%, #1a3347 50%, #4a7a9c 100%)";
+  if (f.includes("gourmand"))
+    return "linear-gradient(135deg, #1a0e06 0%, #3d2210 50%, #c89b6a 100%)";
+  if (f.includes("oriental oud") || f.includes(" oud"))
+    return "linear-gradient(135deg, #0a0605 0%, #2a150a 55%, #6a3d1e 100%)";
+  if (f.includes("floral doce") || f.includes("floral"))
+    return "linear-gradient(135deg, #2a0e1a 0%, #4a1e3d 50%, #c89b6a 100%)";
+  if (f.includes("fougère"))
+    return "linear-gradient(135deg, #14211a 0%, #2a4538 50%, #6b8a5d 100%)";
+  if (f.includes("aromático frutado cítrico"))
+    return "linear-gradient(135deg, #1a2010 0%, #3d4518 50%, #c89b6a 100%)";
+  if (f.includes("aromático frutado amadeirado"))
+    return "linear-gradient(135deg, #1a1e0e 0%, #3d3522 50%, #8c6b26 100%)";
+  if (f.includes("especiado"))
+    return "linear-gradient(135deg, #2e0e10 0%, #5c1e20 50%, #8c5d26 100%)";
+  if (f.includes("âmbar") || f.includes("oriental amadeirado"))
+    return "linear-gradient(135deg, #1a0a0e 0%, #4a1518 50%, #c89b3c 100%)";
+  if (f.includes("oriental baunilha"))
+    return "linear-gradient(135deg, #1a0e08 0%, #3d2014 50%, #c89b6a 100%)";
+  if (f.includes("oriental"))
+    return "linear-gradient(135deg, #1a0a0e 0%, #3d1a22 50%, #8c6b26 100%)";
+  if (f.includes("amadeirado aromático fresco"))
+    return "linear-gradient(135deg, #0f1a25 0%, #1e3447 50%, #4a7a8c 100%)";
+  if (f.includes("amadeirado aromático"))
+    return "linear-gradient(135deg, #2e1b0c 0%, #4a2f14 45%, #8c6b26 100%)";
+  if (f.includes("amadeirado especiado"))
+    return "linear-gradient(135deg, #1a1510 0%, #3d2822 50%, #6e5326 100%)";
+  if (f.includes("amadeirado"))
+    return "linear-gradient(135deg, #1a1510 0%, #3d3322 50%, #6e5b36 100%)";
+  if (f.includes("aromático"))
+    return "linear-gradient(135deg, #1a1a0e 0%, #3d3520 50%, #8c6b26 100%)";
+  return "linear-gradient(135deg, #1a0a0e 0%, #3d1a22 50%, #8c6b26 100%)";
+}
+
+function formatPrice(n: number | null): string {
+  if (n === null) return "—";
+  return n.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+}
+
+type Props = {
+  perfume: Perfume;
+  index?: number;
+};
+
+export function PerfumeCard({ perfume, index = 0 }: Props) {
+  const gradient = gradientForFamily(perfume.familia);
+  const primaryClone = perfume.cloneDe?.[0];
+  const extraClones = perfume.cloneDe && perfume.cloneDe.length > 1
+    ? perfume.cloneDe.length - 1
+    : 0;
+  const isPending = !perfume.marca;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{
+        duration: 0.8,
+        delay: Math.min(index * 0.04, 0.4),
+        ease: [0.19, 1, 0.22, 1],
+      }}
+    >
+      <Link
+        href={`/perfume/${perfume.id}`}
+        className="group relative block aspect-[3/4] overflow-hidden rounded-sm border border-cream/5 bg-ink-soft transition-all duration-700 hover:border-amber/40 hover:shadow-[0_0_50px_rgba(200,155,60,0.12)]"
+      >
+        {/* Background gradient da família olfativa */}
+        <div
+          aria-hidden
+          className="absolute inset-0 transition-transform duration-[1500ms] group-hover:scale-105"
+          style={{ background: gradient }}
+        />
+
+        {/* Textura sutil pra quebrar o flat do gradient */}
+        <div
+          aria-hidden
+          className="absolute inset-0 opacity-40 mix-blend-overlay"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.12), transparent 60%), radial-gradient(circle at 70% 80%, rgba(0,0,0,0.4), transparent 60%)",
+          }}
+        />
+
+        {/* Darkening gradient no rodapé pra contraste do texto */}
+        <div
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-[70%] bg-gradient-to-t from-ink/95 via-ink/65 to-transparent"
+        />
+
+        {/* Número do catálogo */}
+        <div className="absolute left-5 top-5 z-10">
+          <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber/80">
+            Nº {String(perfume.numero).padStart(2, "0")}
+          </span>
+        </div>
+
+        {/* Concentração ou badge "em breve" */}
+        <div className="absolute right-5 top-5 z-10">
+          <span
+            className={`text-[9px] font-sans uppercase tracking-[0.35em] ${
+              isPending ? "text-amber/70" : "text-cream/50"
+            }`}
+          >
+            {isPending ? "Em breve" : perfume.concentracao}
+          </span>
+        </div>
+
+        {/* Conteúdo principal no rodapé */}
+        <div className="absolute inset-x-0 bottom-0 z-10 p-6">
+          {/* Marca */}
+          <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber/90">
+            {perfume.marca ?? "Fragrância"}
+          </span>
+
+          {/* Nome */}
+          <h3 className="mt-2 font-display text-xl font-light leading-[1.1] text-cream transition-colors duration-500 group-hover:text-amber/95 md:text-2xl">
+            {perfume.nome}
+          </h3>
+
+          {/* Divider */}
+          <span className="mt-4 block h-px w-10 bg-amber/50 transition-all duration-500 group-hover:w-16 group-hover:bg-amber" />
+
+          {/* Row: clone de × preço */}
+          <div className="mt-4 flex items-end justify-between gap-3">
+            <div className="min-w-0 flex-1">
+              {primaryClone ? (
+                <p className="text-xs leading-tight text-cream/60">
+                  <span className="italic">inspirado em </span>
+                  <span className="text-cream/85">{primaryClone}</span>
+                  {extraClones > 0 && (
+                    <span className="text-cream/40"> +{extraClones}</span>
+                  )}
+                </p>
+              ) : isPending ? (
+                <p className="text-xs italic text-cream/50">dados em breve</p>
+              ) : (
+                <p className="text-xs italic text-cream/60">DNA próprio</p>
+              )}
+            </div>
+
+            <div className="flex flex-col items-end">
+              <span className="text-[9px] font-sans uppercase tracking-[0.3em] text-cream/40">
+                A partir de
+              </span>
+              <span className="font-display text-2xl leading-none text-cream">
+                {formatPrice(perfume.precoVenda)}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Seta de navegação — aparece no hover */}
+        <div className="absolute right-5 top-1/2 z-10 -translate-y-1/2 opacity-0 transition-all duration-500 group-hover:right-6 group-hover:opacity-100">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-amber/50 bg-ink/60 backdrop-blur-sm">
+            <span className="font-sans text-xs text-amber">→</span>
+          </div>
+        </div>
+      </Link>
+    </motion.div>
+  );
+}

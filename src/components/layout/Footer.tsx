@@ -1,0 +1,85 @@
+import { BRAND } from "@/lib/brand";
+
+const NAVIGATE = [
+  { href: "/catalogo", label: "Catálogo" },
+  { href: "/mapa", label: "Mapa olfativo" },
+  { href: "/ritual", label: "O Ritual — quiz olfativo" },
+  { href: "/comparador", label: "Árabe × Designer" },
+  { href: "/curadorias", label: "Curadorias" },
+  { href: "/decants", label: "Decants — teste antes" },
+  { href: "/manifesto", label: "Manifesto" },
+];
+
+export function Footer() {
+  return (
+    <footer
+      className="relative border-t border-cream/5 bg-ink px-6 py-20 md:px-12"
+    >
+      <div className="mx-auto max-w-[1440px]">
+        <div className="grid grid-cols-1 gap-14 md:grid-cols-3">
+          <div>
+            <h3 className="font-display text-3xl font-light tracking-tight text-cream">
+              {BRAND.name}
+              <span className="text-amber">.</span>
+            </h3>
+            <p className="mt-2 text-[10px] font-sans tracking-[0.4em] text-cream/50">
+              PARFUMS · {BRAND.origin}
+            </p>
+            <p className="mt-6 max-w-xs text-sm leading-relaxed text-cream/60">
+              {BRAND.manifesto}
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-3 text-sm text-cream/60">
+            <span className="mb-1 text-[10px] font-sans uppercase tracking-[0.4em] text-cream/40">
+              Navegar
+            </span>
+            {NAVIGATE.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="transition-colors hover:text-amber"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+
+          <div className="flex flex-col gap-3 text-sm text-cream/60">
+            <span className="mb-1 text-[10px] font-sans uppercase tracking-[0.4em] text-cream/40">
+              Contato
+            </span>
+            <a
+              href={`https://instagram.com/${BRAND.handles.instagram}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-amber"
+            >
+              Instagram · @{BRAND.handles.instagram}
+            </a>
+            <a
+              href={`https://tiktok.com/@${BRAND.handles.tiktok}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-amber"
+            >
+              TikTok · @{BRAND.handles.tiktok}
+            </a>
+            <span className="text-cream/40 text-xs mt-2">
+              Atendimento em breve via WhatsApp
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-16 flex flex-col gap-4 border-t border-cream/5 pt-8 text-[10px] font-sans uppercase tracking-[0.35em] text-cream/30 md:flex-row md:justify-between">
+          <span>
+            © {BRAND.foundedYear} {BRAND.fullName}. Todos os direitos reservados.
+          </span>
+          <span>
+            Fundada por {BRAND.founders.join(", ")} · {BRAND.city}
+          </span>
+        </div>
+      </div>
+    </footer>
+  );
+}
