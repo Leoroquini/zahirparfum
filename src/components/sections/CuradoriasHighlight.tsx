@@ -13,7 +13,7 @@ const EASE_OUT = [0.19, 1, 0.22, 1] as const;
  * começar-certo, clones-imbativeis, sob-150.
  * CTA manda pra /curadorias (as 6 completas).
  */
-const IDS_DESTAQUE = ["comecar-certo", "clones-imbativeis", "sob-150"];
+const IDS_DESTAQUE = ["comecar-certo", "clones-imbativeis", "sob-250"];
 
 export function CuradoriasHighlight() {
   const destaques = CURADORIAS.filter((c) => IDS_DESTAQUE.includes(c.id)).sort(

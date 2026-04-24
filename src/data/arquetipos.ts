@@ -62,10 +62,10 @@ export const ARQUETIPOS: Record<string, string> = {
     "Usado pelo cara que chega tarde no bar e é o último a sair. Doce sem ser infantil, denso o suficiente pra contar a história de quem ficou a noite toda.",
 
   "vulcan-feu":
-    "Arquétipo em definição. Unissex de caráter forte — a escrita vem depois que a gente cheira e descreve em primeira pessoa.",
+    "Usado pelo cara (ou mulher) que não tem medo de ser notado. Manga, gengibre, praliné — frutado doce masculino que entra na sala e conversa com o ambiente inteiro.",
 
   "ghost-spectre":
-    "Arquétipo em definição. Misterioso já no nome — aguardando os sócios confirmarem notas e perfil pra escrever com precisão.",
+    "Usado pelo cara que prefere o sussurro ao grito. Especiado sofisticado com baunilha leve — performance de extrait escondida dentro de um EDP que dura o dia todo sem chamar atenção.",
 
   "atlas-extrait":
     "Usado pelo cara que veraneia no Nordeste e não precisa mandar foto pros amigos. Nuclear aquático — duas borrifadas e a praia inteira sabe que chegou.",

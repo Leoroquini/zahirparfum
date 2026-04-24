@@ -32,13 +32,13 @@ export const CURADORIAS: Curadoria[] = [
     descricaoHome:
       "Fragrâncias de entrada — acessíveis, versáteis, agradam fácil. Se essa é sua primeira compra consciente, a gente começa por aqui com você.",
     descricaoPage:
-      "Cinco perfumes para quem está entrando no universo árabe agora. Preço que cabe na primeira compra, projeção alta o suficiente pra você notar a diferença do mercado designer, versatilidade pra usar no dia ou na noite. Escolhas que agradam fácil sem parecer genéricas.",
+      "Perfumes para quem está entrando no universo árabe agora. Preço que cabe na primeira compra, projeção alta o suficiente pra você notar a diferença do mercado designer, versatilidade pra usar no dia ou na noite. Escolhas que agradam fácil sem parecer genéricas.",
     foto: "/curadorias/comecar-certo.png",
     gradient:
       "linear-gradient(135deg, #1a1510 0%, #3d3322 50%, #c89b6a 100%)",
     filter: (p) =>
       p.precoVenda !== null &&
-      p.precoVenda <= 180 &&
+      p.precoVenda <= 260 &&
       (p.projecao === "alta" || p.projecao === "moderada-alta") &&
       p.ocasioes.some((o) =>
         ["versátil", "dia", "noite", "todas as estações"].includes(
@@ -70,17 +70,17 @@ export const CURADORIAS: Curadoria[] = [
     order: (a, b) => (a.precoVenda ?? 0) - (b.precoVenda ?? 0),
   },
   {
-    id: "sob-150",
-    titulo: "Sob R$ 150",
+    id: "sob-250",
+    titulo: "Sob R$ 250",
     subtitulo: "Ótimos sem pesar no bolso",
     descricaoHome:
-      "Toda a curadoria por até cento e cinquenta reais. Entrada acessível pro cara que quer começar bem sem comprometer o mês.",
+      "Toda a curadoria por até duzentos e cinquenta reais. Entrada acessível pro cara que quer começar bem sem comprometer o mês.",
     descricaoPage:
-      "Curadoria completa de tudo que custa até R$ 150 no catálogo. Projeção, qualidade e DNA olfativo premium sem ultrapassar o orçamento. Ideal pra primeira compra, pra montar coleção sem gastar R$ 250 por frasco, ou pra testar um perfil olfativo novo sem medo.",
-    foto: "/curadorias/sob-150.png",
+      "Curadoria completa de tudo que custa até R$ 250 no catálogo. Projeção, qualidade e DNA olfativo premium sem ultrapassar o orçamento. Ideal pra primeira compra, pra montar coleção sem gastar R$ 300+ por frasco, ou pra testar um perfil olfativo novo sem medo.",
+    foto: "/curadorias/sob-250.png",
     gradient:
       "linear-gradient(135deg, #1a0e06 0%, #3d2210 50%, #c89b6a 100%)",
-    filter: (p) => p.precoVenda !== null && p.precoVenda <= 150,
+    filter: (p) => p.precoVenda !== null && p.precoVenda <= 250,
     order: (a, b) => (a.precoVenda ?? 0) - (b.precoVenda ?? 0),
   },
   {

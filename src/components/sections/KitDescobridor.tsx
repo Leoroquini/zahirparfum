@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "motion/react";
 import { CATALOGO } from "@/data/catalogo";
-import { addItem } from "@/lib/lista-store";
+import { addItem, precoDa } from "@/lib/lista-store";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
 import { toast } from "@/lib/toast-store";
 
@@ -27,6 +27,13 @@ export function KitDescobridor() {
       .map((id) => CATALOGO.find((p) => p.id === id))
       .filter((p): p is NonNullable<typeof p> => !!p);
   }, []);
+
+  // Cálculo dinâmico — sempre bate com os preços vigentes do catálogo
+  const totalAvulso = kit.reduce((sum, p) => sum + precoDa(p, "decant-10"), 0);
+  const precoKit = Math.round((totalAvulso * 0.8) / 5) * 5; // 20% off arredondado múltiplo de 5
+  const descontoPct = totalAvulso > 0
+    ? Math.round(((totalAvulso - precoKit) / totalAvulso) * 100)
+    : 0;
 
   const handleAdicionarKit = () => {
     kit.forEach((p) => addItem(p, "decant-10"));
@@ -64,24 +71,24 @@ export function KitDescobridor() {
             </span>
             <h2 className="max-w-xl font-display text-4xl font-light leading-[1.05] tracking-tight text-cream md:text-5xl lg:text-6xl">
               Três decants curados por{" "}
-              <em className="italic text-amber/90">R$ 99.</em>
+              <em className="italic text-amber/90">R$ {precoKit}.</em>
             </h2>
             <p className="max-w-xl text-base leading-relaxed text-cream/70 md:text-lg">
               Três perfumes árabes completamente diferentes — um fresco
               especiado, um oriental denso, um gourmand noturno — em decants
               de 10 ml cada. O jeito mais barato de descobrir seu perfil
-              olfativo sem gastar R$ 700.
+              olfativo sem gastar em três frascos cheios.
             </p>
 
             <div className="mt-2 flex flex-wrap items-baseline gap-4">
               <span className="font-display text-4xl font-light text-cream md:text-5xl">
-                R$ 99
+                R$ {precoKit}
               </span>
               <span className="text-sm text-cream/55 line-through">
-                R$ 125
+                R$ {totalAvulso}
               </span>
               <span className="rounded-full bg-amber/15 px-3 py-1 text-[10px] font-sans uppercase tracking-[0.3em] text-amber">
-                21% off
+                {descontoPct}% off
               </span>
             </div>
 

@@ -5,7 +5,6 @@ import { Ritual } from "@/components/sections/Ritual";
 import { KitDescobridor } from "@/components/sections/KitDescobridor";
 import { Decants } from "@/components/sections/Decants";
 import { ComparadorPreview } from "@/components/sections/ComparadorPreview";
-import { SocialProof } from "@/components/sections/SocialProof";
 import { MapaOlfativo } from "@/components/sections/MapaOlfativo";
 import { ManifestoPreview } from "@/components/sections/ManifestoPreview";
 import { Newsletter } from "@/components/sections/Newsletter";
@@ -34,10 +33,7 @@ export default function HomePage() {
       {/* 7. Comparador — prévia com 1 exemplo forte */}
       <ComparadorPreview />
 
-      {/* 8. Social proof — vozes de beta testers */}
-      <SocialProof />
-
-      {/* 9. Mapa olfativo — visual "uau" */}
+      {/* 8. Mapa olfativo — visual "uau" */}
       <MapaOlfativo />
 
       {/* 9. Manifesto — versão curta */}

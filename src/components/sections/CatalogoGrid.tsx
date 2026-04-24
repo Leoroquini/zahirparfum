@@ -48,10 +48,10 @@ const OCASIAO_GRUPOS = [
 
 /** Faixas de preço pré-calibradas pros dados do catálogo */
 const PRECO_FAIXAS = [
-  { key: "low", label: "até R$140", min: 0, max: 140 },
-  { key: "mid", label: "R$140–180", min: 140, max: 180 },
-  { key: "high", label: "R$180–220", min: 180, max: 220 },
-  { key: "premium", label: "R$220+", min: 220, max: Infinity },
+  { key: "low", label: "até R$200", min: 0, max: 200 },
+  { key: "mid", label: "R$200–250", min: 200, max: 250 },
+  { key: "high", label: "R$250–300", min: 250, max: 300 },
+  { key: "premium", label: "R$300+", min: 300, max: Infinity },
 ] as const;
 
 type Ordenacao =

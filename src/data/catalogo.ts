@@ -1,10 +1,8 @@
 /**
  * CATÁLOGO ZAHIR PARFUMS
  * Fonte: informações novas/catalogo-zahir.md
- * Atualizar aqui quando novos SKUs forem adicionados.
- *
- * Perfumes 19 (Vulcan Feu) e 20 (Ghost Spectre) têm dados incompletos —
- * preencher marca/família/notas após pesquisa.
+ * Preços de venda com margem bruta ~30% (custo ÷ 0.7, arredondado pra múltiplo de 5).
+ * `precoMercado` = referência do designer original / custo de boutique no Brasil.
  */
 
 export type Projecao =
@@ -70,8 +68,8 @@ export const CATALOGO: Perfume[] = [
     cloneDe: ["Creed Aventus"],
     projecao: "alta",
     fixacao: "6-8h",
-    precoMercado: 251.10,
-    precoVenda: 190.00,
+    precoMercado: 2400,
+    precoVenda: 270,
     ocasioes: ["noite", "encontro", "inverno"],
     notas: {
       topo: ["bergamota", "maçã", "limão", "abacaxi", "groselha preta"],
@@ -93,8 +91,8 @@ export const CATALOGO: Perfume[] = [
     cloneFidelidade: "70-80%",
     projecao: "moderada",
     fixacao: "6-8h",
-    precoMercado: 300.00,
-    precoVenda: 230.00,
+    precoMercado: 850,
+    precoVenda: 330,
     ocasioes: ["dia", "trabalho", "todas as estações"],
     notas: {
       topo: ["toranja", "limão", "menta", "pimenta rosa", "coentro"],
@@ -114,8 +112,8 @@ export const CATALOGO: Perfume[] = [
     cloneDe: ["Dior Sauvage Elixir"],
     projecao: "alta",
     fixacao: "8-10h",
-    precoMercado: 196.08,
-    precoVenda: 135.00,
+    precoMercado: 1300,
+    precoVenda: 195,
     ocasioes: ["noite", "inverno", "encontro"],
     notas: {
       topo: ["pimenta preta", "tabaco", "abacaxi"],
@@ -136,8 +134,8 @@ export const CATALOGO: Perfume[] = [
     cloneTipo: "referência",
     projecao: "moderada-alta",
     fixacao: "10-12h",
-    precoMercado: 223.51,
-    precoVenda: 170.00,
+    precoMercado: 900,
+    precoVenda: 245,
     ocasioes: ["noite", "inverno", "eventos especiais"],
     notas: {
       topo: [],
@@ -158,8 +156,8 @@ export const CATALOGO: Perfume[] = [
     cloneTipo: "DNA próprio, não clone direto",
     projecao: "alta",
     fixacao: "10-14h",
-    precoMercado: 257.99,
-    precoVenda: 145.00,
+    precoMercado: 2600,
+    precoVenda: 205,
     ocasioes: ["noite", "outono", "inverno", "encontros românticos"],
     notas: {
       topo: ["canela", "cardamomo", "gengibre"],
@@ -180,8 +178,8 @@ export const CATALOGO: Perfume[] = [
     cloneDe: ["Angel's Share by Kilian", "Side Effect Initio"],
     projecao: "alta",
     fixacao: null,
-    precoMercado: 232.32,
-    precoVenda: 170.00,
+    precoMercado: 2600,
+    precoVenda: 245,
     ocasioes: ["noite", "inverno", "ocasiões especiais"],
     notas: {
       topo: ["açafrão", "bergamota"],
@@ -204,8 +202,8 @@ export const CATALOGO: Perfume[] = [
     cloneTipo: "DNA próximo",
     projecao: "moderada-alta",
     fixacao: "6-8h",
-    precoMercado: 180.70,
-    precoVenda: 150.00,
+    precoMercado: 2800,
+    precoVenda: 215,
     ocasioes: ["dia", "trabalho", "primavera"],
     notas: {
       topo: ["bergamota", "pimenta preta", "gengibre", "toranja"],
@@ -226,8 +224,8 @@ export const CATALOGO: Perfume[] = [
     cloneTipo: "DNA próprio amadeirado/defumado",
     projecao: "moderada",
     fixacao: "6-8h",
-    precoMercado: 161.10,
-    precoVenda: 180.00,
+    precoMercado: 480,
+    precoVenda: 255,
     ocasioes: ["noite", "outono", "inverno", "eventos formais"],
     notas: {
       topo: ["conhaque", "açafrão", "noz-moscada", "maçã"],
@@ -248,8 +246,8 @@ export const CATALOGO: Perfume[] = [
     cloneTipo: "DNA próximo",
     projecao: "alta",
     fixacao: "8-10h+",
-    precoMercado: 135.38,
-    precoVenda: 160.00,
+    precoMercado: 2750,
+    precoVenda: 230,
     ocasioes: ["noite", "inverno", "uso masculino marcante"],
     notas: {
       topo: ["maçã", "pimenta rosa", "alecrim"],
@@ -270,8 +268,8 @@ export const CATALOGO: Perfume[] = [
     cloneTipo: "DNA aquático — referência",
     projecao: "alta",
     fixacao: "8-10h",
-    precoMercado: null,
-    precoVenda: 115.00,
+    precoMercado: 850,
+    precoVenda: 165,
     ocasioes: ["dia", "trabalho", "primavera", "verão"],
     notas: {
       topo: ["bergamota", "limão", "pimenta"],
@@ -292,8 +290,8 @@ export const CATALOGO: Perfume[] = [
     cloneFidelidade: "90%",
     projecao: "alta",
     fixacao: "10h+",
-    precoMercado: 245.00,
-    precoVenda: 220.00,
+    precoMercado: 900,
+    precoVenda: 315,
     ocasioes: ["noite", "inverno", "eventos especiais"],
     notas: {
       topo: ["pimenta rosa", "açafrão", "toranja"],
@@ -314,8 +312,8 @@ export const CATALOGO: Perfume[] = [
     cloneTipo: "versão mais amadeirada/defumada",
     projecao: "alta",
     fixacao: null,
-    precoMercado: 280.00,
-    precoVenda: 210.00,
+    precoMercado: 2400,
+    precoVenda: 300,
     ocasioes: ["noite", "inverno"],
     notas: {
       topo: ["bergamota", "abacaxi", "limão"],
@@ -337,8 +335,8 @@ export const CATALOGO: Perfume[] = [
     projecao: "moderada",
     fixacao: "6-8h",
     fixacaoObs: "melhora após maceração",
-    precoMercado: 220.00,
-    precoVenda: 160.00,
+    precoMercado: 750,
+    precoVenda: 230,
     ocasioes: ["dia", "trabalho", "primavera", "verão"],
     notas: {
       topo: ["maçã", "bergamota", "gengibre"],
@@ -359,9 +357,9 @@ export const CATALOGO: Perfume[] = [
     cloneFidelidade: "85-90%",
     projecao: "moderada-alta",
     fixacao: "8-10h",
-    precoMercado: 141.34,
-    precoVenda: 160.00,
-    ocasioes: [],
+    precoMercado: 650,
+    precoVenda: 230,
+    ocasioes: ["noite", "eventos"],
     notas: {
       topo: ["toranja", "cardamomo", "pimenta rosa"],
       coracao: ["tuberosa", "notas solares", "artemisia"],
@@ -381,8 +379,8 @@ export const CATALOGO: Perfume[] = [
     cloneFidelidade: "85-95%",
     projecao: "alta",
     fixacao: "8-10h",
-    precoMercado: 244.34,
-    precoVenda: 190.00,
+    precoMercado: 900,
+    precoVenda: 270,
     ocasioes: ["noite", "outono", "inverno", "eventos"],
     notas: {
       topo: ["lavanda", "menta", "sálvia"],
@@ -403,8 +401,8 @@ export const CATALOGO: Perfume[] = [
     cloneTipo: "DNA próximo",
     projecao: "moderada",
     fixacao: "6-8h",
-    precoMercado: 250.00,
-    precoVenda: 180.00,
+    precoMercado: 700,
+    precoVenda: 255,
     ocasioes: ["dia", "noite", "versátil", "3 estações"],
     notas: {
       topo: ["lavanda", "canela", "tangerina"],
@@ -425,8 +423,8 @@ export const CATALOGO: Perfume[] = [
     cloneTipo: "DNA próximo",
     projecao: "moderada-alta",
     fixacao: "7-9h",
-    precoMercado: 289.00,
-    precoVenda: 230.00,
+    precoMercado: 2400,
+    precoVenda: 330,
     ocasioes: ["dia", "primavera", "verão", "casual", "esportivo"],
     notas: {
       topo: ["tangerina", "limão", "bergamota"],
@@ -447,8 +445,8 @@ export const CATALOGO: Perfume[] = [
     cloneFidelidade: "90-95%",
     projecao: "alta",
     fixacao: "8-10h",
-    precoMercado: 255.36,
-    precoVenda: 175.00,
+    precoMercado: 800,
+    precoVenda: 250,
     ocasioes: ["noite", "outono", "inverno", "encontro"],
     notas: {
       topo: ["maçã", "canela", "lavanda", "bergamota"],
@@ -461,37 +459,49 @@ export const CATALOGO: Perfume[] = [
     numero: 19,
     nome: "Vulcan Feu",
     nomeCompleto: "Vulcan Feu EDP 100ml (Unissex)",
-    marca: null,
+    marca: "French Avenue",
+    marcaGrupo: "Fragrance World",
     volume: "100ml",
     concentracao: "EDP",
-    familia: null,
+    familia: "Amadeirado Frutado Doce",
     cloneDe: null,
-    projecao: null,
-    fixacao: null,
-    precoMercado: 314.37,
-    precoVenda: 245.00,
-    ocasioes: [],
-    notas: { topo: [], coracao: [], fundo: [] },
+    cloneTipo: "DNA próprio — frutado doce amadeirado",
+    projecao: "alta",
+    fixacao: "8-10h",
+    precoMercado: 520,
+    precoVenda: 350,
+    ocasioes: ["noite", "encontro", "eventos especiais", "versátil"],
+    notas: {
+      topo: ["manga", "limão", "gengibre", "ruibarbo"],
+      coracao: ["pimenta rosa", "jasmim", "violeta", "praliné"],
+      fundo: ["tonka", "cedro", "ambergris", "musgo"],
+    },
     genero: "unissex",
-    status: "dados pendentes — consultar Fragrantica",
+    destaque: "novidade",
   },
   {
     id: "ghost-spectre",
     numero: 20,
     nome: "Ghost Spectre",
     nomeCompleto: "Ghost Spectre EDP 80ml",
-    marca: null,
+    marca: "French Avenue",
+    marcaGrupo: "Fragrance World",
     volume: "80ml",
     concentracao: "EDP",
-    familia: null,
+    familia: "Amadeirado Aromático Especiado",
     cloneDe: null,
-    projecao: null,
-    fixacao: null,
-    precoMercado: 290.00,
-    precoVenda: 235.00,
-    ocasioes: [],
-    notas: { topo: [], coracao: [], fundo: [] },
-    status: "dados pendentes — consultar Fragrantica",
+    cloneTipo: "DNA próprio — especiado com baunilha leve",
+    projecao: "alta",
+    fixacao: "10h+",
+    fixacaoObs: "performance de extrait apesar de EDP",
+    precoMercado: 480,
+    precoVenda: 335,
+    ocasioes: ["dia", "noite", "primavera", "outono", "versátil"],
+    notas: {
+      topo: ["gengibre", "cardamomo", "bergamota"],
+      coracao: ["pimenta rosa", "cassis", "rosa"],
+      fundo: ["baunilha", "cedro", "patchouli", "sândalo", "âmbar", "musk"],
+    },
   },
   {
     id: "atlas-extrait",
@@ -507,8 +517,8 @@ export const CATALOGO: Perfume[] = [
     projecao: "nuclear",
     projecaoObs: "máx. 2 borrifadas",
     fixacao: "10h+",
-    precoMercado: 269.10,
-    precoVenda: 240.00,
+    precoMercado: 3200,
+    precoVenda: 340,
     ocasioes: ["primavera", "verão", "praia", "casual"],
     notas: {
       topo: ["notas marinhas", "sal", "limão"],
@@ -530,8 +540,8 @@ export const CATALOGO: Perfume[] = [
     cloneFidelidade: "85%",
     projecao: "alta",
     fixacao: "12h+",
-    precoMercado: 309.00,
-    precoVenda: 230.00,
+    precoMercado: 2800,
+    precoVenda: 330,
     ocasioes: ["noite", "outono", "inverno"],
     ocasioesObs: "intenso, usar com moderação",
     notas: {
@@ -554,8 +564,8 @@ export const CATALOGO: Perfume[] = [
     cloneTipo: "DNA próprio oriental com oud",
     projecao: "alta",
     fixacao: "10h+",
-    precoMercado: 280.00,
-    precoVenda: 200.00,
+    precoMercado: 520,
+    precoVenda: 285,
     ocasioes: ["noite", "outono", "inverno", "eventos especiais"],
     notas: {
       topo: ["maracujá", "notas frutadas", "rosa", "açafrão"],
@@ -576,8 +586,8 @@ export const CATALOGO: Perfume[] = [
     cloneFidelidade: "90%",
     projecao: "alta",
     fixacao: "8-10h",
-    precoMercado: 184.04,
-    precoVenda: 130.00,
+    precoMercado: 850,
+    precoVenda: 185,
     ocasioes: ["dia", "noite", "versátil", "todas as estações"],
     notas: {
       topo: ["bergamota"],
@@ -599,8 +609,8 @@ export const CATALOGO: Perfume[] = [
     cloneFidelidade: "80-90%",
     projecao: "moderada-alta",
     fixacao: "6-8h",
-    precoMercado: 160.00,
-    precoVenda: 115.00,
+    precoMercado: 1300,
+    precoVenda: 165,
     ocasioes: ["noite", "inverno", "encontro"],
     notas: {
       topo: ["toranja", "cardamomo", "canela", "noz-moscada"],
@@ -621,8 +631,8 @@ export const CATALOGO: Perfume[] = [
     cloneFidelidade: "90%",
     projecao: "alta",
     fixacao: "8-10h",
-    precoMercado: 184.04,
-    precoVenda: 120.00,
+    precoMercado: 950,
+    precoVenda: 170,
     ocasioes: ["dia", "noite", "outono", "inverno"],
     notas: {
       topo: ["bergamota"],
@@ -643,8 +653,8 @@ export const CATALOGO: Perfume[] = [
     cloneFidelidade: "80%",
     projecao: "alta",
     fixacao: "8-12h",
-    precoMercado: 350.00,
-    precoVenda: 240.00,
+    precoMercado: 900,
+    precoVenda: 340,
     ocasioes: ["noite", "outono", "inverno", "encontro"],
     notas: {
       topo: ["menta", "bergamota"],
@@ -666,8 +676,8 @@ export const CATALOGO: Perfume[] = [
     cloneTipo: "DNA",
     projecao: "moderada-alta",
     fixacao: "8-10h",
-    precoMercado: 267.00,
-    precoVenda: 210.00,
+    precoMercado: 1900,
+    precoVenda: 300,
     ocasioes: ["dia", "noite", "versátil", "todas as estações"],
     notas: {
       topo: ["bergamota", "abacaxi", "toranja"],
@@ -726,7 +736,7 @@ export function getPrimeirosPerfumes(limit = 5): Perfume[] {
   return CATALOGO.filter(
     (p) =>
       p.precoVenda !== null &&
-      p.precoVenda <= 160 &&
+      p.precoVenda <= 230 &&
       (p.projecao === "alta" || p.projecao === "moderada-alta") &&
       p.ocasioes.some((o) => ["versátil", "dia", "noite", "todas as estações"].includes(o))
   )
