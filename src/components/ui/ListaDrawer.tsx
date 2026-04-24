@@ -15,6 +15,7 @@ import { CATALOGO } from "@/data/catalogo";
 import { mensagemLista, linkInstagram } from "@/lib/reserva-dm";
 import { events } from "@/lib/track";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
+import { toast } from "@/lib/toast-store";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
@@ -51,6 +52,11 @@ export function ListaDrawer() {
     const mensagem = mensagemLista(items);
     const url = linkInstagram(mensagem);
     window.open(url, "_blank", "noopener,noreferrer");
+    toast.success(
+      "Mensagem aberta no Instagram",
+      "Confere a lista no DM e envia. Respondemos em minutos."
+    );
+    setOpen(false);
   };
 
   return (

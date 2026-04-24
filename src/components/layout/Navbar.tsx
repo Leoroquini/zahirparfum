@@ -90,8 +90,9 @@ export function Navbar() {
           <div className="flex items-center gap-4 md:gap-5">
             <Link
               href="/buscar"
-              aria-label="Buscar"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-cream/15 text-cream/75 transition-all hover:border-amber hover:text-amber"
+              aria-label="Buscar (atalho: tecla /)"
+              title="Buscar · atalho /"
+              className="group flex items-center gap-2 rounded-full border border-cream/15 py-1.5 pl-3 pr-2 text-cream/75 transition-all hover:border-amber hover:text-amber md:pl-3.5 md:pr-2.5"
             >
               <svg
                 width="14"
@@ -105,6 +106,9 @@ export function Navbar() {
                 <circle cx="6" cy="6" r="4.5" />
                 <line x1="9.5" y1="9.5" x2="12.5" y2="12.5" />
               </svg>
+              <kbd className="hidden rounded border border-cream/20 bg-ink/60 px-1.5 py-px text-[10px] font-sans tabular-nums text-cream/60 md:inline-block">
+                /
+              </kbd>
             </Link>
             <a
               href={`https://instagram.com/${BRAND.handles.instagram}`}

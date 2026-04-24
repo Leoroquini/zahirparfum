@@ -91,6 +91,21 @@
   }
 }
 
+/* Respeita preferência do sistema — desliga animações ruidosas */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* Mantém fade (pouco invasivo) mas remove movimento */
+  [data-motion="parallax"],
+  [data-motion="particles"] {
+    display: none !important;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

@@ -21,14 +21,56 @@ type StepState =
   | { kind: "pergunta"; index: number }
   | { kind: "resultado"; perfil: Perfil; perfumes: Perfume[] };
 
+const RITUAL_STATE_KEY = "zahir-ritual-progresso";
+
+type PersistedState = {
+  stepIndex: number; // índice da pergunta em andamento
+  respostaKeys: { perguntaId: string; respostaKey: string }[];
+};
+
+function loadProgress(): PersistedState | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = sessionStorage.getItem(RITUAL_STATE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveProgress(state: PersistedState) {
+  if (typeof window === "undefined") return;
+  try {
+    sessionStorage.setItem(RITUAL_STATE_KEY, JSON.stringify(state));
+  } catch {
+    // silent
+  }
+}
+
+function clearProgress() {
+  if (typeof window === "undefined") return;
+  sessionStorage.removeItem(RITUAL_STATE_KEY);
+}
+
 export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<StepState>({ kind: "intro" });
   const [respostas, setRespostas] = useState<Resposta[]>([]);
+  const [temProgresso, setTemProgresso] = useState(false);
+
+  // Checa progresso salvo na montagem
+  useEffect(() => {
+    const p = loadProgress();
+    if (p && p.stepIndex > 0 && p.stepIndex < PERGUNTAS.length) {
+      setTemProgresso(true);
+    }
+  }, []);
 
   const reset = () => {
     setStep({ kind: "intro" });
     setRespostas([]);
+    clearProgress();
+    setTemProgresso(false);
   };
 
   // Lock body scroll quando o overlay está aberto
@@ -53,6 +95,27 @@ export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
 
   const handleIniciar = () => {
     setOpen(true);
+    // Se tem progresso salvo, retoma dali
+    const p = loadProgress();
+    if (p && p.stepIndex > 0 && p.stepIndex < PERGUNTAS.length) {
+      const resps: Resposta[] = [];
+      for (const item of p.respostaKeys) {
+        const perg = PERGUNTAS.find((pp) => pp.id === item.perguntaId);
+        const r = perg?.respostas.find((rr) => rr.key === item.respostaKey);
+        if (r) resps.push(r);
+      }
+      setRespostas(resps);
+      setStep({ kind: "pergunta", index: p.stepIndex });
+    } else {
+      setStep({ kind: "pergunta", index: 0 });
+    }
+  };
+
+  const handleIniciarDoZero = () => {
+    clearProgress();
+    setTemProgresso(false);
+    setRespostas([]);
+    setOpen(true);
     setStep({ kind: "pergunta", index: 0 });
   };
 
@@ -67,7 +130,16 @@ export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
       const perfil = calcularPerfil(nextRespostas);
       const perfumes = perfumesPara(perfil, 3);
       setStep({ kind: "resultado", perfil, perfumes });
+      clearProgress(); // terminou, limpa
     } else {
+      // Persiste progresso
+      saveProgress({
+        stepIndex: nextIndex,
+        respostaKeys: nextRespostas.map((r, idx) => ({
+          perguntaId: PERGUNTAS[idx].id,
+          respostaKey: r.key,
+        })),
+      });
       setStep({ kind: "pergunta", index: nextIndex });
     }
   };
@@ -110,20 +182,35 @@ export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
             </motion.div>
           )}
 
-          <motion.button
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.2, ease: EASE_OUT }}
-            type="button"
-            onClick={handleIniciar}
-            className="group relative inline-flex items-center gap-4 self-start overflow-hidden rounded-full bg-amber px-9 py-5 text-xs font-sans uppercase tracking-[0.3em] text-ink transition-all duration-500 hover:bg-amber-bright md:self-end"
+            className="flex flex-col items-start gap-2 md:items-end"
           >
-            <span>Começar o Ritual</span>
-            <span className="transition-transform duration-500 group-hover:translate-x-1">
-              →
-            </span>
-          </motion.button>
+            <button
+              type="button"
+              onClick={handleIniciar}
+              className="group relative inline-flex items-center gap-4 overflow-hidden rounded-full bg-amber px-9 py-5 text-xs font-sans uppercase tracking-[0.3em] text-ink transition-all duration-500 hover:bg-amber-bright"
+            >
+              <span>
+                {temProgresso ? "Continuar o Ritual" : "Começar o Ritual"}
+              </span>
+              <span className="transition-transform duration-500 group-hover:translate-x-1">
+                →
+              </span>
+            </button>
+            {temProgresso && (
+              <button
+                type="button"
+                onClick={handleIniciarDoZero}
+                className="text-[10px] font-sans uppercase tracking-[0.3em] text-cream/50 transition-colors hover:text-amber"
+              >
+                ou recomeçar do zero
+              </button>
+            )}
+          </motion.div>
         </div>
       </section>
 

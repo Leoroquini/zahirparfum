@@ -12,6 +12,11 @@ import { Analytics } from "@/components/analytics/Analytics";
 import { CookieBanner } from "@/components/analytics/CookieBanner";
 import { UtmCapture } from "@/components/analytics/UtmCapture";
 import { ListaDrawer } from "@/components/ui/ListaDrawer";
+import { ToastStack } from "@/components/ui/ToastStack";
+import { BuscaShortcut } from "@/components/ui/BuscaShortcut";
+import { CupomBanner } from "@/components/marketing/CupomBanner";
+import { ExitIntentCapture } from "@/components/marketing/ExitIntentCapture";
+import { ListaRetornoNudge } from "@/components/marketing/ListaRetornoNudge";
 import { BRAND } from "@/lib/brand";
 
 const fraunces = Fraunces({
@@ -83,6 +88,11 @@ export default function RootLayout({
         <ListaDrawer />
         <ManifestoFloat />
         <AjudaFloat />
+        <ToastStack />
+        <BuscaShortcut />
+        <CupomBanner />
+        <ExitIntentCapture />
+        <ListaRetornoNudge />
         <CookieBanner />
         <UtmCapture />
         <Analytics />

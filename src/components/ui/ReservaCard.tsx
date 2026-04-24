@@ -13,6 +13,7 @@ import {
 } from "@/lib/lista-store";
 import { linkInstagram, mensagemPerfume } from "@/lib/reserva-dm";
 import { events } from "@/lib/track";
+import { toast } from "@/lib/toast-store";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
@@ -41,8 +42,13 @@ export function ReservaCard({ perfume }: { perfume: Perfume }) {
   };
 
   const handleAddLista = () => {
+    if (naLista) return;
     events.adicionouNaLista(perfume.id, variante);
     addItem(perfume, variante);
+    toast.success(
+      `${perfume.nome} na sua lista`,
+      "Quando terminar de escolher, envia tudo pro Instagram de uma vez."
+    );
   };
 
   if (isPending) {

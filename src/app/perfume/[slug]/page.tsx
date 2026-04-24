@@ -10,6 +10,8 @@ import { StickyReservaBar } from "@/components/ui/StickyReservaBar";
 import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { PerfumeHeroShot } from "@/components/ui/PerfumeHeroShot";
 import { EvolucaoTimeline } from "@/components/ui/EvolucaoTimeline";
+import { DepoimentoInline } from "@/components/ui/DepoimentoInline";
+import { CrossSellKit } from "@/components/ui/CrossSellKit";
 import { arquetipoDe } from "@/data/arquetipos";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -217,6 +219,12 @@ export default async function PerfumePage({ params }: Props) {
       {perfume.cloneDe && perfume.cloneDe.length > 0 && (
         <InspirationCard perfume={perfume} />
       )}
+
+      {/* Depoimento inline (se houver) */}
+      <DepoimentoInline perfumeId={perfume.id} />
+
+      {/* Cross-sell: monta kit com esse + 2 complementares */}
+      <CrossSellKit perfume={perfume} />
 
       {/* Ocasiões */}
       {perfume.ocasioes.length > 0 && (

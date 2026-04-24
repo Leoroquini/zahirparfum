@@ -6,6 +6,7 @@ import { motion } from "motion/react";
 import type { Perfume } from "@/data/catalogo";
 import { addItem, useLista } from "@/lib/lista-store";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
+import { toast } from "@/lib/toast-store";
 
 /**
  * Gradient placeholder por família olfativa.
@@ -156,8 +157,8 @@ export function PerfumeCard({ perfume, index = 0 }: Props) {
           {perfume.destaque && <DestaqueBadge destaque={perfume.destaque} />}
         </div>
 
-        {/* Concentração ou badge "em breve" */}
-        <div className="absolute right-5 top-5 z-10">
+        {/* Concentração ou badge "em breve" + decant disponível */}
+        <div className="absolute right-5 top-5 z-10 flex flex-col items-end gap-1.5">
           <span
             className={`text-[9px] font-sans uppercase tracking-[0.35em] ${
               isPending ? "text-amber/70" : "text-cream/50"
@@ -165,6 +166,12 @@ export function PerfumeCard({ perfume, index = 0 }: Props) {
           >
             {isPending ? "Em breve" : perfume.concentracao}
           </span>
+          {!isPending && perfume.decantDisponivel !== false && (
+            <span className="inline-flex items-center gap-1 rounded-full border border-amber/40 bg-amber/10 px-2 py-0.5 text-[8px] font-sans uppercase tracking-[0.3em] text-amber backdrop-blur-sm">
+              <span className="h-1 w-1 rounded-full bg-amber" />
+              Decant
+            </span>
+          )}
         </div>
 
         {/* Conteúdo principal no rodapé */}
@@ -226,7 +233,12 @@ export function PerfumeCard({ perfume, index = 0 }: Props) {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
+            if (jaNaLista) return;
             addItem(perfume, "frasco");
+            toast.success(
+              `${perfume.nome} na sua lista`,
+              "Abre a lista no canto inferior direito pra enviar pro Instagram."
+            );
           }}
           disabled={jaNaLista}
           aria-label={

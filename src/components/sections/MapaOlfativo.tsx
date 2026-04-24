@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import { CATALOGO, type Perfume } from "@/data/catalogo";
+import { MapaMobileAlt } from "@/components/ui/MapaMobileAlt";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
@@ -86,8 +87,13 @@ export function MapaOlfativo({ hideIntro = false }: { hideIntro?: boolean } = {}
           </motion.div>
         )}
 
-        {/* Mapa */}
-        <div className={`${hideIntro ? "" : "mt-16 "}grid gap-8 lg:grid-cols-[1fr_320px] lg:gap-12`}>
+        {/* Alternativa mobile — lista agrupada por família */}
+        <div className={`${hideIntro ? "" : "mt-12 "}md:hidden`}>
+          <MapaMobileAlt />
+        </div>
+
+        {/* Mapa 2D — só desktop/tablet */}
+        <div className={`${hideIntro ? "" : "mt-16 "}hidden gap-8 md:grid lg:grid-cols-[1fr_320px] lg:gap-12`}>
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             whileInView={{ opacity: 1, scale: 1 }}

@@ -7,6 +7,7 @@ import { motion } from "motion/react";
 import { CATALOGO } from "@/data/catalogo";
 import { addItem } from "@/lib/lista-store";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
+import { toast } from "@/lib/toast-store";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
@@ -29,6 +30,10 @@ export function KitDescobridor() {
 
   const handleAdicionarKit = () => {
     kit.forEach((p) => addItem(p, "decant-10"));
+    toast.success(
+      "Kit Descobridor na sua lista",
+      "Três decants 10ml adicionados. Abre a lista pra enviar pro Instagram."
+    );
   };
 
   return (
