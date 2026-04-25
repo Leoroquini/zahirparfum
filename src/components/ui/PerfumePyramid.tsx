@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "motion/react";
+import { NotaModal } from "@/components/ui/NotaModal";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
@@ -8,44 +10,64 @@ type Props = {
   topo: string[];
   coracao: string[];
   fundo: string[];
+  /** Slug do perfume atual — exclui ele da lista "também aparece em" no modal */
+  perfumeId?: string;
 };
 
-export function PerfumePyramid({ topo, coracao, fundo }: Props) {
+export function PerfumePyramid({ topo, coracao, fundo, perfumeId }: Props) {
+  const [notaAtiva, setNotaAtiva] = useState<string | null>(null);
   const hasAny = topo.length + coracao.length + fundo.length > 0;
   if (!hasAny) return null;
 
   return (
-    <div className="grid gap-12 md:grid-cols-[280px_1fr] md:gap-16 lg:gap-20">
-      {/* SVG pyramid */}
-      <div className="relative flex items-start justify-center md:justify-start">
-        <PyramidSVG />
+    <>
+      <div className="grid gap-12 md:grid-cols-[280px_1fr] md:gap-16 lg:gap-20">
+        {/* SVG pyramid */}
+        <div className="relative flex items-start justify-center md:justify-start">
+          <PyramidSVG />
+        </div>
+
+        {/* Layers com notas */}
+        <div className="flex flex-col gap-10">
+          <Layer
+            label="Topo"
+            subtitle="primeira impressão · 3–15 min"
+            notas={topo}
+            delay={0.2}
+            color="bright"
+            onSelect={setNotaAtiva}
+          />
+          <Layer
+            label="Coração"
+            subtitle="a assinatura · 20 min – 4 h"
+            notas={coracao}
+            delay={0.4}
+            color="mid"
+            onSelect={setNotaAtiva}
+          />
+          <Layer
+            label="Fundo"
+            subtitle="o que fica · 4 h+"
+            notas={fundo}
+            delay={0.6}
+            color="deep"
+            onSelect={setNotaAtiva}
+          />
+
+          {/* Dica de uso — só aparece quando ainda não interagiu */}
+          <p className="text-xs italic text-cream/45">
+            Clica em qualquer nota pra entender como ela cheira e em quais
+            outros perfumes do catálogo ela aparece.
+          </p>
+        </div>
       </div>
 
-      {/* Layers com notas */}
-      <div className="flex flex-col gap-10">
-        <Layer
-          label="Topo"
-          subtitle="primeira impressão · 3–15 min"
-          notas={topo}
-          delay={0.2}
-          color="bright"
-        />
-        <Layer
-          label="Coração"
-          subtitle="a assinatura · 20 min – 4 h"
-          notas={coracao}
-          delay={0.4}
-          color="mid"
-        />
-        <Layer
-          label="Fundo"
-          subtitle="o que fica · 4 h+"
-          notas={fundo}
-          delay={0.6}
-          color="deep"
-        />
-      </div>
-    </div>
+      <NotaModal
+        nota={notaAtiva}
+        perfumeAtualId={perfumeId}
+        onClose={() => setNotaAtiva(null)}
+      />
+    </>
   );
 }
 
@@ -82,8 +104,6 @@ function PyramidSVG() {
         </filter>
       </defs>
 
-      {/* Piramide — 3 trapézios empilhados, topo menor, base maior */}
-      {/* Topo (triângulo) */}
       <motion.path
         d="M120,20 L155,85 L85,85 Z"
         fill="url(#pyr-top)"
@@ -96,7 +116,6 @@ function PyramidSVG() {
         }}
         transition={{ duration: 1.1, ease: EASE_OUT }}
       />
-      {/* Coração (trapézio meio) */}
       <motion.path
         d="M85,85 L155,85 L180,170 L60,170 Z"
         fill="url(#pyr-mid)"
@@ -109,7 +128,6 @@ function PyramidSVG() {
         }}
         transition={{ duration: 1.1, delay: 0.4, ease: EASE_OUT }}
       />
-      {/* Fundo (trapézio base) */}
       <motion.path
         d="M60,170 L180,170 L210,258 L30,258 Z"
         fill="url(#pyr-bot)"
@@ -123,7 +141,6 @@ function PyramidSVG() {
         transition={{ duration: 1.1, delay: 0.8, ease: EASE_OUT }}
       />
 
-      {/* Labels em italic */}
       <motion.text
         x="120"
         y="66"
@@ -173,7 +190,6 @@ function PyramidSVG() {
         fundo
       </motion.text>
 
-      {/* Linhas laterais decorativas — sombras sutis embaixo */}
       <motion.line
         x1="30"
         y1="263"
@@ -200,12 +216,14 @@ function Layer({
   notas,
   delay,
   color,
+  onSelect,
 }: {
   label: string;
   subtitle: string;
   notas: string[];
   delay: number;
   color: "bright" | "mid" | "deep";
+  onSelect: (nota: string) => void;
 }) {
   const borderColor =
     color === "bright"
@@ -246,7 +264,7 @@ function Layer({
           {subtitle}
         </span>
       </div>
-      <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2">
+      <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-2">
         {notas.map((n, i) => (
           <motion.li
             key={n}
@@ -257,9 +275,17 @@ function Layer({
               duration: 0.5,
               delay: delay + 0.3 + i * 0.05,
             }}
-            className="text-base text-cream/85 transition-colors hover:text-amber"
           >
-            {n}
+            <button
+              type="button"
+              onClick={() => onSelect(n)}
+              className="group inline-flex items-baseline gap-1 rounded-sm px-2 py-1 -mx-2 text-base text-cream/85 outline-none transition-colors hover:bg-amber/10 hover:text-amber focus-visible:bg-amber/15 focus-visible:text-amber focus-visible:ring-1 focus-visible:ring-amber/60"
+              aria-label={`Saber mais sobre ${n}`}
+            >
+              <span className="border-b border-dashed border-cream/20 group-hover:border-amber/60 group-focus-visible:border-amber">
+                {n}
+              </span>
+            </button>
           </motion.li>
         ))}
       </ul>

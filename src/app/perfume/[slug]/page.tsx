@@ -198,6 +198,7 @@ export default async function PerfumePage({ params }: Props) {
               topo={perfume.notas.topo}
               coracao={perfume.notas.coracao}
               fundo={perfume.notas.fundo}
+              perfumeId={perfume.id}
             />
           </div>
         </section>
