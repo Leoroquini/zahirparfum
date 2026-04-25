@@ -25,7 +25,7 @@ export const ARQUETIPOS: Record<string, string> = {
   "khamrah-preto-teriaq":
     "Usado pelo cara que fuma charuto no inverno e acende incenso em casa. Perfume que não pede licença — ocupa o cômodo inteiro.",
 
-  "al-noble-sabaen":
+  "al-noble-safeer":
     "Usado pelo cara que monta apresentação às 8h e manda o deck pro cliente antes das 10h. Elegância de hoje, não de 1998.",
 
   "al-noble-wazeer":

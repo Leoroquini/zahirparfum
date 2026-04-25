@@ -21,7 +21,7 @@ export function KitDescobridor() {
     const ids = [
       "salvo-elixir",      // clone Sauvage Elixir, 5ml acessível
       "asad-preto",        // Dior Sauvage Elixir, cult favorito
-      "al-noble-sabaen",   // Oud for Greatness — oriental especiado
+      "al-noble-safeer",   // Oud for Greatness — oriental especiado
     ];
     return ids
       .map((id) => CATALOGO.find((p) => p.id === id))

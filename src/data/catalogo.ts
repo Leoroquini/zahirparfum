@@ -190,10 +190,10 @@ export const CATALOGO: Perfume[] = [
     destaque: "novidade",
   },
   {
-    id: "al-noble-sabaen",
+    id: "al-noble-safeer",
     numero: 7,
-    nome: "Al Noble Sabaen",
-    nomeCompleto: "Al Noble Sabaen EDP 100ml",
+    nome: "Al Noble Safeer",
+    nomeCompleto: "Al Noble Safeer EDP 100ml",
     marca: "Lattafa",
     volume: "100ml",
     concentracao: "EDP",
