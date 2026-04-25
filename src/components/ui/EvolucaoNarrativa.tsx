@@ -287,14 +287,15 @@ function NotasNivel({
   intensidade: ReturnType<typeof useTransform<number, number>>;
   pesoAtual: number;
 }) {
-  if (notas.length === 0) return null;
-
-  /* Opacidade do bloco inteiro — entre 0.25 e 1 (nunca some totalmente) */
+  /* Hooks SEMPRE no topo — nunca depois de early return.
+     Antes estava errado: perfume sem alguma camada (notas.fundo vazia)
+     fazia o componente retornar null antes dos useTransform, quebrando
+     a ordem de hooks entre renders. */
   const opacityBloco = useTransform(intensidade, [0, 1], [0.25, 1]);
-  /* Largura da barra de intensidade */
   const barWidth = useTransform(intensidade, [0, 1], ["6%", "100%"]);
 
-  /* Texto de status (estático — depende do peso atual da fase) */
+  if (notas.length === 0) return null;
+
   const status =
     pesoAtual === 0
       ? "inativa"

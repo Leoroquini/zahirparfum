@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/layout/PageHero";
-import { Manifesto } from "@/components/sections/Manifesto";
+import { ManifestoSection } from "@/components/sections/ManifestoSection";
 import { BRAND } from "@/lib/brand";
 
 export const metadata: Metadata = {
@@ -25,7 +25,7 @@ export default function ManifestoPage() {
         backgroundGradient="radial-gradient(ellipse at 40% 60%, rgba(200,155,60,0.1), transparent 60%)"
       />
 
-      <Manifesto hideIntro />
+      <ManifestoSection />
 
       {/* O que isso significa pra você — compromissos do cliente */}
       <section className="border-t border-cream/5 bg-ink px-6 py-20 md:px-12 md:py-28">
