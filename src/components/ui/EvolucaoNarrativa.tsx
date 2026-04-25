@@ -1,18 +1,31 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { useRef, useState } from "react";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useTransform,
+  useMotionValueEvent,
+} from "motion/react";
 
 /**
  * Versão scrolltelling da evolução olfativa na pele.
- * Sticky section que prende enquanto o cliente rola — três cenas
- * (topo / coração / fundo) cross-fadeiam, transformando a página
- * de produto em narrativa cinematográfica.
  *
- * Renderiza apenas em desktop com hardware decente. Em mobile ou
- * hardware fraco, o wrapper EvolucaoSection.tsx volta pra timeline
- * tradicional (mais leve, com slider manual).
+ * Filosofia desse design:
+ *   - Layout limpo, fixo, lado a lado (igual o original que era elogiado)
+ *   - 5 momentos editoriais (igual o original)
+ *   - 3 camadas (Topo/Coração/Fundo) SEMPRE visíveis com intensidade
+ *     variando — não há sobreposição/cross-fade ambíguo
+ *   - Apenas UM bloco editorial por vez (eyebrow + título + descrição)
+ *     trocando suavemente via AnimatePresence quando o cliente avança
+ *   - O scroll é o motor — não a estética
+ *
+ * Renderiza só em desktop ≥1024px com hardware decente
+ * (wrapper EvolucaoSection.tsx faz a detecção e fallback).
  */
+
+const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
 type Props = {
   topo: string[];
@@ -20,289 +33,304 @@ type Props = {
   fundo: string[];
 };
 
-const FASES = [
+type Momento = {
+  tempo: string;
+  rotuloCurto: string;
+  titulo: string;
+  descricao: string;
+  pesos: { topo: number; coracao: number; fundo: number };
+};
+
+const MOMENTOS: Momento[] = [
   {
-    id: "topo",
-    eyebrow: "3 — 15 min",
+    tempo: "0 — 15 min",
+    rotuloCurto: "0:15",
     titulo: "Primeira impressão",
     descricao:
-      "É o que quem cruza você no elevador vai sentir. Cítricos, especiarias vivas, frutas frescas — voláteis que abrem a porta antes de o resto chegar.",
+      "As notas voláteis dominam. É o que quem cruza você no elevador vai sentir — cítrico, especiaria viva, fruta fresca.",
+    pesos: { topo: 1, coracao: 0.3, fundo: 0.1 },
   },
   {
-    id: "coracao",
-    eyebrow: "20 min — 4 h",
-    titulo: "A assinatura",
+    tempo: "20 min — 1h",
+    rotuloCurto: "1h",
+    titulo: "Transição",
     descricao:
-      "O perfume revela o caráter real. Esta é a fase em que quem te abraça vai se lembrar — a identidade central, a razão pela qual você escolheu esse e não outro.",
+      "O topo começa a desaparecer e o coração assume. A pele esquenta o perfume, revela o caráter real da fragrância.",
+    pesos: { topo: 0.5, coracao: 1, fundo: 0.3 },
   },
   {
-    id: "fundo",
-    eyebrow: "4 h+",
+    tempo: "1h — 3h",
+    rotuloCurto: "3h",
+    titulo: "Assinatura",
+    descricao:
+      "O coração está em plenitude. Esta é a fase em que quem te abraça vai se lembrar — a identidade central do perfume.",
+    pesos: { topo: 0.1, coracao: 1, fundo: 0.6 },
+  },
+  {
+    tempo: "3h — 6h",
+    rotuloCurto: "6h",
+    titulo: "Maturação",
+    descricao:
+      "Coração começa a ceder pro fundo. Madeiras, âmbar e musks assumem. O perfume fica mais próximo da pele — projeção menor, intimidade maior.",
+    pesos: { topo: 0, coracao: 0.5, fundo: 1 },
+  },
+  {
+    tempo: "6h — 8h+",
+    rotuloCurto: "8h+",
     titulo: "O que fica",
     descricao:
-      "Madeiras, âmbar, almíscar. O perfume fica mais próximo da pele — projeção menor, intimidade maior. É o rastro que alguém sente no seu casaco no dia seguinte.",
+      "Só o fundo. É o rastro que alguém sente no seu casaco no dia seguinte. A memória olfativa que o perfume deixa em você e em quem passou.",
+    pesos: { topo: 0, coracao: 0.1, fundo: 1 },
   },
-] as const;
+];
+
+/* Pontos de breakpoint do scroll que definem qual momento está ativo */
+const FASE_THRESHOLDS = [0, 0.2, 0.4, 0.6, 0.8, 1];
 
 export function EvolucaoNarrativa({ topo, coracao, fundo }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const [faseIdx, setFaseIdx] = useState(0);
 
-  // 0 = topo do container entrou no viewport, 1 = saiu
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  /* Opacidade de cada fase — cross-fade suave */
-  // Topo:    1.0 ──┐
-  //              0.0 ─────────── 0.0
-  const opacityTopo = useTransform(
+  // Atualiza qual fase está ativa conforme o scroll passa
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    let novaFase = 0;
+    for (let i = 0; i < FASE_THRESHOLDS.length - 1; i++) {
+      if (v >= FASE_THRESHOLDS[i] && v < FASE_THRESHOLDS[i + 1]) {
+        novaFase = i;
+        break;
+      }
+    }
+    if (v >= 1) novaFase = MOMENTOS.length - 1;
+    setFaseIdx(novaFase);
+  });
+
+  /* Intensidades das camadas — interpoladas suavemente entre todos os momentos */
+  const intensidadeTopo = useTransform(
     scrollYProgress,
-    [0, 0.28, 0.4, 1],
-    [1, 1, 0, 0],
+    [0, 0.2, 0.4, 0.6, 0.8, 1],
+    MOMENTOS.map((m) => m.pesos.topo),
   );
-  // Coração: 0.0 ──┐ 1.0 ────┐ 0.0
-  const opacityCoracao = useTransform(
+  const intensidadeCoracao = useTransform(
     scrollYProgress,
-    [0, 0.3, 0.5, 0.65, 0.78, 1],
-    [0, 0, 1, 1, 0, 0],
+    [0, 0.2, 0.4, 0.6, 0.8, 1],
+    MOMENTOS.map((m) => m.pesos.coracao),
   );
-  // Fundo:   0.0 ──────── 0.0 ┐ 1.0
-  const opacityFundo = useTransform(
+  const intensidadeFundo = useTransform(
     scrollYProgress,
-    [0, 0.7, 0.82, 1],
-    [0, 0, 1, 1],
+    [0, 0.2, 0.4, 0.6, 0.8, 1],
+    MOMENTOS.map((m) => m.pesos.fundo),
   );
 
-  /* Y translate das notas pra dar sensação de "subir" */
-  const yTopo = useTransform(scrollYProgress, [0, 0.4], [0, -40]);
-  const yCoracao = useTransform(scrollYProgress, [0.3, 0.78], [40, -40]);
-  const yFundo = useTransform(scrollYProgress, [0.7, 1], [40, 0]);
+  /* Posição do marcador na linha do tempo */
+  const marcadorX = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
-  /* Background gradient — 3 camadas com opacidade animada */
-  const bgOpacityTopo = useTransform(
-    scrollYProgress,
-    [0, 0.33, 0.5],
-    [0.5, 0.4, 0],
-  );
-  const bgOpacityCoracao = useTransform(
-    scrollYProgress,
-    [0.25, 0.5, 0.75],
-    [0, 0.5, 0],
-  );
-  const bgOpacityFundo = useTransform(
-    scrollYProgress,
-    [0.5, 0.75, 1],
-    [0, 0.4, 0.5],
-  );
-
-  /* Indicador de progresso lateral */
-  const progressoFase1 = useTransform(scrollYProgress, [0, 0.33], [0, 100]);
-  const progressoFase2 = useTransform(scrollYProgress, [0.33, 0.66], [0, 100]);
-  const progressoFase3 = useTransform(scrollYProgress, [0.66, 1], [0, 100]);
+  const momento = MOMENTOS[faseIdx];
 
   return (
     <div
       ref={containerRef}
       className="relative"
-      style={{ height: "300vh" /* 3 telas de scroll pras 3 cenas */ }}
+      style={{ height: "250vh" /* 5 momentos × ~50vh cada */ }}
     >
-      {/* Sticky section que segura enquanto o usuário rola */}
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        {/* Background gradient — 3 camadas com opacidade animada cross-fade */}
-        <motion.div
+      <div className="sticky top-0 flex min-h-screen items-center overflow-hidden py-16">
+        {/* Background gradient sutil — sem ser dramático demais */}
+        <div
           aria-hidden
-          className="pointer-events-none absolute inset-0"
+          className="pointer-events-none absolute inset-0 opacity-50"
           style={{
-            opacity: bgOpacityTopo,
             background:
-              "radial-gradient(ellipse at 20% 30%, rgba(231,182,89,0.22), transparent 60%)",
-          }}
-        />
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            opacity: bgOpacityCoracao,
-            background:
-              "radial-gradient(ellipse at 50% 50%, rgba(200,155,60,0.22), transparent 60%)",
-          }}
-        />
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            opacity: bgOpacityFundo,
-            background:
-              "radial-gradient(ellipse at 70% 70%, rgba(74,21,24,0.30), transparent 65%)",
+              "radial-gradient(ellipse at 50% 60%, rgba(200,155,60,0.10), transparent 65%)",
           }}
         />
 
-        {/* Indicador de progresso lateral (esquerda) */}
-        <div className="pointer-events-none absolute left-6 top-1/2 hidden -translate-y-1/2 lg:block">
-          <ul className="flex flex-col gap-6">
-            {FASES.map((f, i) => (
-              <li key={f.id} className="flex items-center gap-3">
-                <div className="relative h-px w-16 bg-cream/15">
-                  <motion.div
-                    className="absolute left-0 top-0 h-full bg-amber"
-                    style={{
-                      scaleX: useTransform(
-                        i === 0
-                          ? progressoFase1
-                          : i === 1
-                          ? progressoFase2
-                          : progressoFase3,
-                        [0, 100],
-                        [0, 1],
-                      ),
-                      transformOrigin: "left",
-                    }}
-                  />
-                </div>
-                <motion.span
-                  className="text-[9px] font-sans uppercase tracking-[0.35em]"
+        <div className="relative mx-auto w-full max-w-6xl px-6 md:px-12">
+          {/* Eyebrow */}
+          <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
+            Cheiro na pele
+          </span>
+
+          <h3 className="mt-4 font-display text-3xl font-light leading-[1.1] text-cream md:text-4xl">
+            Como esse perfume{" "}
+            <em className="italic text-amber/90">evolui em você.</em>
+          </h3>
+
+          {/* Linha do tempo horizontal — sempre visível, marcador acompanha scroll */}
+          <div className="mt-10">
+            {/* Rótulos dos 5 momentos */}
+            <div className="mb-3 flex justify-between text-[10px] font-sans uppercase tracking-[0.3em]">
+              {MOMENTOS.map((m, i) => (
+                <span
+                  key={m.tempo}
+                  className={`transition-colors duration-500 ${
+                    i === faseIdx ? "text-amber" : "text-cream/35"
+                  }`}
+                >
+                  {m.rotuloCurto}
+                </span>
+              ))}
+            </div>
+
+            {/* Trilha + marcador */}
+            <div className="relative h-px w-full bg-cream/15">
+              {/* Preenchimento até a fase atual */}
+              <motion.div
+                className="absolute left-0 top-0 h-full origin-left bg-amber"
+                style={{ scaleX: scrollYProgress }}
+              />
+              {/* Pontos das fases */}
+              {MOMENTOS.map((_, i) => (
+                <span
+                  key={i}
+                  className={`absolute top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full border transition-all duration-500 ${
+                    i <= faseIdx
+                      ? "border-amber bg-amber"
+                      : "border-cream/30 bg-ink"
+                  } ${i === faseIdx ? "scale-150 ring-2 ring-amber/35" : ""}`}
                   style={{
-                    color: useTransform(
-                      i === 0
-                        ? progressoFase1
-                        : i === 1
-                        ? progressoFase2
-                        : progressoFase3,
-                      [0, 100],
-                      ["rgba(244, 233, 212, 0.4)", "rgba(200, 155, 60, 1)"],
-                    ),
+                    left: `${(i / (MOMENTOS.length - 1)) * 100}%`,
                   }}
-                >
-                  {f.eyebrow}
-                </motion.span>
-              </li>
-            ))}
-          </ul>
-        </div>
+                  aria-hidden
+                />
+              ))}
+              {/* Marcador "vivo" que segue o scroll com suavidade */}
+              <motion.span
+                className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-bright shadow-[0_0_12px_rgba(231,182,89,0.6)]"
+                style={{ left: marcadorX }}
+                aria-hidden
+              />
+            </div>
+          </div>
 
-        {/* Conteúdo central — grid 2 colunas */}
-        <div className="relative mx-auto grid w-full max-w-6xl grid-cols-1 gap-12 px-6 md:px-12 lg:grid-cols-[1fr_1.2fr] lg:gap-20 lg:pl-32">
-          {/* Lado esquerdo — texto da fase */}
-          <div className="relative h-[60vh] min-h-[440px]">
-            {/* Eyebrow comum */}
-            <span className="absolute left-0 top-0 text-[10px] font-sans uppercase tracking-[0.5em] text-amber">
-              Cheiro na pele
-            </span>
-
-            {/* Cada fase — 3 textos absolutos sobrepostos, cross-fade */}
-            {FASES.map((f, i) => {
-              const op =
-                i === 0
-                  ? opacityTopo
-                  : i === 1
-                  ? opacityCoracao
-                  : opacityFundo;
-              return (
+          {/* Conteúdo principal — 2 colunas */}
+          <div className="mt-12 grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
+            {/* Esquerda — bloco editorial (UM por vez, troca suave) */}
+            <div className="relative min-h-[260px]">
+              <AnimatePresence mode="wait">
                 <motion.div
-                  key={f.id}
-                  style={{ opacity: op }}
-                  className="absolute inset-0 mt-12 flex flex-col gap-5"
+                  key={faseIdx}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.45, ease: EASE_OUT }}
+                  className="flex flex-col gap-4"
                 >
-                  <span className="text-xs font-sans uppercase tracking-[0.4em] text-amber/80">
-                    {f.eyebrow}
+                  <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber/85">
+                    {momento.tempo}
                   </span>
-                  <h3 className="font-display text-4xl font-light leading-[1.05] tracking-tight text-cream md:text-5xl lg:text-6xl">
-                    {f.titulo}
-                  </h3>
+                  <h4 className="font-display text-3xl font-light leading-[1.05] text-cream md:text-4xl lg:text-5xl">
+                    {momento.titulo}
+                  </h4>
                   <p className="max-w-md text-base leading-relaxed text-cream/75 md:text-lg">
-                    {f.descricao}
+                    {momento.descricao}
                   </p>
                 </motion.div>
-              );
-            })}
+              </AnimatePresence>
+            </div>
+
+            {/* Direita — 3 camadas de notas, sempre visíveis, intensidade varia */}
+            <div className="flex flex-col gap-7">
+              <NotasNivel
+                titulo="Topo"
+                notas={topo}
+                intensidade={intensidadeTopo}
+                pesoAtual={momento.pesos.topo}
+              />
+              <NotasNivel
+                titulo="Coração"
+                notas={coracao}
+                intensidade={intensidadeCoracao}
+                pesoAtual={momento.pesos.coracao}
+              />
+              <NotasNivel
+                titulo="Fundo"
+                notas={fundo}
+                intensidade={intensidadeFundo}
+                pesoAtual={momento.pesos.fundo}
+              />
+            </div>
           </div>
 
-          {/* Lado direito — notas da fase ativa */}
-          <div className="relative h-[60vh] min-h-[440px]">
-            <NotasCamada
-              titulo="Topo"
-              notas={topo}
-              opacity={opacityTopo}
-              y={yTopo}
-            />
-            <NotasCamada
-              titulo="Coração"
-              notas={coracao}
-              opacity={opacityCoracao}
-              y={yCoracao}
-            />
-            <NotasCamada
-              titulo="Fundo"
-              notas={fundo}
-              opacity={opacityFundo}
-              y={yFundo}
-            />
-          </div>
+          {/* Hint sutil de continuar — só na primeira fase */}
+          {faseIdx === 0 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="pointer-events-none mt-12 flex items-center gap-3 text-[10px] font-sans uppercase tracking-[0.4em] text-cream/45"
+            >
+              <span className="h-px w-10 bg-cream/30" />
+              Continua rolando pra ver evolução
+            </motion.div>
+          )}
         </div>
-
-        {/* Hint sutil "continua rolando" — só na primeira fase */}
-        <motion.div
-          className="pointer-events-none absolute bottom-10 left-1/2 -translate-x-1/2 text-center"
-          style={{ opacity: opacityTopo }}
-        >
-          <span className="text-[9px] font-sans uppercase tracking-[0.45em] text-cream/45">
-            Continua rolando
-          </span>
-          <div className="mx-auto mt-2 h-8 w-px bg-gradient-to-b from-cream/40 to-transparent" />
-        </motion.div>
       </div>
     </div>
   );
 }
 
-/* ---------------- Camada de notas (uma por fase) ---------------- */
+/* ---------------- Camada de notas (Topo / Coração / Fundo) ---------------- */
 
-function NotasCamada({
+function NotasNivel({
   titulo,
   notas,
-  opacity,
-  y,
+  intensidade,
+  pesoAtual,
 }: {
   titulo: string;
   notas: string[];
-  opacity: ReturnType<typeof useTransform<number, number>>;
-  y: ReturnType<typeof useTransform<number, number>>;
+  intensidade: ReturnType<typeof useTransform<number, number>>;
+  pesoAtual: number;
 }) {
-  if (notas.length === 0) {
-    return (
-      <motion.div
-        style={{ opacity, y }}
-        className="absolute inset-0 flex flex-col items-start gap-6"
-      >
-        <span className="font-display text-2xl italic text-amber/60">
-          {titulo}
-        </span>
-        <p className="text-sm italic text-cream/40">
-          (não declarado por este perfume)
-        </p>
-      </motion.div>
-    );
-  }
+  if (notas.length === 0) return null;
+
+  /* Opacidade do bloco inteiro — entre 0.25 e 1 (nunca some totalmente) */
+  const opacityBloco = useTransform(intensidade, [0, 1], [0.25, 1]);
+  /* Largura da barra de intensidade */
+  const barWidth = useTransform(intensidade, [0, 1], ["6%", "100%"]);
+
+  /* Texto de status (estático — depende do peso atual da fase) */
+  const status =
+    pesoAtual === 0
+      ? "inativa"
+      : pesoAtual < 0.3
+      ? "desvanecendo"
+      : pesoAtual < 0.7
+      ? "presente"
+      : "dominante";
 
   return (
-    <motion.div
-      style={{ opacity, y }}
-      className="absolute inset-0 flex flex-col items-start gap-6"
-    >
-      <span className="font-display text-2xl italic text-amber/85 md:text-3xl">
-        {titulo}
-      </span>
-      <ul className="flex flex-wrap gap-x-6 gap-y-3">
+    <motion.div style={{ opacity: opacityBloco }} className="flex flex-col gap-2">
+      <div className="flex items-baseline justify-between gap-3">
+        <span className="font-display text-base italic text-amber/85 md:text-lg">
+          {titulo}
+        </span>
+        <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-cream/45">
+          {status}
+        </span>
+      </div>
+
+      {/* Barra de intensidade — width varia continuamente com o scroll */}
+      <div className="relative h-px w-full bg-cream/10">
+        <motion.div
+          className="absolute left-0 top-0 h-full bg-amber"
+          style={{ width: barWidth }}
+        />
+      </div>
+
+      {/* Notas */}
+      <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1.5">
         {notas.map((n) => (
-          <li
-            key={n}
-            className="font-display text-2xl font-light leading-tight text-cream md:text-3xl lg:text-4xl"
-          >
+          <span key={n} className="text-base text-cream/85 md:text-lg">
             {n}
-          </li>
+          </span>
         ))}
-      </ul>
+      </div>
     </motion.div>
   );
 }
