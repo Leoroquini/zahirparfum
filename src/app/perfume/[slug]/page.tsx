@@ -9,7 +9,7 @@ import { ReservaCard } from "@/components/ui/ReservaCard";
 import { StickyReservaBar } from "@/components/ui/StickyReservaBar";
 import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { PerfumeHeroShot } from "@/components/ui/PerfumeHeroShot";
-import { EvolucaoTimeline } from "@/components/ui/EvolucaoTimeline";
+import { EvolucaoSection } from "@/components/ui/EvolucaoSection";
 import { CrossSellKit } from "@/components/ui/CrossSellKit";
 import { arquetipoDe } from "@/data/arquetipos";
 
@@ -207,7 +207,7 @@ export default async function PerfumePage({ params }: Props) {
       {/* "Cheiro na pele" — evolução ao longo do dia */}
       {hasNotes && (
         <section className="mt-20">
-          <EvolucaoTimeline
+          <EvolucaoSection
             topo={perfume.notas.topo}
             coracao={perfume.notas.coracao}
             fundo={perfume.notas.fundo}
