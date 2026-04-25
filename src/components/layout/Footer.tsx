@@ -8,6 +8,7 @@ const NAVIGATE = [
   { href: "/curadorias", label: "Curadorias" },
   { href: "/decants", label: "Decants — teste antes" },
   { href: "/notas", label: "Notas-assinatura" },
+  { href: "/diario", label: "Diário olfativo" },
   { href: "/manifesto", label: "Manifesto" },
 ];
 
