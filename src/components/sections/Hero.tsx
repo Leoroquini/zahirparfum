@@ -103,16 +103,12 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 2.6 }}
-        className="pointer-events-none absolute bottom-10 left-1/2 flex -translate-x-1/2 flex-col items-center gap-3"
+        className="pointer-events-none absolute bottom-10 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 md:flex"
       >
         <span className="text-[9px] font-sans uppercase tracking-[0.45em] text-cream/40">
           Deslize
         </span>
-        <motion.span
-          animate={{ y: [0, 10, 0], opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-          className="block h-10 w-px bg-gradient-to-b from-cream/60 to-transparent"
-        />
+        <span className="block h-10 w-px animate-pulse bg-gradient-to-b from-cream/60 to-transparent" />
       </motion.div>
 
       {/* Assinatura vertical à esquerda */}
@@ -171,7 +167,10 @@ function HeroMasterImage() {
         alt=""
         fill
         priority
+        quality={72}
         sizes="100vw"
+        placeholder="blur"
+        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAhEAABAwIHAAAAAAAAAAAAAAABAAIDBRIEBhETITFB/8QAFQEBAQAAAAAAAAAAAAAAAAAAAgP/xAAaEQACAgMAAAAAAAAAAAAAAAAAAQIRAyFB/9oADAMBAAIRAxEAPwCYzE2opTLdhYO7XxDKcHDBWNhDWjoABU5ES3dUKJm6RllUpLZ//9k="
         className="object-cover object-center"
         style={{ filter: "saturate(1.08) contrast(1.03)" }}
       />

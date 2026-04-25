@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { motion } from "motion/react";
 import type { Perfume } from "@/data/catalogo";
@@ -9,15 +10,19 @@ const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
 /**
  * Hero shot do produto — foto grande do frasco com spray effect no hover.
- * Partículas âmbar saem do topo (atomizador) simulando o perfume sendo
- * borrifado. Só visual, sem áudio — respeita prefers-reduced-motion.
+ * Partículas só renderizam DURANTE o hover (evita 14 animações infinitas
+ * rodando mesmo quando o usuário não está olhando, que travava mobile).
  */
 export function PerfumeHeroShot({ perfume }: { perfume: Perfume }) {
+  const [isHovering, setIsHovering] = useState(false);
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 1, ease: EASE_OUT }}
+      onHoverStart={() => setIsHovering(true)}
+      onHoverEnd={() => setIsHovering(false)}
       className="group relative aspect-square w-full overflow-hidden rounded-sm border border-cream/10 bg-ink-soft"
     >
       {/* Foto do frasco */}
@@ -27,6 +32,7 @@ export function PerfumeHeroShot({ perfume }: { perfume: Perfume }) {
         fill
         sizes="(max-width: 1024px) 100vw, 50vw"
         priority
+        quality={78}
         className="object-cover transition-transform duration-[1800ms] group-hover:scale-[1.03]"
       />
 
@@ -40,15 +46,14 @@ export function PerfumeHeroShot({ perfume }: { perfume: Perfume }) {
         }}
       />
 
-      {/* Spray particles — ativam no hover */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-      >
-        {SPRAY_PARTICLES.map((p) => (
-          <SprayParticle key={p.id} delay={p.delay} x={p.x} size={p.size} />
-        ))}
-      </div>
+      {/* Spray particles — só renderiza enquanto hover ativo */}
+      {isHovering && (
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          {SPRAY_PARTICLES.map((p) => (
+            <SprayParticle key={p.id} delay={p.delay} x={p.x} size={p.size} />
+          ))}
+        </div>
+      )}
 
       {/* Etiqueta de interação no canto */}
       <div className="pointer-events-none absolute bottom-4 left-4 flex items-center gap-2 rounded-full border border-cream/15 bg-ink/60 px-3 py-1.5 opacity-0 backdrop-blur-sm transition-opacity duration-500 group-hover:opacity-80">
@@ -71,9 +76,9 @@ export function PerfumeHeroShot({ perfume }: { perfume: Perfume }) {
 
 type Particle = { id: number; x: number; delay: number; size: number };
 
-const SPRAY_PARTICLES: Particle[] = Array.from({ length: 14 }).map((_, i) => ({
+const SPRAY_PARTICLES: Particle[] = Array.from({ length: 10 }).map((_, i) => ({
   id: i,
-  x: 35 + Math.random() * 30, // entre 35% e 65% da largura (boca do frasco)
+  x: 35 + Math.random() * 30,
   delay: Math.random() * 1.5,
   size: 2 + Math.random() * 3,
 }));

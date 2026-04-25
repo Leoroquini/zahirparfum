@@ -250,14 +250,12 @@ function PerfumeDot({
       style={{ left: `${pos.x * 100}%`, top: `${pos.y * 100}%` }}
       aria-label={`${perfume.nome} — ${perfume.familia}`}
     >
-      {/* Ring pulse quando hover */}
+      {/* Ring estático no ponto ativo */}
       {active && (
-        <motion.span
+        <span
           aria-hidden
-          initial={{ scale: 1, opacity: 0.6 }}
-          animate={{ scale: 3, opacity: 0 }}
-          transition={{ duration: 1.2, repeat: Infinity, ease: "easeOut" }}
-          className="absolute inset-0 h-3 w-3 rounded-full bg-amber"
+          className="absolute inset-0 h-3 w-3 rounded-full bg-amber/40"
+          style={{ transform: "scale(2.2)" }}
         />
       )}
       {/* Dot */}

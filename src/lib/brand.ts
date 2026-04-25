@@ -13,7 +13,7 @@ export const BRAND = {
     tiktok: "zahirparfums",
   },
   whatsapp: {
-    number: "",
-    display: "",
+    number: "5511914760230",
+    display: "(11) 91476-0230",
   },
 } as const;
