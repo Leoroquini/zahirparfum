@@ -53,7 +53,7 @@ export default function ManifestoPage() {
             <Compromisso
               numero="03"
               titulo="Você testa antes de investir."
-              descricao="Decants de 5 e 10 ml nos principais. Se não gostou, gastou quarenta reais. Se gostou, o valor vira crédito parcial pro frasco cheio. Perfume errado de R$ 250 é cliente frustrado pra sempre."
+              descricao="Decants de 5 e 10 ml nos principais. Se não gostou, gastou pouco para aprender sobre seu gosto. Se gostou, volta pelo frasco cheio com mais segurança."
             />
             <Compromisso
               numero="04"
@@ -93,8 +93,8 @@ export default function ManifestoPage() {
                 O perfume árabe chega no homem brasileiro em um momento
                 específico: o cara que cresceu vendo campanha de Dior no
                 intervalo do futebol agora encontra fragrâncias com
-                concentração maior, projeção mais alta e DNA mais complexo —
-                por um quarto do preço.
+                boa presença, DNA marcante e uma relação de valor mais
+                acessível que muitos perfumes de boutique.
               </p>
               <p className="text-cream/70">
                 A pergunta não é se o homem brasileiro vai adotar perfume

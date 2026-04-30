@@ -76,10 +76,11 @@ export default function TermosPage() {
           </Topico>
 
           <Topico n="6" t="Formas de pagamento">
-            Aceitamos Pix (com 3% de desconto à vista), cartão de crédito em
-            até 12x sem juros (via Pagar.me) e boleto bancário. Processadores
-            de pagamento seguem padrões PCI-DSS próprios; a ZAHIR não armazena
-            dados de cartão.
+            Nesta fase inicial, aceitamos Pix. O valor total, incluindo frete,
+            é confirmado no atendimento antes do pagamento. Cartão de crédito,
+            boleto e checkout automatizado podem ser disponibilizados em uma
+            fase posterior. A ZAHIR não solicita nem armazena dados de cartão
+            por mensagem.
           </Topico>
 
           <Topico n="7" t="Troca e devolução">

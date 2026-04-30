@@ -50,7 +50,14 @@ export function PerfumeHeroShot({ perfume }: { perfume: Perfume }) {
       {isHovering && (
         <div aria-hidden className="pointer-events-none absolute inset-0">
           {SPRAY_PARTICLES.map((p) => (
-            <SprayParticle key={p.id} delay={p.delay} x={p.x} size={p.size} />
+            <SprayParticle
+              key={p.id}
+              delay={p.delay}
+              x={p.x}
+              size={p.size}
+              drift1={p.drift1}
+              drift2={p.drift2}
+            />
           ))}
         </div>
       )}
@@ -74,23 +81,36 @@ export function PerfumeHeroShot({ perfume }: { perfume: Perfume }) {
 
 /* ---------------- Spray particles ---------------- */
 
-type Particle = { id: number; x: number; delay: number; size: number };
+type Particle = {
+  id: number;
+  x: number;
+  delay: number;
+  size: number;
+  drift1: number;
+  drift2: number;
+};
 
 const SPRAY_PARTICLES: Particle[] = Array.from({ length: 10 }).map((_, i) => ({
   id: i,
   x: 35 + Math.random() * 30,
   delay: Math.random() * 1.5,
   size: 2 + Math.random() * 3,
+  drift1: (Math.random() - 0.5) * 40,
+  drift2: (Math.random() - 0.5) * 60,
 }));
 
 function SprayParticle({
   x,
   delay,
   size,
+  drift1,
+  drift2,
 }: {
   x: number;
   delay: number;
   size: number;
+  drift1: number;
+  drift2: number;
 }) {
   return (
     <motion.span
@@ -104,7 +124,7 @@ function SprayParticle({
       }}
       animate={{
         y: [0, -20, -50, -80],
-        x: [0, (Math.random() - 0.5) * 40, (Math.random() - 0.5) * 60],
+        x: [0, drift1, drift2],
         opacity: [0, 0.9, 0.4, 0],
         scale: [0.3, 1, 1.5, 0.5],
       }}

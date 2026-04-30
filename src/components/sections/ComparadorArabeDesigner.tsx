@@ -10,7 +10,7 @@ const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 /**
  * Info curada dos principais designers referenciados no catálogo.
  * Preços são estimativas de boutique no Brasil (abril 2026) — usados
- * apenas pra calcular % de economia; ajustar quando os sócios pesquisarem.
+ * apenas pra calcular % de economia; ajustar quando a curadoria revisar.
  */
 const DESIGNER_INFO: Record<
   string,

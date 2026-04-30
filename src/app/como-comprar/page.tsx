@@ -23,17 +23,17 @@ const PASSOS = [
   {
     n: "03",
     t: "Combina o pagamento",
-    d: "A gente responde em minutos (horário comercial estendido 9h–22h), confirma estoque, calcula o frete pelo seu CEP, e manda link de Pix ou cartão.",
+    d: "A gente responde em horário comercial estendido (9h–22h), confirma disponibilidade, calcula o frete pelo seu CEP e envia os dados para pagamento via Pix.",
   },
   {
     n: "04",
     t: "Paga com segurança",
-    d: "Pix cai em segundos. Cartão em até 12x sem juros pela Pagar.me. Boleto também rola (leva 1–2 dias pra compensar).",
+    d: "Nesta fase inicial, aceitamos Pix. O pedido só entra na fila de separação depois da confirmação do pagamento no atendimento.",
   },
   {
     n: "05",
     t: "Recebe em casa",
-    d: "Envio em até 24h úteis depois do pagamento. Entrega pelo Correios ou transportadora, com rastreamento. 3–7 dias úteis pra maior parte do Brasil.",
+    d: "Preparo em 1 a 2 dias úteis depois do Pix confirmado. Envio pelos Correios ou transportadora, sempre com código de rastreamento.",
   },
 ];
 
@@ -85,15 +85,15 @@ export default function ComoComprarPage() {
           <div className="mt-10 grid gap-8 md:grid-cols-3 md:gap-12">
             <MetodoPagamento
               t="Pix"
-              d="Desconto de 3% no Pix à vista. Cai em segundos, envio no mesmo dia se for antes das 15h."
+              d="Forma inicial de pagamento. O valor total com frete é confirmado no atendimento antes de você pagar."
             />
             <MetodoPagamento
               t="Cartão"
-              d="Visa, Master, Elo, Hiper, Amex. Até 12x sem juros via Pagar.me. Link seguro enviado no DM."
+              d="Ainda não disponível. Entra em uma próxima fase, quando a operação estiver pronta para checkout e parcelamento."
             />
             <MetodoPagamento
               t="Boleto"
-              d="Compensa em 1–2 dias úteis. Depois do pagamento confirmado, envio no mesmo dia."
+              d="Ainda não disponível. Para manter a operação simples no lançamento, os primeiros pedidos serão fechados por Pix."
             />
           </div>
         </div>

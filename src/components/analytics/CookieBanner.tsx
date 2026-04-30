@@ -5,6 +5,9 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 
 const STORAGE_KEY = "zahir-cookie-consent";
+const HAS_ANALYTICS = Boolean(
+  process.env.NEXT_PUBLIC_GA4_ID || process.env.NEXT_PUBLIC_META_PIXEL_ID
+);
 
 type Consent = "accepted" | "rejected" | null;
 
@@ -15,17 +18,12 @@ type Consent = "accepted" | "rejected" | null;
  */
 export function CookieBanner() {
   const [visible, setVisible] = useState(false);
-  const [hasAnalytics, setHasAnalytics] = useState(false);
 
   useEffect(() => {
-    // Verifica se algum analytics está ativo (vars expostas via NEXT_PUBLIC_)
-    const ga = process.env.NEXT_PUBLIC_GA4_ID;
-    const pixel = process.env.NEXT_PUBLIC_META_PIXEL_ID;
-    if (!ga && !pixel) {
+    if (!HAS_ANALYTICS) {
       // Sem analytics ativos, banner não é necessário
       return;
     }
-    setHasAnalytics(true);
 
     // Checa consentimento prévio
     const saved = localStorage.getItem(STORAGE_KEY) as Consent;
@@ -43,7 +41,7 @@ export function CookieBanner() {
     if (c === "accepted") window.location.reload();
   };
 
-  if (!hasAnalytics) return null;
+  if (!HAS_ANALYTICS) return null;
 
   return (
     <AnimatePresence>

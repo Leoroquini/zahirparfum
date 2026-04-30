@@ -66,7 +66,7 @@ export function Hero() {
           transition={{ duration: 1.1, delay: 1.7, ease: EASE_OUT }}
           className="mt-14 max-w-xl text-base leading-relaxed text-cream/60 md:text-lg"
         >
-          Perfume árabe pro homem brasileiro que quer cheirar bem —
+          Perfume árabe masculino pra quem quer cheirar bem —
           <br className="hidden md:block" />{" "}
           e saber{" "}
           <em className="font-display italic text-cream/90">por que</em> cheira
@@ -204,4 +204,3 @@ function DarkeningOverlay() {
     </>
   );
 }
-

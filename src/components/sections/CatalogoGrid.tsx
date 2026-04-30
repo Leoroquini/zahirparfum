@@ -305,7 +305,7 @@ export function CatalogoGrid({ hideIntro = false }: { hideIntro?: boolean } = {}
           <span className="h-px w-16 bg-amber/40" />
           <p className="max-w-md text-sm italic text-cream/50">
             O catálogo cresce junto com a curadoria. Novas casas árabes entram
-            sob convite dos sócios.
+            quando fazem sentido para a proposta da marca.
           </p>
         </motion.div>
       </div>

@@ -14,7 +14,7 @@ const CATEGORIAS = [
     perguntas: [
       {
         p: "Os perfumes são originais?",
-        r: "100%. Todos os SKUs da curadoria são importados direto de casas árabes dos Emirados Árabes Unidos (Lattafa, Armaf, Rasasi, Afnan, Maison Alhambra, French Avenue, entre outras). Não trabalhamos com decants de fonte não identificada nem com falsificações.",
+        r: "Trabalhamos apenas com perfumes originais, adquiridos com fornecedores nacionais e importadores parceiros. A curadoria não trabalha com falsificações nem com decants de fonte não identificada.",
       },
       {
         p: "Por que o perfume árabe é mais barato que o designer original?",
@@ -22,7 +22,7 @@ const CATEGORIAS = [
       },
       {
         p: "A fidelidade de 85%, 90% é real mesmo?",
-        r: "Sim. Os percentuais que usamos são consenso da comunidade de perfumaria (Fragrantica, Parfumo, Basenotes) ou resultado de testes cegos feitos entre os sócios e um grupo de colaboradores. Não inventamos número pra vender — se é 70%, a gente diz 70%.",
+        r: "Os percentuais são estimativas editoriais baseadas em referências públicas de comunidade olfativa, comparações de mercado e avaliação da curadoria. Não são análise química laboratorial. Se a referência for distante, a ficha técnica deve dizer isso com clareza.",
       },
       {
         p: "Qual a diferença entre EDT, EDP e Extrait?",
@@ -43,7 +43,7 @@ const CATEGORIAS = [
       },
       {
         p: "Se eu gostar do decant, posso usar o valor pra comprar o frasco cheio?",
-        r: "Sim. Metade do valor do decant vira crédito na compra do frasco cheio do mesmo perfume, até 30 dias depois da primeira compra. Basta avisar no DM que a gente aplica.",
+        r: "Por enquanto, não. No lançamento, o decant serve para reduzir seu risco antes do frasco cheio. Programas de crédito e recompra podem entrar depois, quando a operação estiver mais madura.",
       },
       {
         p: "Posso trocar um decant já aberto?",
@@ -60,7 +60,7 @@ const CATEGORIAS = [
       },
       {
         p: "Quais formas de pagamento?",
-        r: "Pix (3% de desconto à vista), cartão até 12x sem juros (via Pagar.me), ou boleto. Tudo confirmado depois do DM — você recebe link seguro pra pagar.",
+        r: "Nesta fase inicial, Pix. O valor final com frete é confirmado no atendimento antes do pagamento. Cartão, boleto e checkout entram em uma próxima etapa.",
       },
       {
         p: "Minha compra fica registrada em algum lugar?",
@@ -73,7 +73,7 @@ const CATEGORIAS = [
     perguntas: [
       {
         p: "Quanto custa o frete?",
-        r: "Calculamos por CEP depois que você envia a lista pelo DM. Correios PAC para maior parte do Brasil sai entre R$ 15 e R$ 40. Em breve teremos frete grátis acima de R$ 250.",
+        r: "Calculamos por CEP depois que você envia a lista pelo DM. O valor depende do endereço, peso e modalidade escolhida. A regra é simples: frete real informado antes do pagamento.",
       },
       {
         p: "Entregam em todo o Brasil?",

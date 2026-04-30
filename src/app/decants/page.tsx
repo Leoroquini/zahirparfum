@@ -50,8 +50,8 @@ export default function DecantsPage() {
               r="É exatamente pra isso que o decant existe. Você testou, gastou R$ 25–40, descobriu que não é pra você. Melhor descobrir aqui do que depois de comprar o frasco inteiro."
             />
             <Pergunta
-              p="Se eu gostar, rola desconto pra migrar pro frasco?"
-              r="Rola. O que você gastou no decant vira crédito parcial na compra do frasco cheio do mesmo perfume — 50% do valor do decant. Avisa no WhatsApp que a gente aplica."
+              p="Se eu gostar, rola algum benefício pra migrar pro frasco?"
+              r="Por enquanto, não. No lançamento, o decant existe para você testar antes de investir no frasco cheio. Crédito parcial pode entrar em uma fase posterior."
             />
             <Pergunta
               p="Frasco do decant é transparente ou escuro?"

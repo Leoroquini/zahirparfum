@@ -50,11 +50,11 @@ export const CURADORIAS: Curadoria[] = [
   {
     id: "clones-imbativeis",
     titulo: "Clones Imbatíveis",
-    subtitulo: "Mesmo DNA, fração do preço",
+    subtitulo: "Referências olfativas com custo menor",
     descricaoHome:
-      "Perfumes árabes com 85% ou mais de fidelidade em relação ao designer original. Economia real, líquido igual, sem pagar pela campanha de celebridade.",
+      "Perfumes árabes com referência editorial alta em relação a designers conhecidos. Boa porta de entrada pra quem quer o DNA olfativo sem começar pelo preço de boutique.",
     descricaoPage:
-      "Você já conhece Sauvage, Aventus, Bleu de Chanel — e quer saber qual clone árabe vale de verdade. Filtramos aqui só os SKUs com fidelidade declarada de 85% ou mais em relação ao designer original. Performance equivalente (ou superior), por um quarto do preço. Transparência em número, não em promessa de marketing.",
+      "Você já conhece Sauvage, Aventus, Bleu de Chanel — e quer entender quais interpretações árabes fazem sentido. Filtramos aqui SKUs com referência editorial declarada de 85% ou mais em relação ao designer original. A ideia é comparar caminho olfativo, ocasião de uso e valor percebido com transparência, sem vender número como garantia absoluta.",
     foto: "/curadorias/clones-imbativeis.png",
     gradient:
       "linear-gradient(135deg, #0a0a0a 0%, #1a1510 50%, #c89b3c 100%)",
@@ -130,7 +130,7 @@ export const CURADORIAS: Curadoria[] = [
     descricaoHome:
       "Orientais densos, gourmands profundos, amadeirados quentes. O inverno é a estação pra qual os perfumes árabes foram feitos.",
     descricaoPage:
-      "Frio pede fragrância encorpada. Orientais, gourmands, amadeirados especiados — perfumes de DNA árabe clássico que a pele esquenta e libera em ondas quentes. A estação em que o perfume árabe brilha mais que qualquer designer europeu — porque concentração maior + frio = rastro que dura o dia inteiro.",
+      "Frio pede fragrância encorpada. Orientais, gourmands, amadeirados especiados — perfumes de DNA árabe clássico que a pele esquenta e libera em ondas quentes. É a estação em que notas densas, âmbar, especiarias e madeiras costumam aparecer melhor, sempre variando conforme pele, clima e quantidade aplicada.",
     foto: "/curadorias/aromas-de-inverno.png",
     gradient:
       "linear-gradient(135deg, #1a0a0e 0%, #3d1a22 50%, #8c4518 100%)",

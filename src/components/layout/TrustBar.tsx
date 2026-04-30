@@ -13,8 +13,8 @@ export function TrustBar() {
               <path d="M5 9l2.5 2.5L13 6.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           }
-          t="Originais importados"
-          s="Direto dos Emirados"
+          t="Curadoria original"
+          s="Fornecedores verificados"
         />
         <Pilar
           icone={

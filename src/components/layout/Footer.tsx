@@ -105,7 +105,7 @@ export function Footer() {
             © {BRAND.foundedYear} {BRAND.fullName}. Todos os direitos reservados.
           </span>
           <span>
-            Fundada por {BRAND.founders.join(", ")} · {BRAND.city}
+            Marca independente · {BRAND.city}
           </span>
         </div>
       </div>

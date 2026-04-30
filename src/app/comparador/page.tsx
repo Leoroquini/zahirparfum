@@ -5,7 +5,7 @@ import { ComparadorArabeDesigner } from "@/components/sections/ComparadorArabeDe
 export const metadata: Metadata = {
   title: "Árabe × Designer",
   description:
-    "Alternativas árabes com o mesmo DNA dos grandes designers — por uma fração do preço. Compare Creed Aventus, Sauvage, Bleu de Chanel e outros com seus equivalentes do catálogo.",
+    "Alternativas árabes com caminhos olfativos próximos aos grandes designers. Compare Creed Aventus, Sauvage, Bleu de Chanel e outros com referências do catálogo.",
 };
 
 export default function ComparadorPage() {
@@ -19,7 +19,7 @@ export default function ComparadorPage() {
             <em className="italic">Designer</em>.
           </>
         }
-        descricao="Escolhe um designer que você conhece (ou queria conhecer). Mostramos as fragrâncias árabes do catálogo que capturam o mesmo DNA — por uma fração do preço, com fidelidade transparente."
+        descricao="Escolhe um designer que você conhece (ou queria conhecer). Mostramos fragrâncias árabes do catálogo que conversam com o mesmo caminho olfativo, com referência editorial transparente."
         backgroundGradient="radial-gradient(ellipse at 70% 50%, rgba(122,45,50,0.15), transparent 60%)"
       />
 
@@ -33,15 +33,15 @@ export default function ComparadorPage() {
           <div className="mt-10 grid gap-8 md:grid-cols-3 md:gap-10">
             <Motivo
               titulo="Mesma ideia olfativa"
-              descricao="Perfumistas árabes estudam os designers nota por nota. Não é plágio — é interpretação, às vezes com ajustes que melhoram o original (mais projeção, mais fixação)."
+              descricao="Muitas casas árabes criam interpretações inspiradas em designers conhecidos. O objetivo aqui é comparar família, notas, ocasião de uso e sensação geral."
             />
             <Motivo
-              titulo="Concentração maior"
-              descricao="Perfumarias árabes costumam formular com 20–30% de concentração em EDP e extraits — o dobro do padrão ocidental. Resultado: dura mais, projeta mais."
+              titulo="Performance na prática"
+              descricao="Algumas fragrâncias árabes têm presença forte, mas projeção e fixação variam por pele, clima, quantidade aplicada e lote. Por isso a curadoria evita tratar performance como promessa absoluta."
             />
             <Motivo
               titulo="Preço justo"
-              descricao="Sem o custo da celebridade-embaixadora, sem marketing de campanha global, sem margem de boutique. A qualidade do líquido chega por um quarto do preço."
+              descricao="A proposta é entregar boa experiência olfativa com investimento menor que muitos designers de boutique, sem transformar comparação de preço em garantia de equivalência."
             />
           </div>
         </div>

@@ -349,12 +349,12 @@ function buildInspirationText(perfume: Perfume): string {
   const price = perfume.precoVenda;
 
   if (fidelidade && price) {
-    return `${name} entrega fidelidade ${fidelidade} do designer, por uma fração do preço (R$ ${Math.round(
+    return `${name} conversa com o caminho olfativo do designer, com referência editorial aproximada de ${fidelidade}, por um investimento menor na curadoria ZAHIR (R$ ${Math.round(
       price
-    )} versus o original). A projeção e fixação, na maioria dos casos, superam a versão europeia — porque fragrâncias árabes são formuladas com concentração maior.`;
+    )}). Projeção e fixação variam conforme pele, clima e lote, por isso a recomendação é validar pelo atendimento antes da compra.`;
   }
   if (fidelidade) {
-    return `${name} entrega fidelidade ${fidelidade} do designer. Projeção e fixação geralmente superam a versão europeia — perfumarias árabes formulam com concentração maior.`;
+    return `${name} conversa com o caminho olfativo do designer, com referência editorial aproximada de ${fidelidade}. Projeção e fixação variam conforme pele, clima e lote.`;
   }
   return `${name} conversa com o DNA desse(s) designer(s) — seja como interpretação direta ou como referência olfativa. Decant de 10 ml permite testar antes de investir no frasco cheio.`;
 }
@@ -482,14 +482,4 @@ function RelacionadosPorMarca({ perfume }: { perfume: Perfume }) {
       </ul>
     </section>
   );
-}
-
-function formatPrice(n: number | null): string {
-  if (n === null) return "—";
-  return n.toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  });
 }

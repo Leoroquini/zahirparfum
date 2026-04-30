@@ -249,11 +249,6 @@ export function calcularPerfil(
 }
 
 export function perfumesPara(perfil: Perfil, limit = 3): Perfume[] {
-  // Junta as famílias que satisfazem as top dimensões
-  const familiasPriorizadas = Array.from(
-    new Set(perfil.top.flatMap((d) => DIMENSAO_FAMILIAS[d]))
-  );
-
   // Score cada perfume: quantas dimensões top ele casa + peso pelo rank
   const scored = CATALOGO.filter((p) => p.familia && p.precoVenda !== null).map(
     (p) => {

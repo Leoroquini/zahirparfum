@@ -33,8 +33,8 @@ export default function EntregaPage() {
           <div className="mt-10 grid gap-8 md:grid-cols-3 md:gap-10">
             <Bloco
               dest="Preparo do pedido"
-              val="24h úteis"
-              obs="Contados a partir da confirmação do pagamento. Pedidos pagos até 15h são preparados e despachados no mesmo dia."
+              val="1 a 2 dias úteis"
+              obs="Contados a partir da confirmação do Pix. O pedido é separado, conferido e embalado antes do despacho."
             />
             <Bloco
               dest="São Paulo capital e Grande SP"
@@ -68,7 +68,7 @@ export default function EntregaPage() {
             <p>
               Frasco cheio vai na caixa original da casa, envolvido em bolha
               dupla dentro de caixa de papel-kraft reforçada. Viaja em pé, com
-              etiqueta "frágil".
+              etiqueta &quot;frágil&quot;.
             </p>
             <p>
               Decant vai em frasco de vidro âmbar com atomizador spray, em

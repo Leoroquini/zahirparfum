@@ -112,10 +112,10 @@ export default function TrocasPage() {
                 Arrependimento (art. 49 CDC)
               </span>
               <p className="text-sm leading-relaxed text-cream/60">
-                Você paga o frete reverso, mas pode usar código dos Correios
-                que a gente envia pelo DM pra ter desconto. Depois que a
-                mercadoria chegar e estiver íntegra, devolvemos 100% do valor
-                pago.
+                A política de frete reverso é combinada no atendimento,
+                conforme o caso e a legislação aplicável. Depois que a
+                mercadoria chegar e estiver íntegra, fazemos o ressarcimento
+                conforme a forma de pagamento usada.
               </p>
             </div>
           </div>

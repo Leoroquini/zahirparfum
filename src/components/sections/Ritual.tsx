@@ -56,15 +56,10 @@ export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<StepState>({ kind: "intro" });
   const [respostas, setRespostas] = useState<Resposta[]>([]);
-  const [temProgresso, setTemProgresso] = useState(false);
-
-  // Checa progresso salvo na montagem
-  useEffect(() => {
+  const [temProgresso, setTemProgresso] = useState(() => {
     const p = loadProgress();
-    if (p && p.stepIndex > 0 && p.stepIndex < PERGUNTAS.length) {
-      setTemProgresso(true);
-    }
-  }, []);
+    return !!p && p.stepIndex > 0 && p.stepIndex < PERGUNTAS.length;
+  });
 
   const reset = () => {
     setStep({ kind: "intro" });

@@ -92,8 +92,9 @@ export default function PrivacidadePage() {
           <Bloco n="4" t="Com quem compartilhamos">
             <ul className="flex flex-col gap-3">
               <li className="border-l border-amber/50 pl-4">
-                <strong className="text-cream">Processadores de pagamento</strong>{" "}
-                (Pagar.me, bancos) — apenas dados necessários pra transação.
+                <strong className="text-cream">Serviços financeiros</strong>{" "}
+                (bancos e provedores de pagamento, quando aplicável) — apenas
+                dados necessários pra transação.
               </li>
               <li className="border-l border-amber/50 pl-4">
                 <strong className="text-cream">Transportadoras</strong>{" "}

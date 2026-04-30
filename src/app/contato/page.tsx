@@ -79,7 +79,7 @@ export default function ContatoPage() {
             </span>
             <p className="text-sm italic text-cream/55">
               Nas horas de pico (18h–22h), pode demorar um pouco mais — mas
-              não deixa de responder o mesmo dia.
+              a fila é respondida em ordem.
             </p>
           </div>
         </div>

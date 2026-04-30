@@ -5,7 +5,6 @@ import { motion } from "motion/react";
 import type { Perfume } from "@/data/catalogo";
 import {
   addItem,
-  isInLista,
   labelDa,
   precoDa,
   useLista,
@@ -156,7 +155,7 @@ export function ReservaCard({ perfume }: { perfume: Perfume }) {
       <ul className="flex flex-col gap-2 border-t border-cream/5 pt-5 text-xs text-cream/60">
         <li className="flex items-start gap-2">
           <span className="text-amber">✦</span>
-          <span>Envio em até 24h úteis depois do pagamento</span>
+          <span>Preparo em 1 a 2 dias úteis depois do Pix confirmado</span>
         </li>
         <li className="flex items-start gap-2">
           <span className="text-amber">✦</span>
@@ -164,7 +163,7 @@ export function ReservaCard({ perfume }: { perfume: Perfume }) {
         </li>
         <li className="flex items-start gap-2">
           <span className="text-amber">✦</span>
-          <span>Pix, cartão em até 12x ou boleto (confirmado no DM)</span>
+          <span>Pagamento inicial via Pix, confirmado no atendimento</span>
         </li>
       </ul>
     </div>

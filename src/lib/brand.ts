@@ -6,8 +6,12 @@ export const BRAND = {
   tagline: "O que fica depois que você passa",
   manifesto:
     "Perfume árabe pensado pro homem brasileiro que quer cheirar bem — e saber por que cheira bem.",
-  founders: ["Roquini", "Druzian", "Pedreira"],
   city: "São Paulo",
+  audience: "Perfumaria árabe masculina",
+  sourcing:
+    "Curadoria de perfumes árabes originais adquiridos com fornecedores nacionais e importadores parceiros.",
+  payment:
+    "Pagamento inicial por Pix, confirmado no atendimento antes do envio.",
   handles: {
     instagram: "zahirparfums",
     tiktok: "zahirparfums",

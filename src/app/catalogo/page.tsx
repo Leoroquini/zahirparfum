@@ -33,7 +33,7 @@ export default function CatalogoPage() {
           <MetaStat label="Fragrâncias" value={CATALOGO.length.toString()} />
           <MetaStat label="Famílias" value={FAMILIAS.length.toString()} />
           <MetaStat label="Casas árabes" value={MARCAS.length.toString()} />
-          <MetaStat label="Origem" value="Emirados" />
+          <MetaStat label="Curadoria" value="Árabe" />
         </div>
       </section>
 

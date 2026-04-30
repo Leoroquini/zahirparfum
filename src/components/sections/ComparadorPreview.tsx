@@ -48,12 +48,12 @@ export function ComparadorPreview() {
             Árabe × Designer
           </span>
           <h2 className="max-w-3xl font-display text-4xl font-light leading-[1.05] tracking-tight text-cream md:text-5xl lg:text-6xl">
-            Mesmo DNA,{" "}
-            <em className="italic text-amber/90">fração do preço.</em>
+            DNA conhecido,{" "}
+            <em className="italic text-amber/90">leitura árabe.</em>
           </h2>
           <p className="max-w-2xl text-base leading-relaxed text-cream/60 md:text-lg">
-            Casas árabes estudam os designers nota por nota e formulam com
-            concentração maior. Um exemplo clássico:
+            Algumas fragrâncias árabes conversam com designers conhecidos.
+            Veja um exemplo clássico da curadoria:
           </p>
         </motion.div>
 
@@ -127,7 +127,7 @@ export function ComparadorPreview() {
                 {alternativa.nome}
               </h3>
               <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-amber/80">
-                Fidelidade alta · mesma família
+                Referência alta · mesma família
               </span>
               <span className="mt-1 font-display text-4xl font-light text-cream md:text-5xl">
                 R$ {alternativa.precoVenda}

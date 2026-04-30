@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   },
   description: BRAND.manifesto,
   applicationName: BRAND.fullName,
-  authors: BRAND.founders.map((f) => ({ name: f })),
+  authors: [{ name: BRAND.fullName }],
   keywords: [
     "perfume árabe",
     "perfume masculino",
