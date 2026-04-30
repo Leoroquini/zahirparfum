@@ -39,7 +39,7 @@ export function ListaRetornoNudge() {
     }, 2500);
 
     return () => clearTimeout(timer);
-    // intencional — checa só na montagem inicial
+    // intencional, checa só na montagem inicial
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

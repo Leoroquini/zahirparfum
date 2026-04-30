@@ -23,13 +23,13 @@ export default function ContatoPage() {
         backgroundGradient="radial-gradient(ellipse at 50% 50%, rgba(200,155,60,0.1), transparent 60%)"
       />
 
-      <section className="bg-ink px-6 py-20 md:px-12 md:py-28">
+      <section className="section-veil-light px-6 py-20 md:px-12 md:py-28">
         <div className="mx-auto max-w-[1200px]">
           <div className="grid gap-6 md:grid-cols-2 md:gap-8">
             <CanalCard
               titulo="Instagram"
               value={`@${BRAND.handles.instagram}`}
-              descricao="Canal principal. Pedidos, dúvidas, curadoria personalizada — tudo acontece aqui."
+              descricao="Canal principal. Pedidos, dúvidas, curadoria personalizada, tudo acontece aqui."
               href={`https://instagram.com/${BRAND.handles.instagram}`}
               primary
             />
@@ -48,7 +48,7 @@ export default function ContatoPage() {
             <CanalCard
               titulo="E-mail"
               value="contato@zahirparfums.com.br"
-              descricao="Pra assuntos formais — parcerias, imprensa, jurídico. Respondemos em até 48h úteis."
+              descricao="Pra assuntos formais, parcerias, imprensa, jurídico. Respondemos em até 48h úteis."
               href="mailto:contato@zahirparfums.com.br"
               disabled
             />
@@ -57,28 +57,28 @@ export default function ContatoPage() {
       </section>
 
       {/* Horário */}
-      <section className="border-t border-cream/5 bg-ink-soft px-6 py-16 md:px-12 md:py-20">
+      <section className="section-veil-light border-t border-ink/5 px-6 py-16 md:px-12 md:py-20">
         <div className="mx-auto grid max-w-[1200px] gap-8 md:grid-cols-2 md:gap-12">
           <div className="flex flex-col gap-3">
             <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
               Horário de atendimento
             </span>
-            <span className="font-display text-3xl font-light text-cream md:text-4xl">
+            <span className="font-display text-3xl font-light text-ink md:text-4xl">
               9h às 22h
             </span>
-            <p className="text-sm italic text-cream/55">
-              Todos os dias — inclusive fins de semana.
+            <p className="text-sm italic text-ink/70">
+              Todos os dias, inclusive fins de semana.
             </p>
           </div>
           <div className="flex flex-col gap-3">
             <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
               Tempo médio de resposta
             </span>
-            <span className="font-display text-3xl font-light text-cream md:text-4xl">
+            <span className="font-display text-3xl font-light text-ink md:text-4xl">
               10 a 20 min
             </span>
-            <p className="text-sm italic text-cream/55">
-              Nas horas de pico (18h–22h), pode demorar um pouco mais — mas
+            <p className="text-sm italic text-ink/70">
+              Nas horas de pico (18h–22h), pode demorar um pouco mais, mas
               a fila é respondida em ordem.
             </p>
           </div>
@@ -86,32 +86,32 @@ export default function ContatoPage() {
       </section>
 
       {/* Info institucional (vazia por enquanto) */}
-      <section className="border-t border-cream/5 bg-ink px-6 py-16 md:px-12 md:py-24">
+      <section className="section-veil-light border-t border-ink/5 px-6 py-16 md:px-12 md:py-24">
         <div className="mx-auto max-w-[1200px]">
           <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
             <span className="mr-3 inline-block h-px w-8 align-middle bg-amber" />
             Informações da empresa
           </span>
-          <div className="mt-8 grid gap-8 md:grid-cols-3 md:gap-12 text-sm leading-relaxed text-cream/70">
+          <div className="mt-8 grid gap-8 md:grid-cols-3 md:gap-12 text-sm leading-relaxed text-ink/70">
             <div className="flex flex-col gap-1">
-              <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-cream/40">
+              <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-ink/75">
                 Razão social
               </span>
-              <span className="text-cream">{BRAND.fullName}</span>
+              <span className="text-ink">{BRAND.fullName}</span>
             </div>
             <div className="flex flex-col gap-1">
-              <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-cream/40">
+              <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-ink/75">
                 CNPJ
               </span>
-              <span className="italic text-cream/50">
+              <span className="italic text-ink/70">
                 em processo de registro
               </span>
             </div>
             <div className="flex flex-col gap-1">
-              <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-cream/40">
+              <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-ink/75">
                 Sede
               </span>
-              <span className="text-cream">{BRAND.city} — Brasil</span>
+              <span className="text-ink">{BRAND.city}, Brasil</span>
             </div>
           </div>
         </div>
@@ -149,12 +149,12 @@ function CanalCard({
       </div>
       <span
         className={`mt-3 font-display text-2xl font-light leading-[1.2] md:text-3xl ${
-          disabled ? "text-cream/50" : "text-cream"
+          disabled ? "text-ink/70" : "text-ink"
         }`}
       >
         {value}
       </span>
-      <p className="mt-3 text-sm leading-relaxed text-cream/65">{descricao}</p>
+      <p className="mt-3 text-sm leading-relaxed text-ink/65">{descricao}</p>
     </>
   );
 
@@ -162,8 +162,8 @@ function CanalCard({
     primary
       ? "border-amber/40 bg-amber/5 hover:border-amber hover:bg-amber/10"
       : disabled
-      ? "border-cream/10 bg-ink-soft/40 opacity-60"
-      : "border-cream/10 bg-ink-soft hover:border-amber/40"
+      ? "border-ink/10 bg-cream-soft/40 opacity-60"
+      : "border-ink/10 hover:border-amber/40"
   }`;
 
   if (disabled || !href) {

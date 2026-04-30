@@ -8,7 +8,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Lenis é o principal culpado por travamento em devices fracos.
     // Em hardware modesto, mobile, ou prefers-reduced-motion, mantém o
-    // scroll nativo do browser — que é liso e hardware-accelerated.
+    // scroll nativo do browser, que é liso e hardware-accelerated.
     if (isLowEndDevice()) return;
 
     const lenis = new Lenis({

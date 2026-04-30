@@ -8,7 +8,7 @@ import {
 
 /**
  * Funções puras pra calcular insights agregados a partir de uma
- * lista de registros do diário. Tudo determinístico — sem efeitos.
+ * lista de registros do diário. Tudo determinístico, sem efeitos.
  */
 
 const PESO_SENTIMENTO: Record<Sentimento, number> = {

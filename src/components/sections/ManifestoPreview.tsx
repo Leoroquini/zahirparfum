@@ -13,25 +13,20 @@ const EASE_OUT = [0.19, 1, 0.22, 1] as const;
  */
 export function ManifestoPreview() {
   return (
-    <section
-      id="manifesto-preview"
-      className="relative overflow-hidden border-t border-cream/5 bg-ink-soft px-6 py-28 md:px-12 md:py-36"
+    <section id="manifesto-preview"
+      className="section-veil-light relative overflow-hidden border-t border-ink/5 px-6 py-28 md:px-12 md:py-36"
     >
       {/* Background sutil com a imagem de ingredientes */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 opacity-15">
+      <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.08]">
         <Image
           src="/hero/ingredients.png"
           alt=""
           fill
           sizes="100vw"
           className="object-cover"
-          style={{ filter: "blur(40px) brightness(0.35) saturate(0.7)" }}
+          style={{ filter: "blur(50px) brightness(1.2) saturate(0.6)" }}
         />
       </div>
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-ink-soft via-ink-soft/80 to-ink-soft"
-      />
 
       <div className="relative mx-auto flex max-w-[1200px] flex-col items-center gap-8 text-center">
         <motion.div
@@ -47,16 +42,16 @@ export function ManifestoPreview() {
             <span className="h-px w-8 bg-amber" />
           </span>
 
-          <h2 className="max-w-4xl font-display text-4xl font-light leading-[1.02] tracking-tight text-cream md:text-6xl lg:text-7xl">
+          <h2 className="max-w-4xl font-display text-4xl font-light leading-[1.02] tracking-tight text-ink md:text-6xl lg:text-7xl">
             Perfume é{" "}
             <em className="italic text-amber/90">memória</em>
             <br />
             que não se vê.
           </h2>
 
-          <p className="max-w-2xl font-display text-lg font-light leading-[1.55] text-cream/75 md:text-xl">
+          <p className="max-w-2xl font-display text-lg font-light leading-[1.55] text-ink/75 md:text-xl">
             Não somos mais um catálogo com desconto piscando. Somos a loja que
-            ensina o homem brasileiro a escolher perfume com informação — e a
+            ensina o homem brasileiro a escolher perfume com informação, e a
             escrever seu rastro no ar com as letras certas.
           </p>
 

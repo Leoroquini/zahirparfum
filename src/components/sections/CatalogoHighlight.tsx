@@ -9,7 +9,7 @@ import { PerfumeCard } from "@/components/ui/PerfumeCard";
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
 /**
- * Versão compacta do catálogo pra home — só 4 cards em destaque.
+ * Versão compacta do catálogo pra home, só 4 cards em destaque.
  * Seleciona perfumes marcados com `destaque` (mais-pedido, novidade,
  * curadoria) + fallback pros primeiros 4 do catálogo.
  * CTA manda pro catálogo completo.
@@ -22,11 +22,10 @@ export function CatalogoHighlight() {
   }, []);
 
   return (
-    <section
-      id="catalogo"
-      className="relative border-t border-cream/5 bg-ink px-6 py-24 md:px-12 md:py-32"
+    <section id="catalogo"
+      className="section-veil-light relative border-t border-ink/5 px-6 py-24 md:px-12 md:py-32"
     >
-      <div className="mx-auto max-w-[1440px]">
+      <div className="relative z-10 mx-auto max-w-[1440px]">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -40,11 +39,11 @@ export function CatalogoHighlight() {
               <span className="h-px w-8 bg-amber" />
               Catálogo
             </span>
-            <h2 className="font-display text-4xl font-light leading-[1.05] tracking-tight text-cream md:text-5xl lg:text-6xl">
+            <h2 className="font-display text-4xl font-light leading-[1.05] tracking-tight text-ink md:text-5xl lg:text-6xl">
               Alguns dos{" "}
               <em className="italic text-amber/90">favoritos da casa.</em>
             </h2>
-            <p className="text-base leading-relaxed text-cream/60 md:text-lg">
+            <p className="text-base leading-relaxed text-ink/75 md:text-lg">
               Uma amostra da curadoria. O catálogo inteiro tem{" "}
               {CATALOGO.length} fragrâncias com filtros, busca e comparação
               direta árabe × designer.

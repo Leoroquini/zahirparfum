@@ -38,8 +38,10 @@ yarn-error.log*
 /informações novas/
 /fotos dos perfumes/
 
-# dev server log local
+# dev server logs locais
 .dev.log
+zahir-dev*.log
+zahir-start*.log
 
 # vercel
 .vercel

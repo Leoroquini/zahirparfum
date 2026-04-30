@@ -8,61 +8,43 @@ import { CURADORIAS, countOf, type Curadoria } from "@/data/curadorias";
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
 /**
- * Versão compacta das curadorias pra home — só 3 cards.
- * Seleciona os 3 de maior intenção de conversão:
- * começar-certo, clones-imbativeis, sob-150.
- * CTA manda pra /curadorias (as 6 completas).
+ * Curadorias na home: agora as 4 inteiras (depois do corte de "Sob R$250" e
+ * "Horario Comercial"). Sem CTA "ver todas" — a /curadorias mostra as mesmas
+ * 4 no mesmo layout, so com header ligeiramente diferente.
  */
-const IDS_DESTAQUE = ["comecar-certo", "clones-imbativeis", "sob-250"];
-
 export function CuradoriasHighlight() {
-  const destaques = CURADORIAS.filter((c) => IDS_DESTAQUE.includes(c.id)).sort(
-    (a, b) => IDS_DESTAQUE.indexOf(a.id) - IDS_DESTAQUE.indexOf(b.id)
-  );
-
   return (
     <section
       id="curadorias"
-      className="relative border-t border-cream/5 bg-ink-soft px-6 py-24 md:px-12 md:py-32"
+      className="section-veil-light relative border-t border-ink/5 px-6 py-24 md:px-12 md:py-32"
     >
-      <div className="mx-auto max-w-[1440px]">
+      <div className="relative z-10 mx-auto max-w-[1440px]">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1, ease: EASE_OUT }}
-          className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between"
+          className="flex max-w-3xl flex-col gap-5"
         >
-          <div className="flex max-w-2xl flex-col gap-5">
-            <span className="inline-flex items-center gap-3 text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
-              <span className="h-px w-8 bg-amber" />
-              Curadorias
-            </span>
-            <h2 className="font-display text-4xl font-light leading-[1.05] tracking-tight text-cream md:text-5xl lg:text-6xl">
-              Pra escolher pelo{" "}
-              <em className="italic text-amber/90">contexto certo.</em>
-            </h2>
-            <p className="text-base leading-relaxed text-cream/60 md:text-lg">
-              Três recortes pra facilitar sua decisão — começar certo, clones
-              imbatíveis e sob R$ 150. Tem mais 3 na página de curadorias.
-            </p>
-          </div>
-
-          <Link
-            href="/curadorias"
-            className="group inline-flex shrink-0 items-center gap-3 self-start rounded-full border border-amber px-7 py-3.5 text-[11px] font-sans uppercase tracking-[0.3em] text-amber transition-all hover:bg-amber hover:text-ink md:self-end"
-          >
-            Ver todas as curadorias
-            <span className="transition-transform duration-500 group-hover:translate-x-1">
-              →
-            </span>
-          </Link>
+          <span className="inline-flex items-center gap-3 text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
+            <span className="h-px w-8 bg-amber" />
+            Curadorias
+          </span>
+          <h2 className="font-display text-4xl font-light leading-[1.05] tracking-tight text-ink md:text-5xl lg:text-6xl">
+            Pra escolher pelo{" "}
+            <em className="italic text-amber/90">contexto certo.</em>
+          </h2>
+          <p className="text-base leading-relaxed text-ink/75 md:text-lg">
+            Quatro recortes pensados pra responder as perguntas que você já tem
+            antes de chegar: começar sem errar, conhecer os clones que valem,
+            achar o perfume da noite, abraçar o frio.
+          </p>
         </motion.div>
 
-        {/* Grid de 3 destaques em linha única */}
-        <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-3">
-          {destaques.map((c, i) => (
+        {/* Grid das 4 */}
+        <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {CURADORIAS.map((c, i) => (
             <CuradoriaCardCompacto key={c.id} curadoria={c} index={i} />
           ))}
         </div>
@@ -93,21 +75,25 @@ function CuradoriaCardCompacto({
     >
       <Link
         href={`/curadoria/${curadoria.id}`}
-        className="group relative flex aspect-[4/5] flex-col justify-between overflow-hidden rounded-sm border border-cream/10 p-6 transition-all duration-700 hover:border-amber/50 hover:shadow-[0_0_50px_rgba(200,155,60,0.15)] md:aspect-[3/4] md:p-7"
+        className="group relative flex aspect-[4/5] flex-col justify-between overflow-hidden rounded-sm border border-ink/10 p-6 shadow-editorial transition-all duration-700 hover:-translate-y-1 hover:border-amber/50 hover:shadow-product md:p-7"
       >
         {/* Foto de capa */}
         <Image
           src={curadoria.foto}
           alt={`Curadoria ${curadoria.titulo}`}
           fill
-          sizes="(max-width: 768px) 100vw, 33vw"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           className="object-cover transition-transform duration-[1500ms] group-hover:scale-105"
         />
 
-        {/* Vinheta */}
+        {/* Vinheta no topo (mais leve) e no rodape (mais densa) */}
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/30 to-ink/40"
+          className="absolute inset-x-0 top-0 h-[35%] bg-gradient-to-b from-ink/55 via-ink/15 to-transparent"
+        />
+        <div
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-ink/95 via-ink/55 to-transparent"
         />
 
         {/* Glow no hover */}
@@ -116,16 +102,16 @@ function CuradoriaCardCompacto({
           className="absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 70%, rgba(200,155,60,0.15) 0%, transparent 60%)",
+              "radial-gradient(ellipse at 50% 70%, rgba(200,155,60,0.18) 0%, transparent 60%)",
           }}
         />
 
         {/* Top */}
         <div className="relative flex items-start justify-between gap-4">
-          <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber/90">
+          <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber/95">
             {curadoria.subtitulo}
           </span>
-          <span className="rounded-full border border-cream/20 px-2.5 py-0.5 text-[10px] font-sans tabular-nums text-cream/80 backdrop-blur-sm">
+          <span className="rounded-full border border-cream/30 bg-ink/40 px-2.5 py-0.5 text-[10px] font-sans tabular-nums text-cream/90 backdrop-blur-sm">
             {count}
           </span>
         </div>

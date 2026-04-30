@@ -24,7 +24,7 @@ export default function ComparadorPage() {
       />
 
       {/* Por que compensa */}
-      <section className="border-b border-cream/5 bg-ink-soft px-6 py-14 md:px-12 md:py-20">
+      <section className="section-veil-light border-b border-ink/5 px-6 py-14 md:px-12 md:py-20">
         <div className="mx-auto max-w-[1440px]">
           <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
             <span className="mr-3 inline-block h-px w-8 align-middle bg-amber" />
@@ -55,10 +55,10 @@ export default function ComparadorPage() {
 function Motivo({ titulo, descricao }: { titulo: string; descricao: string }) {
   return (
     <div className="flex flex-col gap-3 border-l-2 border-amber/40 pl-5">
-      <span className="font-display text-2xl font-light text-cream">
+      <span className="font-display text-2xl font-light text-ink">
         {titulo}
       </span>
-      <p className="text-sm leading-relaxed text-cream/65">{descricao}</p>
+      <p className="text-sm leading-relaxed text-ink/65">{descricao}</p>
     </div>
   );
 }

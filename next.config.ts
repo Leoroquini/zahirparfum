@@ -5,11 +5,13 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [360, 480, 640, 768, 1024, 1280, 1600, 1920],
     imageSizes: [64, 96, 128, 256, 384],
-    qualities: [72, 75, 78],
+    qualities: [72, 75, 78, 85],
     minimumCacheTTL: 60 * 60 * 24 * 30,
   },
   compress: true,
   poweredByHeader: false,
+  productionBrowserSourceMaps: false,
+  allowedDevOrigins: ["192.168.0.6", "192.168.0.*"],
 };
 
 export default nextConfig;

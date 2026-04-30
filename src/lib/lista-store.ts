@@ -46,13 +46,6 @@ export function labelDa(variante: VarianteReserva): string {
   return variante;
 }
 
-export function labelCurtoDa(variante: VarianteReserva): string {
-  if (variante === "frasco") return "Frasco";
-  if (variante === "decant-10") return "10ml";
-  if (variante === "decant-5") return "5ml";
-  return variante;
-}
-
 /* ---------------- Store ---------------- */
 
 const listeners = new Set<() => void>();
@@ -75,7 +68,7 @@ function writeStorage(items: ItemLista[]) {
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
     } catch {
-      // quota exceeded etc — silent
+      // quota exceeded etc, silent
     }
   }
   listeners.forEach((cb) => cb());
@@ -139,6 +132,37 @@ export function addItem(
   ]);
 }
 
+/**
+ * Adiciona um item com preço customizado (usado por kits de preço fixo).
+ * Se o item ja existe (mesmo perfume+variante), atualiza o preçoSnapshot
+ * pra refletir o preço do kit (mais barato em geral).
+ */
+export function addItemComPreco(
+  perfume: Perfume,
+  variante: VarianteReserva,
+  preco: number
+): void {
+  const current = readStorage();
+  const idx = current.findIndex(
+    (i) => i.perfumeId === perfume.id && i.variante === variante
+  );
+  if (idx >= 0) {
+    const next = [...current];
+    next[idx] = { ...next[idx], precoSnapshot: preco };
+    writeStorage(next);
+    return;
+  }
+  writeStorage([
+    ...current,
+    {
+      perfumeId: perfume.id,
+      variante,
+      precoSnapshot: preco,
+      addedAt: Date.now(),
+    },
+  ]);
+}
+
 export function removeItem(
   perfumeId: string,
   variante: VarianteReserva
@@ -153,21 +177,4 @@ export function removeItem(
 
 export function clearLista(): void {
   writeStorage([]);
-}
-
-export function isInLista(
-  perfumeId: string,
-  variante?: VarianteReserva
-): boolean {
-  const items = cache;
-  if (variante) {
-    return items.some(
-      (i) => i.perfumeId === perfumeId && i.variante === variante
-    );
-  }
-  return items.some((i) => i.perfumeId === perfumeId);
-}
-
-export function totalLista(): number {
-  return cache.reduce((sum, i) => sum + i.precoSnapshot, 0);
 }

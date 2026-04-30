@@ -10,7 +10,7 @@ type Props = {
   topo: string[];
   coracao: string[];
   fundo: string[];
-  /** Slug do perfume atual — exclui ele da lista "também aparece em" no modal */
+  /** Slug do perfume atual, exclui ele da lista "também aparece em" no modal */
   perfumeId?: string;
 };
 
@@ -54,8 +54,8 @@ export function PerfumePyramid({ topo, coracao, fundo, perfumeId }: Props) {
             onSelect={setNotaAtiva}
           />
 
-          {/* Dica de uso — só aparece quando ainda não interagiu */}
-          <p className="text-xs italic text-cream/45">
+          {/* Dica de uso, só aparece quando ainda não interagiu */}
+          <p className="text-xs italic text-ink/65">
             Clica em qualquer nota pra entender como ela cheira e em quais
             outros perfumes do catálogo ela aparece.
           </p>
@@ -84,16 +84,16 @@ function PyramidSVG() {
     >
       <defs>
         <linearGradient id="pyr-top" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#F4E9D4" stopOpacity="0.55" />
-          <stop offset="1" stopColor="#E7B659" stopOpacity="0.25" />
+          <stop offset="0" stopColor="#E7B659" stopOpacity="0.95" />
+          <stop offset="1" stopColor="#C89B3C" stopOpacity="0.85" />
         </linearGradient>
         <linearGradient id="pyr-mid" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#E7B659" stopOpacity="0.45" />
-          <stop offset="1" stopColor="#C89B3C" stopOpacity="0.22" />
+          <stop offset="0" stopColor="#C89B3C" stopOpacity="0.95" />
+          <stop offset="1" stopColor="#8C6B26" stopOpacity="0.9" />
         </linearGradient>
         <linearGradient id="pyr-bot" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#C89B3C" stopOpacity="0.4" />
-          <stop offset="1" stopColor="#4A1518" stopOpacity="0.3" />
+          <stop offset="0" stopColor="#8C6B26" stopOpacity="0.95" />
+          <stop offset="1" stopColor="#4A3614" stopOpacity="0.95" />
         </linearGradient>
         <filter id="pyr-glow">
           <feGaussianBlur stdDeviation="2" result="blur" />
@@ -107,8 +107,8 @@ function PyramidSVG() {
       <motion.path
         d="M120,20 L155,85 L85,85 Z"
         fill="url(#pyr-top)"
-        stroke="#E7B659"
-        strokeWidth="1.2"
+        stroke="#8C6B26"
+        strokeWidth="1.5"
         filter="url(#pyr-glow)"
         variants={{
           hidden: { opacity: 0, pathLength: 0 },
@@ -119,8 +119,8 @@ function PyramidSVG() {
       <motion.path
         d="M85,85 L155,85 L180,170 L60,170 Z"
         fill="url(#pyr-mid)"
-        stroke="#C89B3C"
-        strokeWidth="1.2"
+        stroke="#6B4D1F"
+        strokeWidth="1.5"
         filter="url(#pyr-glow)"
         variants={{
           hidden: { opacity: 0, pathLength: 0 },
@@ -131,8 +131,8 @@ function PyramidSVG() {
       <motion.path
         d="M60,170 L180,170 L210,258 L30,258 Z"
         fill="url(#pyr-bot)"
-        stroke="#8C6B26"
-        strokeWidth="1.2"
+        stroke="#3A2810"
+        strokeWidth="1.5"
         filter="url(#pyr-glow)"
         variants={{
           hidden: { opacity: 0, pathLength: 0 },
@@ -234,16 +234,16 @@ function Layer({
 
   if (notas.length === 0) {
     return (
-      <div className={`border-l-2 ${borderColor} pl-5 opacity-30`}>
+      <div className={`border-l-2 ${borderColor} pl-5 opacity-40`}>
         <div className="flex flex-wrap items-baseline gap-3">
-          <span className="font-display text-2xl font-light text-cream/70">
+          <span className="font-display text-2xl font-light text-ink/80">
             {label}
           </span>
-          <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-amber/60">
+          <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-amber-dim">
             {subtitle}
           </span>
         </div>
-        <p className="mt-3 text-xs italic text-cream/40">não declarado</p>
+        <p className="mt-3 text-xs italic text-ink/75">não declarado</p>
       </div>
     );
   }
@@ -257,10 +257,10 @@ function Layer({
       className={`border-l-2 ${borderColor} pl-5`}
     >
       <div className="flex flex-wrap items-baseline gap-3">
-        <span className="font-display text-2xl font-light text-cream">
+        <span className="font-display text-2xl font-light text-ink">
           {label}
         </span>
-        <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-amber/80">
+        <span className="text-[10px] font-sans font-medium uppercase tracking-[0.3em] text-amber-dim">
           {subtitle}
         </span>
       </div>
@@ -279,10 +279,10 @@ function Layer({
             <button
               type="button"
               onClick={() => onSelect(n)}
-              className="group inline-flex items-baseline gap-1 rounded-sm px-2 py-1 -mx-2 text-base text-cream/85 outline-none transition-colors hover:bg-amber/10 hover:text-amber focus-visible:bg-amber/15 focus-visible:text-amber focus-visible:ring-1 focus-visible:ring-amber/60"
+              className="group inline-flex items-baseline gap-1 rounded-sm px-2 py-1 -mx-2 text-base font-medium text-ink outline-none transition-colors hover:bg-amber/15 hover:text-amber-dim focus-visible:bg-amber/15 focus-visible:text-amber-dim focus-visible:ring-1 focus-visible:ring-amber/60"
               aria-label={`Saber mais sobre ${n}`}
             >
-              <span className="border-b border-dashed border-cream/20 group-hover:border-amber/60 group-focus-visible:border-amber">
+              <span className="border-b border-dashed border-ink/40 group-hover:border-amber group-focus-visible:border-amber">
                 {n}
               </span>
             </button>

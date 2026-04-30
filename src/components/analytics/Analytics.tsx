@@ -1,7 +1,7 @@
 import Script from "next/script";
 
 /**
- * Analytics stubs — só renderiza quando os IDs estão definidos como env vars.
+ * Analytics stubs, só renderiza quando os IDs estão definidos como env vars.
  * Pra ativar, edite `.env.local` (ou `.env.production`) e adicione:
  *   NEXT_PUBLIC_GA4_ID=G-XXXXXXXXXX
  *   NEXT_PUBLIC_META_PIXEL_ID=XXXXXXXXXXXXXXX

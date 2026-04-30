@@ -1,10 +1,10 @@
 /**
- * Barra de confiança — fica acima do footer em todas as páginas.
+ * Barra de confiança, fica acima do footer em todas as páginas.
  * Transmite os quatro pilares de segurança/qualidade em 1 linha visual.
  */
 export function TrustBar() {
   return (
-    <div className="border-t border-cream/5 bg-ink-soft/50 px-6 py-8 md:px-12">
+    <div className="border-t border-ink/5 bg-cream-soft/50 px-6 py-8 md:px-12">
       <ul className="mx-auto flex max-w-[1440px] flex-wrap items-center justify-center gap-x-10 gap-y-4 md:justify-between">
         <Pilar
           icone={
@@ -65,10 +65,10 @@ function Pilar({
         {icone}
       </span>
       <div className="flex flex-col">
-        <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-cream/85">
+        <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-ink/85">
           {t}
         </span>
-        <span className="text-[10px] italic text-cream/50">{s}</span>
+        <span className="text-[10px] italic text-ink/70">{s}</span>
       </div>
     </li>
   );

@@ -9,7 +9,7 @@ import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
 /**
- * Versão alternativa do Mapa Olfativo pra mobile — o 2D com pontos
+ * Versão alternativa do Mapa Olfativo pra mobile, o 2D com pontos
  * é inusável em tela pequena. Aqui agrupamos por família olfativa
  * em accordion vertical, mostrando capacidade de scroll natural.
  *
@@ -25,13 +25,13 @@ export function MapaMobileAlt() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="rounded-sm border border-cream/10 bg-ink-soft/50 p-5">
+      <div className="rounded-sm border border-ink/10 bg-cream-soft/50 p-5">
         <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-amber">
           Em mobile
         </span>
-        <p className="mt-2 text-sm italic text-cream/65">
+        <p className="mt-2 text-sm italic text-ink/65">
           O mapa 2D funciona melhor em tela maior. Aqui abaixo o catálogo
-          agrupado por família — toque numa família pra ver as fragrâncias.
+          agrupado por família, toque numa família pra ver as fragrâncias.
         </p>
       </div>
 
@@ -42,11 +42,11 @@ export function MapaMobileAlt() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: idx * 0.03, ease: EASE_OUT }}
-          className="group rounded-sm border border-cream/10 bg-ink-soft/30 p-4 open:bg-ink-soft/60"
+          className="group rounded-sm border border-ink/10 bg-cream-soft/30 p-4 open:bg-cream-soft/60"
         >
           <summary className="flex cursor-pointer items-center justify-between gap-3 list-none">
             <div className="flex flex-col gap-0.5">
-              <span className="font-display text-lg font-light text-cream">
+              <span className="font-display text-lg font-light text-ink">
                 {familia}
               </span>
               <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-amber/70">
@@ -78,10 +78,10 @@ function MobilePerfumeRow({ perfume }: { perfume: Perfume }) {
     <li>
       <Link
         href={`/perfume/${perfume.id}`}
-        className="group flex items-center gap-3 rounded-sm border border-cream/5 bg-ink/50 p-3 transition-colors hover:border-amber/30"
+        className="group flex items-center gap-3 rounded-sm border border-ink/5 bg-cream/50 p-3 transition-colors hover:border-amber/30"
       >
         {hasFoto(perfume) && (
-          <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-sm border border-cream/10">
+          <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-sm border border-ink/10">
             <Image
               src={fotoSrc(perfume)}
               alt=""
@@ -95,12 +95,12 @@ function MobilePerfumeRow({ perfume }: { perfume: Perfume }) {
           <span className="text-[9px] font-sans uppercase tracking-[0.35em] text-amber/70">
             Nº {String(perfume.numero).padStart(2, "0")}
           </span>
-          <span className="truncate font-display text-base text-cream transition-colors group-hover:text-amber">
+          <span className="truncate font-display text-base text-ink transition-colors group-hover:text-amber">
             {perfume.nome}
           </span>
         </div>
         {perfume.precoVenda && (
-          <span className="shrink-0 text-xs text-cream/70">
+          <span className="shrink-0 text-xs text-ink/70">
             R$ {perfume.precoVenda}
           </span>
         )}

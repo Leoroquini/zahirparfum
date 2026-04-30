@@ -3,7 +3,7 @@
 import { useSyncExternalStore } from "react";
 
 /**
- * Diário olfativo — registros de uso do cliente.
+ * Diário olfativo, registros de uso do cliente.
  *
  * - Persiste em localStorage (sem conta, sem login)
  * - Reativo via useSyncExternalStore
@@ -44,7 +44,7 @@ export const OCASIOES: { value: Ocasiao; label: string }[] = [
 export type RegistroDiario = {
   id: string;
   perfumeId: string;
-  /** Timestamp ms — quando o registro foi adicionado (ou data marcada pelo cliente) */
+  /** Timestamp ms, quando o registro foi adicionado (ou data marcada pelo cliente) */
   data: number;
   ocasiao: Ocasiao;
   sentimento: Sentimento;
@@ -77,7 +77,7 @@ function writeStorage(items: RegistroDiario[]) {
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
     } catch {
-      // quota exceeded — silencioso
+      // quota exceeded, silencioso
     }
   }
   listeners.forEach((cb) => cb());

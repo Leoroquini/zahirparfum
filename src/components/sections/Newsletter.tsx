@@ -9,7 +9,7 @@ type FormState = "idle" | "submitting" | "success" | "error";
 
 /**
  * Captura de e-mail pra pré-lançamento / lista de interesse.
- * Por enquanto só armazena no front (console + localStorage) — integração real
+ * Por enquanto só armazena no front (console + localStorage), integração real
  * com Mailerlite/Klaviyo fica como tarefa pós-lançamento.
  */
 export function Newsletter() {
@@ -34,7 +34,7 @@ export function Newsletter() {
     }
 
     setState("submitting");
-    // Fake delay pra feedback visual — troca por fetch quando a integração real estiver pronta
+    // Fake delay pra feedback visual, troca por fetch quando a integração real estiver pronta
     await new Promise((r) => setTimeout(r, 900));
 
     // Salva localmente (não envia pra lugar nenhum ainda)
@@ -55,11 +55,10 @@ export function Newsletter() {
   };
 
   return (
-    <section
-      id="newsletter"
-      className="relative border-t border-cream/5 bg-ink px-6 py-20 md:px-12 md:py-28"
+    <section id="newsletter"
+      className="section-veil-light relative border-t border-ink/5 px-6 py-20 md:px-12 md:py-28"
     >
-      <div className="mx-auto max-w-[1440px]">
+      <div className="relative z-10 mx-auto max-w-[1440px]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -72,11 +71,11 @@ export function Newsletter() {
               <span className="h-px w-8 bg-amber" />
               Lista de interesse
             </span>
-            <h2 className="max-w-xl font-display text-3xl font-light leading-[1.05] tracking-tight text-cream md:text-5xl">
+            <h2 className="max-w-xl font-display text-3xl font-light leading-[1.05] tracking-tight text-ink md:text-5xl">
               Primeiro acesso{" "}
               <em className="italic text-amber/90">aos lançamentos.</em>
             </h2>
-            <p className="max-w-xl text-base leading-relaxed text-cream/60">
+            <p className="max-w-xl text-base leading-relaxed text-ink/75">
               Sem spam. Só: novos perfumes entrando, decants novos abertos, e
               curadorias temáticas quando a gente publicar.
             </p>
@@ -102,7 +101,7 @@ export function Newsletter() {
                 }}
                 disabled={state === "submitting" || state === "success"}
                 placeholder="seu@email.com"
-                className="flex-1 rounded-full border border-cream/15 bg-ink-soft px-5 py-3.5 text-sm text-cream placeholder:text-cream/40 transition-colors focus:border-amber focus:outline-none focus:ring-1 focus:ring-amber/30 disabled:opacity-50"
+                className="flex-1 rounded-full border border-ink/15 px-5 py-3.5 text-sm text-ink placeholder:text-ink/75 transition-colors focus:border-amber focus:outline-none focus:ring-1 focus:ring-amber/30 disabled:opacity-50"
               />
               <button
                 type="submit"
@@ -149,7 +148,7 @@ export function Newsletter() {
               {state === "idle" && (
                 <span
                   key="idle"
-                  className="text-[10px] italic text-cream/40"
+                  className="text-[10px] italic text-ink/75"
                 >
                   Cancelamento com um clique, sempre.
                 </span>

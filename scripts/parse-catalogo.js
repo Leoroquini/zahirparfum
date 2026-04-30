@@ -7,28 +7,51 @@ const OUT_PATH = path.join(__dirname, '../src/data/catalogo.ts');
 
 function parseYaml(str) {
   const result = {};
-  const lines = str.trim().split('\n');
+  const lines = str.split('\n');
+
+  let parentKey = null; // chave pai quando estamos dentro de um bloco aninhado (ex: notas:)
 
   for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed) continue;
+    if (!line.trim()) continue;
 
-    // Key-value pairs with colon
+    // Conta indentação (pra detectar nesting)
+    const indent = line.match(/^(\s*)/)[1].length;
+    const trimmed = line.trim();
+
+    // Match chave: valor
     const match = trimmed.match(/^(\w+):\s*(.*)$/);
     if (!match) continue;
 
     const [, key, rawValue] = match;
 
-    // Handle arrays: [item1, item2]
-    if (rawValue.startsWith('[')) {
-      const content = rawValue.slice(1, -1);
-      result[key] = content ? content.split(',').map(s => s.trim()) : [];
-    } else if (rawValue === 'null' || rawValue === '') {
-      result[key] = null;
-    } else if (!isNaN(rawValue) && rawValue !== '') {
-      result[key] = Number(rawValue);
+    function parseValue(raw) {
+      if (raw.startsWith('[')) {
+        const content = raw.slice(1, -1);
+        return content ? content.split(',').map(s => s.trim()) : [];
+      }
+      if (raw === 'null' || raw === '') return null;
+      if (!isNaN(raw)) return Number(raw);
+      return raw;
+    }
+
+    // Linha sem indentação ou indentação base = chave raiz
+    if (indent === 0) {
+      if (rawValue === '') {
+        // Chave que abre bloco aninhado (ex: "notas:")
+        result[key] = {};
+        parentKey = key;
+      } else {
+        result[key] = parseValue(rawValue);
+        parentKey = null;
+      }
     } else {
-      result[key] = rawValue;
+      // Linha indentada → propriedade do parentKey
+      if (parentKey && result[parentKey] && typeof result[parentKey] === 'object' && !Array.isArray(result[parentKey])) {
+        result[parentKey][key] = parseValue(rawValue);
+      } else {
+        // Fallback: trata como chave raiz se não há contexto
+        result[key] = parseValue(rawValue);
+      }
     }
   }
 

@@ -83,7 +83,7 @@ function Modal({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="absolute inset-0 cursor-default bg-ink/85 backdrop-blur-md"
+        className="absolute inset-0 cursor-default bg-cream/85 backdrop-blur-md"
       />
 
       {/* Modal body */}
@@ -92,14 +92,14 @@ function Modal({
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.96, y: 10 }}
         transition={{ duration: 0.4, ease: EASE_OUT }}
-        className="relative w-full max-w-2xl overflow-hidden rounded-sm border border-amber/25 bg-ink-soft shadow-[0_30px_80px_rgba(0,0,0,0.6)]"
+        className="relative w-full max-w-2xl overflow-hidden rounded-sm border border-amber/25 shadow-[0_30px_80px_rgba(0,0,0,0.6)]"
       >
         {/* Close button */}
         <button
           type="button"
           onClick={onClose}
           aria-label="Fechar"
-          className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-cream/15 text-cream/60 transition-all hover:border-amber hover:text-amber"
+          className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-ink/15 text-ink/75 transition-all hover:border-amber hover:text-amber"
         >
           <svg
             width="14"
@@ -117,8 +117,8 @@ function Modal({
           </svg>
         </button>
 
-        {/* Header — fundo gradiente sutil + tipografia da nota */}
-        <div className="relative overflow-hidden border-b border-cream/8 px-6 py-10 md:px-10 md:py-12">
+        {/* Header, fundo gradiente sutil + tipografia da nota */}
+        <div className="relative overflow-hidden border-b border-ink/8 px-6 py-10 md:px-10 md:py-12">
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0 opacity-60"
@@ -135,7 +135,7 @@ function Modal({
             )}
             <h2
               id="nota-modal-titulo"
-              className="mt-3 font-display text-4xl font-light leading-[1.05] tracking-tight text-cream md:text-5xl"
+              className="mt-3 font-display text-4xl font-light leading-[1.05] tracking-tight text-ink md:text-5xl"
             >
               {nomeExibicao}
             </h2>
@@ -155,15 +155,15 @@ function Modal({
           </div>
         </div>
 
-        {/* Corpo — descrição editorial + lista de perfumes */}
+        {/* Corpo, descrição editorial + lista de perfumes */}
         <div className="max-h-[60vh] overflow-y-auto px-6 py-8 md:px-10">
           {info ? (
-            <p className="font-display text-lg font-light leading-[1.55] text-cream/90 md:text-xl">
+            <p className="font-display text-lg font-light leading-[1.55] text-ink/90 md:text-xl">
               {info.descricao}
             </p>
           ) : (
-            <p className="text-sm italic text-cream/55">
-              Nota ainda sem leitura editorial — em breve a gente escreve.
+            <p className="text-sm italic text-ink/70">
+              Nota ainda sem leitura editorial, em breve a gente escreve.
             </p>
           )}
 
@@ -176,20 +176,20 @@ function Modal({
                       perfumes.length === 1 ? "perfume" : "perfumes"
                     }`}
               </span>
-              <ul className="mt-4 flex flex-col divide-y divide-cream/8 border-y border-cream/8">
+              <ul className="mt-4 flex flex-col divide-y divide-cream/8 border-y border-ink/8">
                 {perfumes.slice(0, 6).map((p) => (
                   <li key={p.id}>
                     <Link
                       href={`/perfume/${p.id}`}
                       onClick={onClose}
-                      className="group flex items-baseline justify-between gap-4 py-3 transition-colors hover:bg-ink-muted/40"
+                      className="group flex items-baseline justify-between gap-4 py-3 transition-colors hover:bg-cream-soft/40"
                     >
                       <div className="flex min-w-0 flex-col">
-                        <span className="truncate font-display text-base font-light text-cream group-hover:text-amber md:text-lg">
+                        <span className="truncate font-display text-base font-light text-ink group-hover:text-amber md:text-lg">
                           {p.nome}
                         </span>
                         {p.marca && (
-                          <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-cream/45">
+                          <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-ink/65">
                             {p.marca}
                             {p.familia ? ` · ${p.familia}` : ""}
                           </span>
@@ -203,7 +203,7 @@ function Modal({
                 ))}
               </ul>
               {perfumes.length > 6 && (
-                <p className="mt-4 text-xs italic text-cream/45">
+                <p className="mt-4 text-xs italic text-ink/65">
                   + {perfumes.length - 6}{" "}
                   {perfumes.length - 6 === 1 ? "outro" : "outros"} no catálogo
                 </p>

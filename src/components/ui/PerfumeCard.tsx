@@ -9,8 +9,9 @@ import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
 import { toast } from "@/lib/toast-store";
 
 /**
- * Gradient placeholder por família olfativa.
- * Substituir por imagens reais de frasco quando chegarem as fotos de produto.
+ * Gradient escuro de fundo do card, por família olfativa.
+ * Cards têm fundo escuro pra destacar as fotos dos perfumes, o card é uma
+ * "ilha" sobre o mármore claro do site (alto contraste = qualidade editorial).
  */
 function gradientForFamily(familia: string | null): string {
   if (!familia)
@@ -110,10 +111,11 @@ export function PerfumeCard({ perfume, index = 0 }: Props) {
         delay: Math.min(index * 0.04, 0.4),
         ease: [0.19, 1, 0.22, 1],
       }}
+      className="group/wrap relative"
     >
       <Link
         href={`/perfume/${perfume.id}`}
-        className="group relative block aspect-[3/4] overflow-hidden rounded-sm border border-cream/5 bg-ink-soft transition-all duration-700 hover:border-amber/40 hover:shadow-[0_0_50px_rgba(200,155,60,0.12)]"
+        className="group relative block aspect-square overflow-hidden rounded-sm border border-ink/20 bg-ink shadow-product transition-all duration-700 hover:-translate-y-1 hover:border-amber/60 hover:shadow-product-hover"
       >
         {/* Foto real do perfume (ou gradient fallback) */}
         {hasFoto(perfume) ? (
@@ -123,7 +125,7 @@ export function PerfumeCard({ perfume, index = 0 }: Props) {
               alt={`Frasco de ${perfume.nome}`}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className="object-cover transition-transform duration-[1500ms] group-hover:scale-105"
+              className="object-cover transition-transform duration-[1500ms] group-hover:scale-[1.03]"
             />
             {/* Vinheta âmbar no hover pra destacar */}
             <div
@@ -143,10 +145,16 @@ export function PerfumeCard({ perfume, index = 0 }: Props) {
           />
         )}
 
-        {/* Darkening gradient no rodapé pra contraste do texto */}
+        {/* Darkening gradient no topo pra contraste dos badges */}
         <div
           aria-hidden
-          className="absolute inset-x-0 bottom-0 h-[70%] bg-gradient-to-t from-ink/95 via-ink/70 to-transparent"
+          className="absolute inset-x-0 top-0 h-[20%] bg-gradient-to-b from-ink/55 via-ink/20 to-transparent"
+        />
+
+        {/* Darkening gradient no rodapé pra contraste do texto sem cobrir o frasco */}
+        <div
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-t from-ink/95 via-ink/60 to-transparent"
         />
 
         {/* Número do catálogo */}
@@ -218,7 +226,7 @@ export function PerfumeCard({ perfume, index = 0 }: Props) {
           </div>
         </div>
 
-        {/* Seta de navegação — aparece no hover */}
+        {/* Seta de navegação, aparece no hover */}
         <div className="absolute right-5 top-1/2 z-10 -translate-y-1/2 opacity-0 transition-all duration-500 group-hover:right-6 group-hover:opacity-100">
           <div className="flex h-10 w-10 items-center justify-center rounded-full border border-amber/50 bg-ink/60 backdrop-blur-sm">
             <span className="font-sans text-xs text-amber">→</span>
@@ -226,7 +234,7 @@ export function PerfumeCard({ perfume, index = 0 }: Props) {
         </div>
       </Link>
 
-      {/* Botão "+" pra adicionar à lista — fora do Link pra não disparar navegação */}
+      {/* Botão "+" pra adicionar à lista, fora do Link pra não disparar navegação */}
       {!isPending && perfume.precoVenda !== null && (
         <button
           type="button"
@@ -256,6 +264,19 @@ export function PerfumeCard({ perfume, index = 0 }: Props) {
             {jaNaLista ? "✓" : "+"}
           </span>
         </button>
+      )}
+
+      {/* Botão "Comparar com" — aparece no hover, pre-preenche slot A em /compare */}
+      {!isPending && (
+        <Link
+          href={`/compare?a=${perfume.id}`}
+          onClick={(e) => e.stopPropagation()}
+          aria-label={`Comparar ${perfume.nome} com outro perfume`}
+          title="Comparar lado a lado"
+          className="absolute bottom-4 right-4 z-20 flex h-9 w-9 items-center justify-center rounded-full border border-cream/20 bg-ink/70 text-cream/80 opacity-0 backdrop-blur-sm transition-all duration-500 hover:border-amber hover:bg-amber hover:text-ink group-hover/wrap:opacity-100"
+        >
+          <span className="text-base leading-none">⇄</span>
+        </Link>
       )}
     </motion.div>
   );

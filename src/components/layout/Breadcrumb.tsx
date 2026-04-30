@@ -13,7 +13,7 @@ export function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
   return (
     <nav
       aria-label="Caminho"
-      className="flex flex-wrap items-center gap-2 text-[10px] font-sans uppercase tracking-[0.32em] text-cream/50"
+      className="flex flex-wrap items-center gap-2 text-[10px] font-sans uppercase tracking-[0.32em] text-ink/70"
     >
       {items.map((item, i) => {
         const isLast = i === items.length - 1;
@@ -31,7 +31,7 @@ export function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
                 {item.label}
               </span>
             )}
-            {!isLast && <span className="text-cream/25">/</span>}
+            {!isLast && <span className="text-ink/25">/</span>}
           </span>
         );
       })}

@@ -148,11 +148,10 @@ export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
   return (
     <>
       {/* Seção visível na home */}
-      <section
-        id="ritual"
-        className="relative border-t border-cream/5 bg-ink-soft px-6 py-28 md:px-12 md:py-36"
+      <section id="ritual"
+        className="section-veil-light relative border-t border-ink/5 px-6 py-28 md:px-12 md:py-36"
       >
-        <div className="mx-auto grid max-w-[1440px] gap-16 md:grid-cols-[1fr_auto] md:items-end md:gap-24">
+        <div className="relative z-10 mx-auto grid max-w-[1440px] gap-16 md:grid-cols-[1fr_auto] md:items-end md:gap-24">
           {!hideIntro && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -165,11 +164,11 @@ export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
                 <span className="h-px w-8 bg-amber" />
                 O Ritual
               </span>
-              <h2 className="max-w-3xl font-display text-4xl font-light leading-[1.05] tracking-tight text-cream md:text-6xl lg:text-7xl">
+              <h2 className="max-w-3xl font-display text-4xl font-light leading-[1.05] tracking-tight text-ink md:text-6xl lg:text-7xl">
                 Seis perguntas pra descobrir{" "}
                 <em className="italic text-amber/90">seu perfil olfativo.</em>
               </h2>
-              <p className="max-w-2xl text-base leading-relaxed text-cream/60 md:text-lg">
+              <p className="max-w-2xl text-base leading-relaxed text-ink/75 md:text-lg">
                 Sem jargão. Sem checklist técnico. Um diálogo curto pra te
                 indicar três fragrâncias do catálogo que conversam com quem você
                 é hoje.
@@ -200,7 +199,7 @@ export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
               <button
                 type="button"
                 onClick={handleIniciarDoZero}
-                className="text-[10px] font-sans uppercase tracking-[0.3em] text-cream/50 transition-colors hover:text-amber"
+                className="text-[10px] font-sans uppercase tracking-[0.3em] text-ink/70 transition-colors hover:text-amber"
               >
                 ou recomeçar do zero
               </button>
@@ -217,25 +216,25 @@ export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="fixed inset-0 z-[200] flex flex-col overflow-y-auto bg-ink"
+            className="fixed inset-0 z-[200] flex flex-col overflow-y-auto"
             role="dialog"
             aria-modal="true"
-            aria-label="O Ritual — quiz olfativo"
+            aria-label="O Ritual, quiz olfativo"
           >
             {/* Background ambiente que muda por pergunta */}
             <AmbienteBackground step={step} />
 
             {/* Progress bar no topo */}
-            <div className="relative z-10 border-b border-cream/5 px-6 py-5 md:px-12">
+            <div className="relative z-10 border-b border-ink/5 px-6 py-5 md:px-12">
               <div className="mx-auto flex max-w-5xl items-center justify-between gap-6">
-                <span className="font-display text-xl italic text-cream">
+                <span className="font-display text-xl italic text-ink">
                   O <span className="text-amber">Ritual</span>
                 </span>
                 <ProgressPill step={step} />
                 <button
                   type="button"
                   onClick={handleFechar}
-                  className="text-[11px] font-sans uppercase tracking-[0.3em] text-cream/60 transition-colors hover:text-amber"
+                  className="text-[11px] font-sans uppercase tracking-[0.3em] text-ink/75 transition-colors hover:text-amber"
                   aria-label="Fechar"
                 >
                   Fechar ×
@@ -359,7 +358,7 @@ function PerguntaView({
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, delay: 0.2, ease: EASE_OUT }}
-        className="font-display text-3xl font-light leading-[1.15] tracking-tight text-cream md:text-5xl lg:text-6xl"
+        className="font-display text-3xl font-light leading-[1.15] tracking-tight text-ink md:text-5xl lg:text-6xl"
       >
         {pergunta.pergunta}
       </motion.h2>
@@ -377,13 +376,13 @@ function PerguntaView({
             }}
             type="button"
             onClick={() => onResposta(r)}
-            className="group relative rounded-sm border border-cream/15 bg-ink-soft/50 p-6 text-left backdrop-blur-sm transition-all duration-400 hover:border-amber hover:bg-ink-soft hover:shadow-[0_0_40px_rgba(200,155,60,0.15)]"
+            className="group relative rounded-sm border border-ink/15 bg-cream-soft/50 p-6 text-left backdrop-blur-sm transition-all duration-400 hover:border-amber hover:hover:shadow-[0_0_40px_rgba(200,155,60,0.15)]"
           >
             <div className="flex items-start gap-4">
               <span className="font-display text-xl italic text-amber/70 transition-colors group-hover:text-amber-bright">
                 {String.fromCharCode(65 + i)}
               </span>
-              <span className="flex-1 text-base leading-relaxed text-cream/85 transition-colors group-hover:text-cream">
+              <span className="flex-1 text-base leading-relaxed text-ink/85 transition-colors group-hover:text-ink">
                 {r.label}
               </span>
               <span className="self-center text-amber opacity-0 transition-all duration-400 group-hover:translate-x-1 group-hover:opacity-100">
@@ -433,7 +432,7 @@ function ResultadoView({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.5, ease: EASE_OUT }}
-          className="max-w-3xl font-display text-5xl font-light leading-[1.05] tracking-tight text-cream md:text-7xl"
+          className="max-w-3xl font-display text-5xl font-light leading-[1.05] tracking-tight text-ink md:text-7xl"
         >
           {perfil.tituloPerfil}
           <span className="text-amber">.</span>
@@ -443,7 +442,7 @@ function ResultadoView({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.9 }}
-          className="max-w-2xl text-base leading-relaxed text-cream/70 md:text-lg"
+          className="max-w-2xl text-base leading-relaxed text-ink/70 md:text-lg"
         >
           {perfil.descricao}
         </motion.p>
@@ -461,7 +460,7 @@ function ResultadoView({
               className={`rounded-full border px-3 py-1 text-[10px] font-sans uppercase tracking-[0.3em] ${
                 i === 0
                   ? "border-amber bg-amber/10 text-amber"
-                  : "border-cream/20 text-cream/70"
+                  : "border-ink/20 text-ink/70"
               }`}
             >
               {d}
@@ -495,7 +494,7 @@ function ResultadoView({
             >
               <Link
                 href={`/perfume/${p.id}`}
-                className="group flex h-full flex-col gap-3 rounded-sm border border-amber/30 bg-ink-soft p-6 transition-all hover:border-amber hover:bg-ink-muted"
+                className="group flex h-full flex-col gap-3 rounded-sm border border-amber/30 p-6 transition-all hover:border-amber hover:"
               >
                 <div className="flex items-baseline justify-between">
                   <span className="font-display text-lg italic text-amber/70">
@@ -506,7 +505,7 @@ function ResultadoView({
                       "Sugestão"}
                   </span>
                 </div>
-                <h3 className="font-display text-2xl font-light leading-[1.1] text-cream transition-colors group-hover:text-amber-bright">
+                <h3 className="font-display text-2xl font-light leading-[1.1] text-ink transition-colors group-hover:text-amber-bright">
                   {p.nome}
                 </h3>
                 {p.familia && (
@@ -515,13 +514,13 @@ function ResultadoView({
                   </span>
                 )}
                 {p.cloneDe?.[0] && (
-                  <p className="mt-1 text-xs text-cream/60">
+                  <p className="mt-1 text-xs text-ink/75">
                     <span className="italic">inspirado em </span>
                     {p.cloneDe[0]}
                   </p>
                 )}
-                <div className="mt-auto flex items-end justify-between border-t border-cream/10 pt-3">
-                  <span className="font-display text-xl text-cream">
+                <div className="mt-auto flex items-end justify-between border-t border-ink/10 pt-3">
+                  <span className="font-display text-xl text-ink">
                     R$ {Math.round(p.precoVenda ?? 0)}
                   </span>
                   <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-amber transition-transform duration-300 group-hover:translate-x-1">
@@ -534,8 +533,8 @@ function ResultadoView({
         </div>
 
         {perfumes.length === 0 && (
-          <p className="text-center text-sm italic text-cream/50">
-            Combinação rara — nenhum perfume do catálogo atual encaixa
+          <p className="text-center text-sm italic text-ink/70">
+            Combinação rara, nenhum perfume do catálogo atual encaixa
             perfeitamente. Tenta de novo ou explora o mapa olfativo.
           </p>
         )}
@@ -566,14 +565,14 @@ function ResultadoView({
         <button
           type="button"
           onClick={onReset}
-          className="rounded-full border border-cream/20 px-7 py-3 text-[11px] font-sans uppercase tracking-[0.3em] text-cream/80 transition-all hover:border-amber hover:text-amber"
+          className="rounded-full border border-ink/20 px-7 py-3 text-[11px] font-sans uppercase tracking-[0.3em] text-ink/80 transition-all hover:border-amber hover:text-amber"
         >
           Refazer o Ritual
         </button>
         <button
           type="button"
           onClick={onFechar}
-          className="rounded-full border border-cream/10 px-7 py-3 text-[11px] font-sans uppercase tracking-[0.3em] text-cream/60 transition-all hover:text-cream"
+          className="rounded-full border border-ink/10 px-7 py-3 text-[11px] font-sans uppercase tracking-[0.3em] text-ink/75 transition-all hover:text-ink"
         >
           Voltar ao site
         </button>
@@ -644,15 +643,15 @@ function CapturaEmailRitual({
         <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber">
           Seu perfil está a caminho
         </span>
-        <p className="mt-3 font-display text-xl font-light italic text-cream md:text-2xl">
+        <p className="mt-3 font-display text-xl font-light italic text-ink md:text-2xl">
           Use o cupom{" "}
           <span className="not-italic font-normal text-amber tracking-wider">
             RITUAL10
           </span>{" "}
           na primeira compra.
         </p>
-        <p className="mt-3 text-sm italic leading-relaxed text-cream/70">
-          Mande o cupom junto com a reserva no Instagram — a gente aplica em
+        <p className="mt-3 text-sm italic leading-relaxed text-ink/70">
+          Mande o cupom junto com a reserva no Instagram, a gente aplica em
           frasco cheio ou decant.
         </p>
         <button
@@ -669,13 +668,13 @@ function CapturaEmailRitual({
   return (
     <form
       onSubmit={onSubmit}
-      className="mt-6 rounded-sm border border-cream/10 bg-ink/40 p-5 backdrop-blur-sm md:p-7"
+      className="mt-6 rounded-sm border border-ink/10 bg-cream/40 p-5 backdrop-blur-sm md:p-7"
     >
       <div className="flex flex-col gap-2 text-center">
         <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber">
           Leve seu perfil
         </span>
-        <p className="font-display text-lg font-light italic text-cream md:text-xl">
+        <p className="font-display text-lg font-light italic text-ink md:text-xl">
           Receba seu perfil + cupom de{" "}
           <span className="not-italic font-normal text-amber">
             10% na primeira compra
@@ -694,7 +693,7 @@ function CapturaEmailRitual({
           }}
           disabled={state === "submitting"}
           placeholder="seu@email.com"
-          className="flex-1 rounded-full border border-cream/15 bg-ink/60 px-5 py-3 text-sm text-cream placeholder:text-cream/40 focus:border-amber focus:outline-none disabled:opacity-50"
+          className="flex-1 rounded-full border border-ink/15 bg-cream/60 px-5 py-3 text-sm text-ink placeholder:text-ink/75 focus:border-amber focus:outline-none disabled:opacity-50"
         />
         <button
           type="submit"
@@ -716,7 +715,7 @@ function CapturaEmailRitual({
         </p>
       )}
       {state === "idle" && (
-        <p className="mt-3 text-center text-[10px] italic text-cream/40">
+        <p className="mt-3 text-center text-[10px] italic text-ink/75">
           Sem spam. A gente avisa só quando sair novidade relevante.
         </p>
       )}

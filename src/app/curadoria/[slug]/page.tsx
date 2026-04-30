@@ -35,8 +35,7 @@ export default async function CuradoriaPage({ params }: Props) {
   return (
     <article className="relative">
       {/* Hero da curadoria */}
-      <section
-        className="relative flex min-h-[55vh] items-end overflow-hidden border-b border-cream/5 px-6 pb-12 pt-32 md:min-h-[65vh] md:px-12 md:pb-16 md:pt-40"
+      <section className="relative flex min-h-[55vh] items-end overflow-hidden border-b border-ink/5 bg-ink px-6 pb-12 pt-32 md:min-h-[65vh] md:px-12 md:pb-16 md:pt-40"
       >
         <Image
           src={curadoria.foto}
@@ -46,16 +45,18 @@ export default async function CuradoriaPage({ params }: Props) {
           priority
           className="object-cover object-center"
         />
+        {/* Vinheta superior leve pra contrastar o breadcrumb */}
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/50 to-ink/40"
+          className="absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-ink/70 via-ink/30 to-transparent"
         />
+        {/* Vinheta inferior densa pra contrastar título + descrição */}
         <div
           aria-hidden
-          className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink via-ink/75 to-transparent"
+          className="absolute inset-x-0 bottom-0 h-[80%] bg-gradient-to-t from-ink via-ink/80 to-transparent"
         />
 
-        <div className="relative mx-auto w-full max-w-[1440px]">
+        <div className="relative mx-auto w-full max-w-[1440px] [&_nav]:!text-cream/75 [&_nav_.text-ink\/25]:!text-cream/30">
           <Breadcrumb
             items={[
               { label: "Home", href: "/" },
@@ -70,10 +71,10 @@ export default async function CuradoriaPage({ params }: Props) {
           <h1 className="mt-4 font-display text-5xl font-light leading-[1] tracking-tight text-cream md:text-7xl lg:text-8xl">
             {curadoria.titulo}
           </h1>
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-cream/80 md:text-lg">
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-cream/85 md:text-lg">
             {curadoria.descricaoPage}
           </p>
-          <div className="mt-8 flex items-center gap-3 text-xs text-cream/60">
+          <div className="mt-8 flex items-center gap-3 text-xs text-cream/75">
             <span className="font-display text-2xl italic text-amber">
               {perfumes.length}
             </span>
@@ -86,12 +87,12 @@ export default async function CuradoriaPage({ params }: Props) {
       </section>
 
       {/* Grid da curadoria */}
-      <section className="bg-ink px-6 py-20 md:px-12 md:py-28">
+      <section className="section-veil-light px-6 py-20 md:px-12 md:py-28">
         <div className="mx-auto max-w-[1440px]">
           {perfumes.length === 0 ? (
-            <p className="mx-auto max-w-md text-center text-sm italic text-cream/50">
+            <p className="mx-auto max-w-md text-center text-sm italic text-ink/70">
               Nenhuma fragrância do catálogo atual encaixa nesse recorte no
-              momento. Volte em breve — novas casas entram toda semana.
+              momento. Volte em breve, novas casas entram toda semana.
             </p>
           ) : (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -103,8 +104,8 @@ export default async function CuradoriaPage({ params }: Props) {
         </div>
       </section>
 
-      {/* Rodapé — outras curadorias */}
-      <section className="border-t border-cream/5 bg-ink-soft px-6 py-20 md:px-12">
+      {/* Rodapé, outras curadorias */}
+      <section className="section-veil-light border-t border-ink/5 px-6 py-20 md:px-12">
         <div className="mx-auto max-w-[1440px]">
           <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
             <span className="mr-3 inline-block h-px w-8 align-middle bg-amber" />
@@ -115,12 +116,12 @@ export default async function CuradoriaPage({ params }: Props) {
               <li key={c.id}>
                 <Link
                   href={`/curadoria/${c.id}`}
-                  className="group flex flex-col gap-2 rounded-sm border border-cream/10 p-5 transition-all hover:border-amber/40 hover:bg-ink"
+                  className="group flex flex-col gap-2 rounded-sm border border-ink/10 p-5 transition-all hover:border-amber/40 hover:"
                 >
                   <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-amber/80">
                     {c.subtitulo}
                   </span>
-                  <span className="font-display text-xl font-light text-cream transition-colors group-hover:text-amber/95">
+                  <span className="font-display text-xl font-light text-ink transition-colors group-hover:text-amber/95">
                     {c.titulo}
                   </span>
                 </Link>

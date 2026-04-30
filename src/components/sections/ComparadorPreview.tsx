@@ -31,11 +31,10 @@ export function ComparadorPreview() {
     : 0;
 
   return (
-    <section
-      id="comparador"
-      className="relative border-t border-cream/5 bg-ink-soft px-6 py-24 md:px-12 md:py-32"
+    <section id="comparador"
+      className="section-veil-light relative border-t border-ink/5 px-6 py-24 md:px-12 md:py-32"
     >
-      <div className="mx-auto max-w-[1440px]">
+      <div className="relative z-10 mx-auto max-w-[1440px]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -47,11 +46,11 @@ export function ComparadorPreview() {
             <span className="h-px w-8 bg-amber" />
             Árabe × Designer
           </span>
-          <h2 className="max-w-3xl font-display text-4xl font-light leading-[1.05] tracking-tight text-cream md:text-5xl lg:text-6xl">
+          <h2 className="max-w-3xl font-display text-4xl font-light leading-[1.05] tracking-tight text-ink md:text-5xl lg:text-6xl">
             DNA conhecido,{" "}
             <em className="italic text-amber/90">leitura árabe.</em>
           </h2>
-          <p className="max-w-2xl text-base leading-relaxed text-cream/60 md:text-lg">
+          <p className="max-w-2xl text-base leading-relaxed text-ink/75 md:text-lg">
             Algumas fragrâncias árabes conversam com designers conhecidos.
             Veja um exemplo clássico da curadoria:
           </p>
@@ -66,23 +65,23 @@ export function ComparadorPreview() {
           className="mt-14 grid items-stretch gap-4 md:grid-cols-[1fr_auto_1fr] md:gap-8"
         >
           {/* Lado designer */}
-          <div className="flex flex-col items-center gap-4 rounded-sm border border-cream/10 bg-ink/50 p-8 text-center md:p-10">
-            <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-cream/45">
+          <div className="flex flex-col items-center gap-4 rounded-sm border border-ink/10 bg-cream/50 p-8 text-center md:p-10">
+            <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-ink/65">
               Designer
             </span>
-            <div className="flex h-32 w-32 items-center justify-center rounded-full border border-cream/10 bg-ink/70">
-              <span className="font-display text-4xl italic text-cream/60">
+            <div className="flex h-32 w-32 items-center justify-center rounded-full border border-ink/10 bg-cream/70">
+              <span className="font-display text-4xl italic text-ink/75">
                 {DESIGNER_ORIGINAL.nome.split(" ").map((w) => w[0]).join("")}
               </span>
             </div>
             <div className="flex flex-col gap-1">
-              <h3 className="font-display text-2xl font-light text-cream md:text-3xl">
+              <h3 className="font-display text-2xl font-light text-ink md:text-3xl">
                 {DESIGNER_ORIGINAL.nome}
               </h3>
-              <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-cream/45">
+              <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-ink/65">
                 Preço de boutique
               </span>
-              <span className="mt-1 font-display text-4xl font-light text-cream md:text-5xl">
+              <span className="mt-1 font-display text-4xl font-light text-ink md:text-5xl">
                 R$ {DESIGNER_ORIGINAL.preco.toLocaleString("pt-BR")}
               </span>
             </div>
@@ -106,7 +105,7 @@ export function ComparadorPreview() {
           {/* Lado árabe */}
           <Link
             href={`/perfume/${alternativa.id}`}
-            className="group relative flex flex-col items-center gap-4 overflow-hidden rounded-sm border border-amber/30 bg-ink-muted p-8 text-center transition-all hover:border-amber md:p-10"
+            className="group relative flex flex-col items-center gap-4 overflow-hidden rounded-sm border border-amber/30 p-8 text-center transition-all hover:border-amber md:p-10"
           >
             <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
               Alternativa árabe
@@ -123,13 +122,13 @@ export function ComparadorPreview() {
               </div>
             )}
             <div className="flex flex-col gap-1">
-              <h3 className="font-display text-2xl font-light text-cream transition-colors group-hover:text-amber md:text-3xl">
+              <h3 className="font-display text-2xl font-light text-ink transition-colors group-hover:text-amber md:text-3xl">
                 {alternativa.nome}
               </h3>
               <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-amber/80">
                 Referência alta · mesma família
               </span>
-              <span className="mt-1 font-display text-4xl font-light text-cream md:text-5xl">
+              <span className="mt-1 font-display text-4xl font-light text-ink md:text-5xl">
                 R$ {alternativa.precoVenda}
               </span>
             </div>
@@ -144,7 +143,7 @@ export function ComparadorPreview() {
           transition={{ duration: 0.8, delay: 0.5 }}
           className="mt-14 flex flex-col items-center gap-3 text-center"
         >
-          <p className="max-w-xl text-sm italic text-cream/55 md:text-base">
+          <p className="max-w-xl text-sm italic text-ink/70 md:text-base">
             Tem alternativas árabes pra Sauvage, Bleu de Chanel, Le Male
             Elixir, Angel&apos;s Share, YSL Y e outros mais.
           </p>

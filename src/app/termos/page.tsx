@@ -22,8 +22,8 @@ export default function TermosPage() {
         backgroundGradient="radial-gradient(ellipse at 50% 50%, rgba(200,155,60,0.08), transparent 60%)"
       />
 
-      <section className="bg-ink px-6 py-20 md:px-12 md:py-28">
-        <div className="mx-auto flex max-w-3xl flex-col gap-10 text-base leading-relaxed text-cream/80">
+      <section className="section-veil-light px-6 py-20 md:px-12 md:py-28">
+        <div className="mx-auto flex max-w-3xl flex-col gap-10 text-base leading-relaxed text-ink/80">
           <div className="rounded-sm border border-amber/25 bg-amber/5 p-5">
             <p className="text-xs italic text-amber/90">
               ⚠ Rascunho inicial. Este texto deve ser revisado por advogado
@@ -32,7 +32,7 @@ export default function TermosPage() {
           </div>
 
           <Topico n="1" t="Objeto">
-            O site <strong className="text-cream">{BRAND.fullName}</strong>{" "}
+            O site <strong className="text-ink">{BRAND.fullName}</strong>{" "}
             (&quot;Site&quot;) é uma plataforma de curadoria e venda de
             perfumes importados, com foco em perfumaria árabe masculina. A
             navegação, consulta de conteúdo e uso das ferramentas interativas
@@ -100,7 +100,7 @@ export default function TermosPage() {
             &quot;O Ritual&quot;, o Mapa Olfativo e o Comparador Árabe ×
             Designer são ferramentas indicativas, baseadas em heurísticas
             olfativas e dados públicos de perfumaria. Não constituem
-            prescrição, recomendação médica nem garantia de satisfação —
+            prescrição, recomendação médica nem garantia de satisfação
             recomendamos sempre testar com decant antes de comprar frasco
             cheio.
           </Topico>
@@ -116,7 +116,7 @@ export default function TermosPage() {
 
           <Topico n="10" t="Responsabilidade">
             A ZAHIR PARFUMS não se responsabiliza por (a) uso indevido dos
-            produtos, (b) reações alérgicas individuais — recomendamos teste
+            produtos, (b) reações alérgicas individuais, recomendamos teste
             na dobra do cotovelo antes do uso completo, (c) interrupções
             temporárias do Site por manutenção ou causas técnicas alheias.
           </Topico>
@@ -133,7 +133,7 @@ export default function TermosPage() {
             qualquer outro.
           </Topico>
 
-          <p className="mt-6 text-sm italic text-cream/50">
+          <p className="mt-6 text-sm italic text-ink/70">
             Última atualização: abril de {BRAND.foundedYear}.
           </p>
         </div>
@@ -156,7 +156,7 @@ function Topico({
       <span className="font-display text-xs italic text-amber/80">
         {n}. {t}
       </span>
-      <div className="font-display text-base font-light leading-[1.55] text-cream/85 md:text-lg">
+      <div className="font-display text-base font-light leading-[1.55] text-ink/85 md:text-lg">
         {children}
       </div>
     </div>

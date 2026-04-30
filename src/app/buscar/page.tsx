@@ -10,7 +10,7 @@ import { PerfumeCard } from "@/components/ui/PerfumeCard";
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
 function matchPerfume(p: Perfume, q: string): number {
-  // Score system — retorna peso de relevância
+  // Score system, retorna peso de relevância
   const needle = q.toLowerCase().trim();
   if (!needle) return 0;
 
@@ -39,7 +39,7 @@ function BuscarContent() {
   const qInicial = searchParams.get("q") ?? "";
   const [query, setQuery] = useState(qInicial);
 
-  // Debounce leve — atualiza URL sem recarregar
+  // Debounce leve, atualiza URL sem recarregar
   useEffect(() => {
     const t = setTimeout(() => {
       const url = query
@@ -60,11 +60,11 @@ function BuscarContent() {
   return (
     <article className="relative">
       {/* Header com input */}
-      <header className="border-b border-cream/5 px-6 pb-10 pt-32 md:px-12 md:pb-14 md:pt-40">
+      <header className="border-b border-ink/5 px-6 pb-10 pt-32 md:px-12 md:pb-14 md:pt-40">
         <div className="mx-auto max-w-[1200px]">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-[10px] font-sans uppercase tracking-[0.35em] text-cream/50 transition-colors hover:text-amber"
+            className="inline-flex items-center gap-2 text-[10px] font-sans uppercase tracking-[0.35em] text-ink/70 transition-colors hover:text-amber"
           >
             ← Home
           </Link>
@@ -79,7 +79,7 @@ function BuscarContent() {
               <span className="h-px w-8 bg-amber" />
               Buscar
             </span>
-            <h1 className="max-w-3xl font-display text-4xl font-light leading-[1.05] tracking-tight text-cream md:text-6xl">
+            <h1 className="max-w-3xl font-display text-4xl font-light leading-[1.05] tracking-tight text-ink md:text-6xl">
               O que você está{" "}
               <em className="italic text-amber/90">procurando?</em>
             </h1>
@@ -91,13 +91,13 @@ function BuscarContent() {
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Ex: aventus, oud, cítrico, Lattafa…"
                 autoFocus
-                className="w-full rounded-full border border-cream/20 bg-ink-soft py-4 pl-6 pr-14 font-display text-xl font-light text-cream placeholder:text-cream/30 focus:border-amber focus:outline-none focus:ring-1 focus:ring-amber/30"
+                className="w-full rounded-full border border-ink/20 py-4 pl-6 pr-14 font-display text-xl font-light text-ink placeholder:text-ink/70 focus:border-amber focus:outline-none focus:ring-1 focus:ring-amber/30"
               />
               {query && (
                 <button
                   type="button"
                   onClick={() => setQuery("")}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-xl text-cream/50 transition-colors hover:text-amber"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-xl text-ink/70 transition-colors hover:text-amber"
                   aria-label="Limpar busca"
                 >
                   ×
@@ -105,7 +105,7 @@ function BuscarContent() {
               )}
             </div>
 
-            <p className="text-xs italic text-cream/50">
+            <p className="text-xs italic text-ink/70">
               Busca por nome, marca, família olfativa, clone designer, nota ou
               ocasião.
             </p>
@@ -114,7 +114,7 @@ function BuscarContent() {
       </header>
 
       {/* Resultados */}
-      <section className="bg-ink px-6 py-20 md:px-12 md:py-28">
+      <section className="section-veil-light px-6 py-20 md:px-12 md:py-28">
         <div className="mx-auto max-w-[1440px]">
           {!query.trim() ? (
             <SugestoesBusca onClick={setQuery} />
@@ -122,7 +122,7 @@ function BuscarContent() {
             <EmptyResults query={query} />
           ) : (
             <>
-              <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-cream/50">
+              <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-ink/70">
                 {results.length}{" "}
                 {results.length === 1 ? "resultado" : "resultados"} para{" "}
                 <em className="italic text-amber">&ldquo;{query}&rdquo;</em>
@@ -151,7 +151,7 @@ export default function BuscarPage() {
 function BuscaLoadingFallback() {
   return (
     <div className="flex min-h-screen items-center justify-center px-6">
-      <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-cream/40">
+      <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-ink/75">
         Carregando busca…
       </span>
     </div>
@@ -181,7 +181,7 @@ function SugestoesBusca({ onClick }: { onClick: (q: string) => void }) {
             key={s}
             type="button"
             onClick={() => onClick(s)}
-            className="rounded-full border border-cream/15 px-4 py-1.5 text-xs text-cream/75 transition-all hover:border-amber hover:bg-amber hover:text-ink"
+            className="rounded-full border border-ink/15 px-4 py-1.5 text-xs text-ink/75 transition-all hover:border-amber hover:bg-amber hover:text-ink"
           >
             {s}
           </button>
@@ -196,11 +196,11 @@ function EmptyResults({ query }: { query: string }) {
     <div className="flex flex-col items-center gap-5 py-10 text-center">
       <span className="font-display text-5xl italic text-amber/40">∅</span>
       <div className="flex max-w-md flex-col gap-2">
-        <p className="font-display text-xl font-light text-cream">
+        <p className="font-display text-xl font-light text-ink">
           Nada encontrado pra{" "}
           <em className="italic text-amber/80">&ldquo;{query}&rdquo;</em>.
         </p>
-        <p className="text-sm leading-relaxed text-cream/55">
+        <p className="text-sm leading-relaxed text-ink/70">
           Tenta uma nota (oud, baunilha), um designer (Sauvage, Aventus), ou
           uma família (gourmand, fresco, amadeirado).
         </p>

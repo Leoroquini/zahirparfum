@@ -12,7 +12,7 @@ const HAS_ANALYTICS = Boolean(
 type Consent = "accepted" | "rejected" | null;
 
 /**
- * Banner LGPD — só aparece uma vez.
+ * Banner LGPD, só aparece uma vez.
  * Salva preferência em localStorage.
  * Só renderiza quando existe ID de GA4 ou Meta Pixel (senão, nada a consentir).
  */
@@ -51,7 +51,7 @@ export function CookieBanner() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 120, opacity: 0 }}
           transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
-          className="fixed inset-x-4 bottom-4 z-[70] rounded-sm border border-amber/25 bg-ink/95 p-5 shadow-[0_-4px_40px_rgba(0,0,0,0.5)] backdrop-blur-xl md:inset-x-auto md:bottom-6 md:left-6 md:max-w-md md:p-6"
+          className="fixed inset-x-4 bottom-4 z-[70] rounded-sm border border-amber/25 bg-cream/95 p-5 shadow-[0_-4px_40px_rgba(0,0,0,0.5)] backdrop-blur-xl md:inset-x-auto md:bottom-6 md:left-6 md:max-w-md md:p-6"
           role="dialog"
           aria-labelledby="cookie-title"
         >
@@ -63,7 +63,7 @@ export function CookieBanner() {
               >
                 Cookies
               </span>
-              <p className="mt-2 text-sm leading-relaxed text-cream/85">
+              <p className="mt-2 text-sm leading-relaxed text-ink/85">
                 Usamos cookies pra melhorar sua experiência e medir desempenho
                 das campanhas. Você pode aceitar ou recusar os cookies
                 opcionais. Leia a{" "}
@@ -88,7 +88,7 @@ export function CookieBanner() {
               <button
                 type="button"
                 onClick={() => setConsent("rejected")}
-                className="rounded-full border border-cream/20 px-5 py-2.5 text-[10px] font-sans uppercase tracking-[0.3em] text-cream/70 transition-all hover:border-amber hover:text-amber"
+                className="rounded-full border border-ink/20 px-5 py-2.5 text-[10px] font-sans uppercase tracking-[0.3em] text-ink/70 transition-all hover:border-amber hover:text-amber"
               >
                 Apenas essenciais
               </button>

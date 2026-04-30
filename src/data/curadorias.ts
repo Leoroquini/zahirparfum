@@ -1,13 +1,20 @@
 import { CATALOGO, type Perfume } from "@/data/catalogo";
 
 /**
- * Curadorias temáticas — agrupam perfumes do catálogo por intenção de compra.
+ * Curadorias temáticas, agrupam perfumes do catálogo por intenção de compra.
  *
- * Princípio de vendas: cada curadoria RESPONDE A UMA PERGUNTA que o cliente
- * já tem na cabeça antes de chegar. Três removem objeção (iniciante, preço,
- * fidelidade), três atendem intenção explícita (trabalho, noite, inverno).
+ * Princípio: cada curadoria responde a UMA pergunta que o cliente já tem na
+ * cabeça antes de chegar. As 4 cobrem:
+ *  - Começar Certo        — primeira compra (carteira + repertório)
+ *  - Clones Imbatíveis    — referência designer com 85%+ fidelidade
+ *  - Noite que não Esquece — encontro/festa/evento marcante
+ *  - Frio que Pede Mais   — orientais densos pra inverno
  *
- * Cada curadoria tem filtro dinâmico — novos SKUs entram automaticamente.
+ * "Sob R$250" virou filtro de preço no catálogo. "Horário Comercial" virou
+ * filtro de ocasião (dia/trabalho) no catálogo. Tirei do conjunto pra evitar
+ * sobreposição com "Começar Certo" e diluição da curadoria editorial.
+ *
+ * Cada curadoria tem filtro dinâmico, novos SKUs entram automaticamente.
  */
 
 export type Curadoria = {
@@ -16,7 +23,7 @@ export type Curadoria = {
   subtitulo: string;           // eyebrow
   descricaoHome: string;       // texto curto no card da home
   descricaoPage: string;       // texto longo na página individual
-  /** Foto de capa em /public/curadorias/{id}.png */
+  /** Foto de capa em /public/curadorias/{id}.webp */
   foto: string;
   /** Gradient de fallback caso foto não renderize */
   gradient: string;
@@ -30,10 +37,10 @@ export const CURADORIAS: Curadoria[] = [
     titulo: "Começar Certo",
     subtitulo: "Pra quem nunca comprou perfume árabe",
     descricaoHome:
-      "Fragrâncias de entrada — acessíveis, versáteis, agradam fácil. Se essa é sua primeira compra consciente, a gente começa por aqui com você.",
+      "Fragrâncias de entrada, acessíveis, versáteis, agradam fácil. Se essa é sua primeira compra consciente, a gente começa por aqui com você.",
     descricaoPage:
       "Perfumes para quem está entrando no universo árabe agora. Preço que cabe na primeira compra, projeção alta o suficiente pra você notar a diferença do mercado designer, versatilidade pra usar no dia ou na noite. Escolhas que agradam fácil sem parecer genéricas.",
-    foto: "/curadorias/comecar-certo.png",
+    foto: "/curadorias/comecar-certo.webp",
     gradient:
       "linear-gradient(135deg, #1a1510 0%, #3d3322 50%, #c89b6a 100%)",
     filter: (p) =>
@@ -54,13 +61,13 @@ export const CURADORIAS: Curadoria[] = [
     descricaoHome:
       "Perfumes árabes com referência editorial alta em relação a designers conhecidos. Boa porta de entrada pra quem quer o DNA olfativo sem começar pelo preço de boutique.",
     descricaoPage:
-      "Você já conhece Sauvage, Aventus, Bleu de Chanel — e quer entender quais interpretações árabes fazem sentido. Filtramos aqui SKUs com referência editorial declarada de 85% ou mais em relação ao designer original. A ideia é comparar caminho olfativo, ocasião de uso e valor percebido com transparência, sem vender número como garantia absoluta.",
-    foto: "/curadorias/clones-imbativeis.png",
+      "Você já conhece Sauvage, Aventus, Bleu de Chanel, e quer entender quais interpretações árabes fazem sentido. Filtramos aqui SKUs com referência editorial declarada de 85% ou mais em relação ao designer original. A ideia é comparar caminho olfativo, ocasião de uso e valor percebido com transparência, sem vender número como garantia absoluta.",
+    foto: "/curadorias/clones-imbativeis.webp",
     gradient:
       "linear-gradient(135deg, #0a0a0a 0%, #1a1510 50%, #c89b3c 100%)",
     filter: (p) => {
       if (!p.cloneFidelidade) return false;
-      // Extrai número (%) — aceita formatos "85%", "85-90%", "70-80%", "90-95%"
+      // Extrai número (%), aceita formatos "85%", "85-90%", "70-80%", "90-95%"
       const match = p.cloneFidelidade.match(/(\d+)/g);
       if (!match) return false;
       // Pega o menor número pra ser conservador
@@ -70,47 +77,14 @@ export const CURADORIAS: Curadoria[] = [
     order: (a, b) => (a.precoVenda ?? 0) - (b.precoVenda ?? 0),
   },
   {
-    id: "sob-250",
-    titulo: "Sob R$ 250",
-    subtitulo: "Ótimos sem pesar no bolso",
-    descricaoHome:
-      "Toda a curadoria por até duzentos e cinquenta reais. Entrada acessível pro cara que quer começar bem sem comprometer o mês.",
-    descricaoPage:
-      "Curadoria completa de tudo que custa até R$ 250 no catálogo. Projeção, qualidade e DNA olfativo premium sem ultrapassar o orçamento. Ideal pra primeira compra, pra montar coleção sem gastar R$ 300+ por frasco, ou pra testar um perfil olfativo novo sem medo.",
-    foto: "/curadorias/sob-250.png",
-    gradient:
-      "linear-gradient(135deg, #1a0e06 0%, #3d2210 50%, #c89b6a 100%)",
-    filter: (p) => p.precoVenda !== null && p.precoVenda <= 250,
-    order: (a, b) => (a.precoVenda ?? 0) - (b.precoVenda ?? 0),
-  },
-  {
-    id: "horario-comercial",
-    titulo: "Horário Comercial",
-    subtitulo: "Elegância que não briga com o ambiente",
-    descricaoHome:
-      "Projeção moderada, DNA limpo, nada que domine uma reunião. Fragrâncias que te posicionam sem atrapalhar a conversa.",
-    descricaoPage:
-      "Escritório, reunião de cliente, apresentação, almoço de negócios. Projeção moderada (ninguém vai pedir pra trocar), paleta aromática ou amadeirada fresca (combina com ambiente fechado), DNA versátil (você sai dali pro happy hour sem precisar trocar). O perfume que alguém elogia em tom baixo depois que todo mundo saiu.",
-    foto: "/curadorias/horario-comercial.png",
-    gradient:
-      "linear-gradient(135deg, #0f1a25 0%, #1e3447 50%, #6b8a9c 100%)",
-    filter: (p) =>
-      p.ocasioes.some((o) =>
-        ["trabalho", "dia", "versátil"].includes(o.toLowerCase())
-      ) &&
-      (p.projecao === "moderada" ||
-        p.projecao === "moderada-alta" ||
-        p.projecao === "discreta"),
-  },
-  {
     id: "noite-que-nao-esquece",
     titulo: "Noite que não Esquece",
     subtitulo: "Encontro, festa, evento marcante",
     descricaoHome:
-      "Magnetismo em frasco — doces masculinos, amadeirados intensos, orientais que ficam na memória. Fragrâncias feitas pra primeira impressão virar lembrança.",
+      "Magnetismo em frasco, doces masculinos, amadeirados intensos, orientais que ficam na memória. Fragrâncias feitas pra primeira impressão virar lembrança.",
     descricaoPage:
-      "Jantar que importa, primeiro encontro, festa onde você quer ser lembrado, evento de gala. Curadoria de fragrâncias com performance alta, DNA sedutor ou sofisticado, e aquela qualidade de 'o que é esse cheiro?' — a pergunta que deixa a noite memorável. Use com moderação: 2 borrifadas, não 6.",
-    foto: "/curadorias/noite-que-nao-esquece.png",
+      "Jantar que importa, primeiro encontro, festa onde você quer ser lembrado, evento de gala. Curadoria de fragrâncias com performance alta, DNA sedutor ou sofisticado, e aquela qualidade de 'o que é esse cheiro?', a pergunta que deixa a noite memorável. Use com moderação: 2 borrifadas, não 6.",
+    foto: "/curadorias/noite-que-nao-esquece.webp",
     gradient:
       "linear-gradient(135deg, #2e0a10 0%, #4a1a1f 50%, #c89b3c 100%)",
     filter: (p) =>
@@ -124,14 +98,14 @@ export const CURADORIAS: Curadoria[] = [
         p.projecao === "nuclear"),
   },
   {
-    id: "aromas-de-inverno",
-    titulo: "Aromas de Inverno",
-    subtitulo: "Quando o frio pede mais",
+    id: "frio-que-pede-mais",
+    titulo: "Frio que Pede Mais",
+    subtitulo: "Quando a temperatura cai, o perfume sobe",
     descricaoHome:
       "Orientais densos, gourmands profundos, amadeirados quentes. O inverno é a estação pra qual os perfumes árabes foram feitos.",
     descricaoPage:
-      "Frio pede fragrância encorpada. Orientais, gourmands, amadeirados especiados — perfumes de DNA árabe clássico que a pele esquenta e libera em ondas quentes. É a estação em que notas densas, âmbar, especiarias e madeiras costumam aparecer melhor, sempre variando conforme pele, clima e quantidade aplicada.",
-    foto: "/curadorias/aromas-de-inverno.png",
+      "Frio pede fragrância encorpada. Orientais, gourmands, amadeirados especiados, perfumes de DNA árabe clássico que a pele esquenta e libera em ondas quentes. É a estação em que notas densas, âmbar, especiarias e madeiras costumam aparecer melhor, sempre variando conforme pele, clima e quantidade aplicada.",
+    foto: "/curadorias/frio-que-pede-mais.webp",
     gradient:
       "linear-gradient(135deg, #1a0a0e 0%, #3d1a22 50%, #8c4518 100%)",
     filter: (p) =>

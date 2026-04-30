@@ -12,6 +12,7 @@ const NAV_LINKS = [
   { href: "/ritual", label: "O Ritual" },
   { href: "/curadorias", label: "Curadorias" },
   { href: "/decants", label: "Decants" },
+  { href: "/comparador", label: "Comparar" },
 ];
 
 export function Navbar() {
@@ -54,7 +55,7 @@ export function Navbar() {
         className={cn(
           "fixed inset-x-0 top-0 z-50 transition-all duration-500",
           scrolled || menuOpen
-            ? "border-b border-cream/5 bg-ink/75 py-4 backdrop-blur-xl"
+            ? "border-b border-ink/5 bg-cream/75 py-4 backdrop-blur-xl"
             : "py-6"
         )}
       >
@@ -64,17 +65,17 @@ export function Navbar() {
             onClick={() => setMenuOpen(false)}
             className="group flex items-center gap-3"
           >
-            <span className="font-display text-xl font-medium tracking-[0.32em] text-cream transition-colors group-hover:text-amber">
+            <span className="font-display text-xl font-medium tracking-[0.32em] text-ink transition-colors group-hover:text-amber">
               {BRAND.name}
             </span>
             <span className="hidden h-4 w-px bg-cream/20 md:block" />
-            <span className="hidden text-[10px] font-sans tracking-[0.45em] text-cream/60 md:block">
+            <span className="hidden text-[10px] font-sans tracking-[0.45em] text-ink/75 md:block">
               PARFUMS
             </span>
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden items-center gap-6 text-[10px] font-sans uppercase tracking-[0.22em] text-cream/70 xl:gap-8 xl:text-[11px] xl:tracking-[0.25em] lg:flex">
+          <nav className="hidden items-center gap-6 text-[10px] font-sans uppercase tracking-[0.22em] text-ink/70 xl:gap-8 xl:text-[11px] xl:tracking-[0.25em] lg:flex">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -92,7 +93,7 @@ export function Navbar() {
               href="/buscar"
               aria-label="Buscar (atalho: tecla /)"
               title="Buscar · atalho /"
-              className="group flex items-center gap-2 rounded-full border border-cream/15 py-1.5 pl-3 pr-2 text-cream/75 transition-all hover:border-amber hover:text-amber md:pl-3.5 md:pr-2.5"
+              className="group flex items-center gap-2 rounded-full border border-ink/15 py-1.5 pl-3 pr-2 text-ink/75 transition-all hover:border-amber hover:text-amber md:pl-3.5 md:pr-2.5"
             >
               <svg
                 width="14"
@@ -106,7 +107,7 @@ export function Navbar() {
                 <circle cx="6" cy="6" r="4.5" />
                 <line x1="9.5" y1="9.5" x2="12.5" y2="12.5" />
               </svg>
-              <kbd className="hidden rounded border border-cream/20 bg-ink/60 px-1.5 py-px text-[10px] font-sans tabular-nums text-cream/60 md:inline-block">
+              <kbd className="hidden rounded border border-ink/20 bg-cream/60 px-1.5 py-px text-[10px] font-sans tabular-nums text-ink/75 md:inline-block">
                 /
               </kbd>
             </Link>
@@ -114,18 +115,18 @@ export function Navbar() {
               href={`https://instagram.com/${BRAND.handles.instagram}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden text-[11px] font-sans uppercase tracking-[0.28em] text-cream/80 transition-colors hover:text-amber md:inline-block"
+              className="hidden text-[11px] font-sans uppercase tracking-[0.28em] text-ink/80 transition-colors hover:text-amber md:inline-block"
             >
               @{BRAND.handles.instagram}
             </a>
 
-            {/* Hamburger — só mobile/tablet */}
+            {/* Hamburger, só mobile/tablet */}
             <button
               type="button"
               onClick={() => setMenuOpen((v) => !v)}
               aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
               aria-expanded={menuOpen}
-              className="group relative z-[60] flex h-10 w-10 items-center justify-center rounded-full border border-cream/15 transition-colors hover:border-amber lg:hidden"
+              className="group relative z-[60] flex h-10 w-10 items-center justify-center rounded-full border border-ink/15 transition-colors hover:border-amber lg:hidden"
             >
               <span className="flex flex-col gap-1.5">
                 <motion.span
@@ -160,7 +161,7 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
-            className="fixed inset-0 z-40 flex flex-col overflow-y-auto bg-ink/95 pt-24 backdrop-blur-2xl lg:hidden"
+            className="fixed inset-0 z-40 flex flex-col overflow-y-auto bg-cream/95 pt-24 backdrop-blur-2xl lg:hidden"
           >
             <nav className="flex flex-col gap-1 px-6 py-8">
               {NAV_LINKS.map((link, i) => (
@@ -177,10 +178,10 @@ export function Navbar() {
                   <Link
                     href={link.href}
                     onClick={() => setMenuOpen(false)}
-                    className="group block border-b border-cream/5 py-5"
+                    className="group block border-b border-ink/5 py-5"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-display text-3xl font-light text-cream transition-colors group-hover:text-amber">
+                      <span className="font-display text-3xl font-light text-ink transition-colors group-hover:text-amber">
                         {link.label}
                       </span>
                       <span className="text-amber opacity-60 transition-all group-hover:translate-x-1 group-hover:opacity-100">
@@ -196,7 +197,7 @@ export function Navbar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="mt-auto flex flex-col gap-3 border-t border-cream/5 px-6 py-8"
+              className="mt-auto flex flex-col gap-3 border-t border-ink/5 px-6 py-8"
             >
               <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber">
                 Siga
@@ -205,11 +206,11 @@ export function Navbar() {
                 href={`https://instagram.com/${BRAND.handles.instagram}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-display text-xl italic text-cream transition-colors hover:text-amber"
+                className="font-display text-xl italic text-ink transition-colors hover:text-amber"
               >
                 @{BRAND.handles.instagram}
               </a>
-              <span className="mt-3 text-[10px] font-sans uppercase tracking-[0.35em] text-cream/40">
+              <span className="mt-3 text-[10px] font-sans uppercase tracking-[0.35em] text-ink/75">
                 {BRAND.fullName} · {BRAND.city}
               </span>
             </motion.div>

@@ -66,17 +66,17 @@ export function DiarioRegistro() {
   const perfumeSelecionado = CATALOGO.find((p) => p.id === perfumeId);
 
   return (
-    <section className="rounded-sm border border-amber/25 bg-ink-soft p-6 md:p-8">
+    <section className="section-veil-light rounded-sm border border-amber/25 p-6 md:p-8">
       <div className="flex items-center justify-between gap-4">
         <div>
           <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber">
             Novo registro
           </span>
-          <p className="mt-2 font-display text-xl font-light text-cream md:text-2xl">
+          <p className="mt-2 font-display text-xl font-light text-ink md:text-2xl">
             {aberto ? (
               <>O que você usou hoje?</>
             ) : (
-              <>Anota um uso de perfume — leva 15 segundos.</>
+              <>Anota um uso de perfume, leva 15 segundos.</>
             )}
           </p>
         </div>
@@ -108,9 +108,9 @@ export function DiarioRegistro() {
                   1. Qual perfume?
                 </label>
                 {perfumeSelecionado ? (
-                  <div className="flex items-center justify-between gap-4 rounded-sm border border-amber/30 bg-ink p-4">
+                  <div className="flex items-center justify-between gap-4 rounded-sm border border-amber/30 p-4">
                     <div className="flex flex-col">
-                      <span className="font-display text-lg font-light text-cream">
+                      <span className="font-display text-lg font-light text-ink">
                         {perfumeSelecionado.nome}
                       </span>
                       <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-amber/70">
@@ -126,7 +126,7 @@ export function DiarioRegistro() {
                         setPerfumeId("");
                         setBusca("");
                       }}
-                      className="text-xs italic text-cream/55 underline-offset-4 hover:text-amber hover:underline"
+                      className="text-xs italic text-ink/70 underline-offset-4 hover:text-amber hover:underline"
                     >
                       trocar
                     </button>
@@ -138,7 +138,7 @@ export function DiarioRegistro() {
                       value={busca}
                       onChange={(e) => setBusca(e.target.value)}
                       placeholder="Procura por nome ou marca..."
-                      className="w-full rounded-sm border border-cream/15 bg-ink px-4 py-3 text-base text-cream placeholder:text-cream/35 focus:border-amber focus:outline-none"
+                      className="w-full rounded-sm border border-ink/15 px-4 py-3 text-base text-ink placeholder:text-ink/35 focus:border-amber focus:outline-none"
                     />
                     <ul className="grid max-h-72 gap-2 overflow-y-auto md:grid-cols-2">
                       {perfumesFiltrados.map((p) => (
@@ -146,13 +146,13 @@ export function DiarioRegistro() {
                           <button
                             type="button"
                             onClick={() => setPerfumeId(p.id)}
-                            className="flex w-full items-baseline justify-between gap-3 rounded-sm border border-cream/8 bg-ink px-4 py-3 text-left transition-all hover:border-amber/50 hover:bg-ink-muted"
+                            className="flex w-full items-baseline justify-between gap-3 rounded-sm border border-ink/8 px-4 py-3 text-left transition-all hover:border-amber/50 hover:"
                           >
                             <div className="flex min-w-0 flex-col">
-                              <span className="truncate font-display text-base font-light text-cream">
+                              <span className="truncate font-display text-base font-light text-ink">
                                 {p.nome}
                               </span>
-                              <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-cream/50">
+                              <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-ink/70">
                                 {p.marca}
                               </span>
                             </div>
@@ -160,7 +160,7 @@ export function DiarioRegistro() {
                         </li>
                       ))}
                       {perfumesFiltrados.length === 0 && (
-                        <li className="col-span-full text-xs italic text-cream/45">
+                        <li className="col-span-full text-xs italic text-ink/65">
                           Nada encontrado.
                         </li>
                       )}
@@ -209,16 +209,16 @@ export function DiarioRegistro() {
               {/* Observação */}
               <div className="flex flex-col gap-3">
                 <label className="text-[10px] font-sans uppercase tracking-[0.3em] text-amber/80">
-                  4. Observação <span className="lowercase italic text-cream/45">— opcional</span>
+                  4. Observação <span className="lowercase italic text-ink/65">(opcional)</span>
                 </label>
                 <textarea
                   value={observacao}
                   onChange={(e) => setObservacao(e.target.value.slice(0, 240))}
                   placeholder="Algo importante a guardar pro futuro? Ex: recebi elogio..."
                   rows={2}
-                  className="w-full resize-none rounded-sm border border-cream/15 bg-ink px-4 py-3 text-base text-cream placeholder:text-cream/35 focus:border-amber focus:outline-none"
+                  className="w-full resize-none rounded-sm border border-ink/15 px-4 py-3 text-base text-ink placeholder:text-ink/35 focus:border-amber focus:outline-none"
                 />
-                <span className="text-right text-[10px] text-cream/40">
+                <span className="text-right text-[10px] text-ink/75">
                   {observacao.length}/240
                 </span>
               </div>
@@ -228,7 +228,7 @@ export function DiarioRegistro() {
                 type="button"
                 onClick={handleSalvar}
                 disabled={!podeSalvar}
-                className="self-end rounded-full bg-amber px-8 py-3 text-[11px] font-sans uppercase tracking-[0.3em] text-ink transition-all hover:bg-amber-bright disabled:cursor-not-allowed disabled:bg-cream/10 disabled:text-cream/30"
+                className="self-end rounded-full bg-amber px-8 py-3 text-[11px] font-sans uppercase tracking-[0.3em] text-ink transition-all hover:bg-amber-bright disabled:cursor-not-allowed disabled:bg-cream/10 disabled:text-ink/70"
               >
                 Salvar registro →
               </button>
@@ -256,7 +256,7 @@ function Chip({
       className={`rounded-full border px-4 py-2 text-xs font-sans transition-all ${
         ativo
           ? "border-amber bg-amber text-ink"
-          : "border-cream/20 bg-ink text-cream/85 hover:border-amber/60 hover:text-amber"
+          : "border-ink/20 text-ink/85 hover:border-amber/60 hover:text-amber"
       }`}
     >
       {children}

@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "motion/react";
 const STORAGE_KEY = "zahir-exit-intent";
 
 /**
- * Popup exit-intent — detecta mouse saindo pro topo da viewport
+ * Popup exit-intent, detecta mouse saindo pro topo da viewport
  * (padrão universal de "vou fechar a aba") e oferece captura de email.
  * Mostra uma vez por navegador (localStorage).
  * Também dispara após 60s de inatividade em desktop.
@@ -29,12 +29,12 @@ export function ExitIntentCapture() {
       setOpen(true);
     };
 
-    // Exit intent — mouse sai pelo topo
+    // Exit intent, mouse sai pelo topo
     const onMouseLeave = (e: MouseEvent) => {
       if (e.clientY <= 0) trigger();
     };
 
-    // Fallback mobile — após 45s na página
+    // Fallback mobile, após 45s na página
     const mobileTimer = setTimeout(() => {
       if (window.matchMedia("(max-width: 768px)").matches) {
         trigger();
@@ -91,7 +91,7 @@ export function ExitIntentCapture() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             onClick={handleDismiss}
-            className="fixed inset-0 z-[75] bg-ink/80 backdrop-blur-md"
+            className="fixed inset-0 z-[75] bg-cream/80 backdrop-blur-md"
             aria-hidden
           />
 
@@ -104,11 +104,11 @@ export function ExitIntentCapture() {
             role="dialog"
             aria-labelledby="exit-title"
           >
-            <div className="relative overflow-hidden rounded-sm border border-amber/40 bg-ink-soft p-8 shadow-[0_40px_80px_rgba(0,0,0,0.6)] md:p-12">
+            <div className="relative overflow-hidden rounded-sm border border-amber/40 p-8 shadow-[0_40px_80px_rgba(0,0,0,0.6)] md:p-12">
               <button
                 type="button"
                 onClick={handleDismiss}
-                className="absolute right-5 top-5 text-lg text-cream/50 transition-colors hover:text-amber"
+                className="absolute right-5 top-5 text-lg text-ink/70 transition-colors hover:text-amber"
                 aria-label="Fechar"
               >
                 ×
@@ -121,16 +121,16 @@ export function ExitIntentCapture() {
                   </span>
                   <h2
                     id="exit-title"
-                    className="font-display text-2xl font-light italic text-cream md:text-3xl"
+                    className="font-display text-2xl font-light italic text-ink md:text-3xl"
                   >
                     Tá dentro.
                   </h2>
-                  <p className="max-w-sm text-sm leading-relaxed text-cream/70">
+                  <p className="max-w-sm text-sm leading-relaxed text-ink/70">
                     Use{" "}
                     <span className="font-display italic text-amber">
                       VOLTA10
                     </span>{" "}
-                    na primeira compra — é só mandar o código junto com a
+                    na primeira compra, é só mandar o código junto com a
                     reserva no Instagram.
                   </p>
                 </div>
@@ -142,12 +142,12 @@ export function ExitIntentCapture() {
                     </span>
                     <h2
                       id="exit-title"
-                      className="font-display text-3xl font-light leading-[1.1] text-cream md:text-4xl"
+                      className="font-display text-3xl font-light leading-[1.1] text-ink md:text-4xl"
                     >
-                      10% na primeira compra —{" "}
+                      10% na primeira compra,{" "}
                       <em className="italic text-amber/90">a gente guarda pra você.</em>
                     </h2>
-                    <p className="mt-2 text-sm leading-relaxed text-cream/65">
+                    <p className="mt-2 text-sm leading-relaxed text-ink/65">
                       Deixa seu e-mail e a gente manda o cupom junto com uma
                       dica de curadoria escolhida pra você. Sem spam, cancela
                       em 1 clique.
@@ -165,7 +165,7 @@ export function ExitIntentCapture() {
                       }}
                       placeholder="seu@email.com"
                       autoFocus
-                      className="w-full rounded-full border border-cream/20 bg-ink px-5 py-3.5 text-sm text-cream placeholder:text-cream/40 focus:border-amber focus:outline-none"
+                      className="w-full rounded-full border border-ink/20 px-5 py-3.5 text-sm text-ink placeholder:text-ink/75 focus:border-amber focus:outline-none"
                     />
                     {state === "error" && (
                       <span
@@ -187,7 +187,7 @@ export function ExitIntentCapture() {
                     <button
                       type="button"
                       onClick={handleDismiss}
-                      className="mt-1 text-center text-[10px] font-sans uppercase tracking-[0.3em] text-cream/40 transition-colors hover:text-cream/70"
+                      className="mt-1 text-center text-[10px] font-sans uppercase tracking-[0.3em] text-ink/75 transition-colors hover:text-ink/70"
                     >
                       Dispensar oferta
                     </button>

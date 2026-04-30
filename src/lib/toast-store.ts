@@ -3,7 +3,7 @@
 import { useSyncExternalStore } from "react";
 
 /**
- * Store global de toasts — feedback visual pra ações do usuário.
+ * Store global de toasts, feedback visual pra ações do usuário.
  * Sem dep externa. Usa o mesmo padrão do lista-store.
  */
 

@@ -64,6 +64,8 @@ export const events = {
     track("removeu_lista", { slug, variante }),
   enviouListaDm: (total: number, valor: number) =>
     track("enviou_lista_dm", { total_itens: total, valor_total: valor }),
+  enviouListaWa: (total: number, valor: number) =>
+    track("enviou_lista_wa", { total_itens: total, valor_total: valor }),
 
   // Reserva direta (fora da lista)
   reservaDireta: (slug: string, variante: string, preco: number) =>
@@ -85,7 +87,10 @@ export const events = {
   newsletterInscricao: () => track("newsletter_inscricao"),
 
   // Kit
-  kitDescobridorAdicionado: () => track("kit_descobridor_adicionado"),
+  kitTrioAdicionado: (tipo: "estreia" | "colecao") =>
+    track("kit_trio_adicionado", { tipo }),
+  clickWhatsApp: (contexto: string) =>
+    track("click_whatsapp", { contexto }),
 };
 
 /* ---------------- UTM handling ---------------- */
@@ -121,7 +126,7 @@ export function captureUtms(): void {
   }
 }
 
-/** Lê os UTMs capturados (se houver) — pra anexar na mensagem do DM */
+/** Lê os UTMs capturados (se houver), pra anexar na mensagem do DM */
 export function getUtms(): Record<string, string> {
   if (typeof window === "undefined") return {};
   try {

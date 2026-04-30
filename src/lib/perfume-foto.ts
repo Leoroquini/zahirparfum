@@ -1,21 +1,65 @@
 import type { Perfume } from "@/data/catalogo";
 
 /**
- * Todos os 28 SKUs têm foto em /public/perfumes/{slug}.png
- * (fotografia com fundo escuro/mármore, estética ZAHIR premium).
- * Helper retorna o caminho — a fallback pro gradient continua pros cards
- * onde foto não renderizou ainda.
+ * Mapeamento de fotos por perfume.
+ * Lista explícita dos IDs que possuem foto em /public/perfumes/{slug}.png
+ * Quando adicionar foto nova, basta incluir o ID aqui.
+ *
+ * Estética: fotografia com fundo escuro/mármore, identidade ZAHIR.
  */
 
-/** True se existe foto pra este perfume (sempre true por enquanto — os 28 têm) */
-export function hasFoto(_perfume: Perfume): boolean {
-  void _perfume;
-  // Todos os 28 SKUs do catálogo inicial têm foto
-  // Quando adicionar SKUs novos sem foto, atualiza este helper
-  return true;
+const PERFUMES_COM_FOTO: ReadonlySet<string> = new Set([
+  "9pm-black",
+  "9pm-elixir",
+  "9pm-night-oud",
+  "9pm-rebel",
+  "aether",
+  "al-noble-ameer",
+  "al-noble-safeer",
+  "al-noble-wazeer",
+  "asad-elixir",
+  "asad-marrom-bourbon",
+  "asad-preto",
+  "asad-zanzibar-azul",
+  "azure-aoud",
+  "badee-al-oud-for-glory",
+  "bharara-king",
+  "club-de-nuit-iconic-blue",
+  "club-de-nuit-intense",
+  "club-de-nuit-milestone",
+  "club-de-nuit-sillage",
+  "club-de-nuit-urban-elixir",
+  "emeer",
+  "fakhar-gold-extrait",
+  "fakhar-platinum",
+  "fakhar-preto",
+  "ghost-spectre",
+  "hawas-black",
+  "hawas-elixir",
+  "his-confession",
+  "khamrah",
+  "khamrah-preto-teriaq",
+  "khamrah-qahwa",
+  "liquid-brun",
+  "maahir-black-edition",
+  "qaed-al-fursan",
+  "rayhaan-corium",
+  "royal-blend-bourbon",
+  "salvo",
+  "salvo-elixir",
+  "salvo-intense",
+  "the-kingdom-man",
+  "turathi-blue",
+  "vulcan-feu",
+  "yeah-man-parfum",
+]);
+
+/** True se existe foto pra este perfume */
+export function hasFoto(perfume: Perfume): boolean {
+  return PERFUMES_COM_FOTO.has(perfume.id);
 }
 
 /** Caminho da foto principal do perfume */
 export function fotoSrc(perfume: Perfume): string {
-  return `/perfumes/${perfume.id}.png`;
+  return `/perfumes/${perfume.id}.webp`;
 }

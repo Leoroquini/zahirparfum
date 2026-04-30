@@ -11,9 +11,9 @@ import {
 const EASE = [0.19, 1, 0.22, 1] as const;
 
 const KIND_COLOR: Record<ToastKind, string> = {
-  success: "border-amber/50 bg-ink/95",
-  info: "border-cream/20 bg-ink/95",
-  error: "border-wine/60 bg-ink/95",
+  success: "border-amber/50 bg-cream/95",
+  info: "border-ink/20 bg-cream/95",
+  error: "border-wine/60 bg-cream/95",
 };
 
 const KIND_ICON: Record<ToastKind, string> = {
@@ -24,12 +24,12 @@ const KIND_ICON: Record<ToastKind, string> = {
 
 const KIND_ICON_COLOR: Record<ToastKind, string> = {
   success: "text-amber",
-  info: "text-cream/80",
-  error: "text-cream",
+  info: "text-ink/80",
+  error: "text-ink",
 };
 
 /**
- * Stack de toasts — canto inferior central, empilha até 5.
+ * Stack de toasts, canto inferior central, empilha até 5.
  * Renderizado globalmente via layout.
  */
 export function ToastStack() {
@@ -72,9 +72,9 @@ function ToastItem({ toast }: { toast: Toast }) {
         {KIND_ICON[toast.kind]}
       </span>
       <div className="flex-1">
-        <p className="text-sm font-sans text-cream">{toast.title}</p>
+        <p className="text-sm font-sans text-ink">{toast.title}</p>
         {toast.description && (
-          <p className="mt-0.5 text-xs italic text-cream/55">
+          <p className="mt-0.5 text-xs italic text-ink/70">
             {toast.description}
           </p>
         )}
@@ -82,7 +82,7 @@ function ToastItem({ toast }: { toast: Toast }) {
       <button
         type="button"
         onClick={() => dismissToast(toast.id)}
-        className="shrink-0 text-xs text-cream/40 transition-colors hover:text-cream"
+        className="shrink-0 text-xs text-ink/75 transition-colors hover:text-ink"
         aria-label="Fechar"
       >
         ×

@@ -7,11 +7,10 @@ const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
 export function Decants({ hideIntro = false }: { hideIntro?: boolean } = {}) {
   return (
-    <section
-      id="decants"
-      className="relative border-t border-cream/5 bg-ink px-6 py-28 md:px-12 md:py-36"
+    <section id="decants"
+      className="section-veil-light relative border-t border-ink/5 px-6 py-28 md:px-12 md:py-36"
     >
-      <div className="mx-auto max-w-[1440px]">
+      <div className="relative z-10 mx-auto max-w-[1440px]">
         <div className="grid gap-16 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-24">
           {/* Texto */}
           <motion.div
@@ -27,55 +26,58 @@ export function Decants({ hideIntro = false }: { hideIntro?: boolean } = {}) {
                   <span className="h-px w-8 bg-amber" />
                   Decants
                 </span>
-                <h2 className="max-w-2xl font-display text-4xl font-light leading-[1.05] tracking-tight text-cream md:text-6xl lg:text-7xl">
-                  Gaste R$ 40 antes de{" "}
-                  <em className="italic text-amber/90">gastar R$ 250.</em>
+                <h2 className="max-w-2xl font-display text-4xl font-light leading-[1.05] tracking-tight text-ink md:text-5xl lg:text-6xl">
+                  Você lembra do cheiro de quem te marcou.{" "}
+                  <em className="italic text-amber/90">
+                    Quem te encontra hoje, lembra do seu?
+                  </em>
                 </h2>
               </>
             )}
             {hideIntro && (
-              <h2 className="max-w-2xl font-display text-3xl font-light leading-[1.1] tracking-tight text-cream md:text-4xl">
+              <h2 className="max-w-2xl font-display text-3xl font-light leading-[1.1] tracking-tight text-ink md:text-4xl">
                 <em className="italic text-amber/90">Como funciona.</em>
               </h2>
             )}
-            <p className="max-w-xl text-base leading-relaxed text-cream/70 md:text-lg">
-              Decant é o frasco cheio dividido em porções menores — 5ml ou 10ml
-              do mesmo perfume original, em frasco de vidro com atomizador.
-              Dura de duas semanas a dois meses dependendo do uso.
+            <p className="max-w-xl text-base leading-relaxed text-ink/75 md:text-lg">
+              Decant é como o cheiro vira o seu antes de virar gasto. Cinco ou
+              dez mililitros do mesmo perfume original, tempo pra ele se
+              misturar com a sua pele e mudar de personalidade ao longo do
+              dia.
             </p>
-            <p className="max-w-xl text-base leading-relaxed text-cream/55 md:text-lg">
-              A gente oferece decants dos principais SKUs pra você testar
-              antes de investir no frasco cheio. Se não gostar, você gastou R$ 40
-              em vez de R$ 250. Se gostar — volta pelo frasco.
+            <p className="max-w-xl text-base leading-relaxed text-ink/75 md:text-lg">
+              Quando alguém te abraça e pergunta{" "}
+              <em className="italic text-ink">&ldquo;que perfume é esse?&rdquo;</em>,
+              você já testou todos os finais.
             </p>
 
             <ul className="mt-4 flex flex-col gap-3 border-l-2 border-amber/30 pl-5">
-              <li className="text-sm text-cream/75">
+              <li className="text-sm text-ink/75">
                 <span className="font-display italic text-amber">·</span>{" "}
                 Mesmo líquido, mesma origem, só muda a quantidade
               </li>
-              <li className="text-sm text-cream/75">
+              <li className="text-sm text-ink/75">
                 <span className="font-display italic text-amber">·</span>{" "}
                 Frasco próprio com atomizador spray
               </li>
-              <li className="text-sm text-cream/75">
+              <li className="text-sm text-ink/75">
                 <span className="font-display italic text-amber">·</span>{" "}
-                Disponível nos SKUs principais — sob demanda nos outros
+                Disponível nos principais perfumes do catálogo
               </li>
             </ul>
 
             <Link
-              href="#catalogo"
+              href="/decants"
               className="group mt-6 inline-flex items-center gap-3 self-start rounded-full border border-amber/50 px-7 py-3 text-[11px] font-sans uppercase tracking-[0.3em] text-amber transition-all hover:border-amber hover:bg-amber hover:text-ink"
             >
-              Ver catálogo
+              Conhecer os decants
               <span className="transition-transform duration-500 group-hover:translate-x-1">
                 →
               </span>
             </Link>
           </motion.div>
 
-          {/* Visualização — 3 frascos SVG */}
+          {/* Visualização, 3 frascos SVG */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -210,7 +212,7 @@ function FrascoSVG({
       <div className="flex flex-col items-center gap-0.5">
         <span
           className={`font-display text-xl ${
-            highlight ? "text-amber" : dim ? "text-cream/60" : "text-cream"
+            highlight ? "text-amber" : dim ? "text-ink/75" : "text-ink"
           }`}
         >
           {label}
@@ -220,8 +222,8 @@ function FrascoSVG({
             highlight
               ? "text-amber/80"
               : dim
-              ? "text-cream/40"
-              : "text-cream/60"
+              ? "text-ink/75"
+              : "text-ink/75"
           }`}
         >
           {subtitle}

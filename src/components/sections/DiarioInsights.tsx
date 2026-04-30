@@ -19,7 +19,7 @@ import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
 /**
- * Painel de insights — só renderiza com 3+ registros (senão dados são ruído).
+ * Painel de insights, só renderiza com 3+ registros (senão dados são ruído).
  */
 export function DiarioInsights({
   registros,
@@ -28,17 +28,17 @@ export function DiarioInsights({
 }) {
   if (registros.length < 3) {
     return (
-      <section className="rounded-sm border border-cream/8 bg-ink-soft p-8 text-center md:p-10">
+      <section className="section-veil-light rounded-sm border border-ink/8 p-8 text-center md:p-10">
         <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber/70">
           Insights
         </span>
-        <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-cream/70 md:text-lg">
+        <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-ink/70 md:text-lg">
           A partir do{" "}
-          <em className="text-cream">terceiro registro</em>, esse espaço começa
-          a mostrar padrões do seu uso — família dominante, ocasiões favoritas,
+          <em className="text-ink">terceiro registro</em>, esse espaço começa
+          a mostrar padrões do seu uso, família dominante, ocasiões favoritas,
           lacunas e sugestões.
         </p>
-        <p className="mt-3 text-sm italic text-cream/45">
+        <p className="mt-3 text-sm italic text-ink/65">
           Você está em {registros.length}{" "}
           {registros.length === 1 ? "registro" : "registros"}.
         </p>
@@ -66,7 +66,7 @@ export function DiarioInsights({
         <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber">
           Insights
         </span>
-        <span className="text-xs italic text-cream/55">
+        <span className="text-xs italic text-ink/70">
           {resumo.totalRegistros} registros · {mes} este mês
         </span>
       </div>
@@ -75,17 +75,17 @@ export function DiarioInsights({
         {/* Família dominante */}
         {resumo.familiaTop && (
           <Card label="Família dominante">
-            <p className="font-display text-2xl font-light leading-tight text-cream md:text-3xl">
+            <p className="font-display text-2xl font-light leading-tight text-ink md:text-3xl">
               {resumo.familiaTop.familia}
             </p>
-            <p className="mt-2 text-sm text-cream/65">
+            <p className="mt-2 text-sm text-ink/65">
               {resumo.familiaTop.pct}% dos seus registros
             </p>
             {familias.length > 1 && (
-              <ul className="mt-4 space-y-1 text-xs text-cream/55">
+              <ul className="mt-4 space-y-1 text-xs text-ink/70">
                 {familias.slice(1).map((f) => (
                   <li key={f.familia}>
-                    {f.familia} <span className="text-cream/35">— {f.pct}%</span>
+                    {f.familia} <span className="text-ink/55">· {f.pct}%</span>
                   </li>
                 ))}
               </ul>
@@ -96,19 +96,19 @@ export function DiarioInsights({
         {/* Ocasião dominante */}
         {resumo.ocasiaoTop && (
           <Card label="Ocasião favorita">
-            <p className="font-display text-2xl font-light leading-tight text-cream md:text-3xl">
+            <p className="font-display text-2xl font-light leading-tight text-ink md:text-3xl">
               {resumo.ocasiaoTop.label}
             </p>
-            <p className="mt-2 text-sm text-cream/65">
+            <p className="mt-2 text-sm text-ink/65">
               {resumo.ocasiaoTop.count}{" "}
               {resumo.ocasiaoTop.count === 1 ? "vez" : "vezes"} ·{" "}
               {resumo.ocasiaoTop.pct}%
             </p>
             {ocasioes.length > 1 && (
-              <ul className="mt-4 space-y-1 text-xs text-cream/55">
+              <ul className="mt-4 space-y-1 text-xs text-ink/70">
                 {ocasioes.slice(1).map((o) => (
                   <li key={o.ocasiao}>
-                    {o.label} <span className="text-cream/35">— {o.pct}%</span>
+                    {o.label} <span className="text-ink/55">· {o.pct}%</span>
                   </li>
                 ))}
               </ul>
@@ -124,7 +124,7 @@ export function DiarioInsights({
               className="group flex items-center gap-3"
             >
               {hasFoto(resumo.perfumeTop.perfume) && (
-                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-sm border border-cream/10">
+                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-sm border border-ink/10">
                   <Image
                     src={fotoSrc(resumo.perfumeTop.perfume)}
                     alt=""
@@ -135,10 +135,10 @@ export function DiarioInsights({
                 </div>
               )}
               <div className="flex min-w-0 flex-col">
-                <p className="truncate font-display text-xl font-light text-cream group-hover:text-amber md:text-2xl">
+                <p className="truncate font-display text-xl font-light text-ink group-hover:text-amber md:text-2xl">
                   {resumo.perfumeTop.perfume.nome}
                 </p>
-                <p className="text-xs text-cream/65">
+                <p className="text-xs text-ink/65">
                   {resumo.perfumeTop.count}{" "}
                   {resumo.perfumeTop.count === 1 ? "uso" : "usos"} registrado
                   {resumo.perfumeTop.count === 1 ? "" : "s"}
@@ -146,12 +146,12 @@ export function DiarioInsights({
               </div>
             </Link>
             {perfumes.length > 1 && (
-              <ul className="mt-4 space-y-1 text-xs text-cream/55">
+              <ul className="mt-4 space-y-1 text-xs text-ink/70">
                 {perfumes.slice(1).map((p) => (
                   <li key={p.perfume.id} className="truncate">
                     {p.perfume.nome}{" "}
-                    <span className="text-cream/35">
-                      — {p.count}x
+                    <span className="text-ink/35">
+                     , {p.count}x
                     </span>
                   </li>
                 ))}
@@ -166,17 +166,17 @@ export function DiarioInsights({
         <div className="grid gap-4 md:grid-cols-2">
           {hits.length > 0 && (
             <Card label="Seus hits">
-              <p className="text-sm text-cream/85">
-                Perfumes que você claramente ama — usos com avaliação alta.
+              <p className="text-sm text-ink/85">
+                Perfumes que você claramente ama, usos com avaliação alta.
               </p>
               <ul className="mt-4 flex flex-col divide-y divide-cream/8">
                 {hits.slice(0, 3).map((h) => (
                   <li key={h.perfume.id}>
                     <Link
                       href={`/perfume/${h.perfume.id}`}
-                      className="group flex items-baseline justify-between gap-3 py-2 transition-colors hover:bg-ink-muted/40"
+                      className="group flex items-baseline justify-between gap-3 py-2 transition-colors hover:bg-cream-soft/40"
                     >
-                      <span className="truncate font-display text-base font-light text-cream group-hover:text-amber">
+                      <span className="truncate font-display text-base font-light text-ink group-hover:text-amber">
                         {h.perfume.nome}
                       </span>
                       <span className="shrink-0 text-[10px] font-sans uppercase tracking-[0.3em] text-amber/70">
@@ -191,7 +191,7 @@ export function DiarioInsights({
 
           {lacunas.length > 0 && (
             <Card label="Lacunas">
-              <p className="text-sm text-cream/85">
+              <p className="text-sm text-ink/85">
                 Ocasiões que você ainda não registrou nenhum uso. Cada uma é
                 espaço pra explorar um perfume novo com propósito.
               </p>
@@ -212,11 +212,11 @@ export function DiarioInsights({
 
       {/* Sugestões */}
       {sugestoes.length > 0 && (
-        <div className="rounded-sm border border-amber/25 bg-ink-soft p-6 md:p-8">
+        <div className="rounded-sm border border-amber/25 p-6 md:p-8">
           <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber">
             Pra explorar
           </span>
-          <p className="mt-2 font-display text-xl font-light text-cream md:text-2xl">
+          <p className="mt-2 font-display text-xl font-light text-ink md:text-2xl">
             Baseado nos seus padrões.
           </p>
           <ul className="mt-6 grid gap-4 md:grid-cols-3">
@@ -224,10 +224,10 @@ export function DiarioInsights({
               <li key={perfume.id}>
                 <Link
                   href={`/perfume/${perfume.id}`}
-                  className="group flex h-full flex-col gap-3 rounded-sm border border-cream/8 bg-ink p-4 transition-all hover:border-amber/50"
+                  className="group flex h-full flex-col gap-3 rounded-sm border border-ink/8 p-4 transition-all hover:border-amber/50"
                 >
                   {hasFoto(perfume) && (
-                    <div className="relative aspect-square overflow-hidden rounded-sm border border-cream/8">
+                    <div className="relative aspect-square overflow-hidden rounded-sm border border-ink/8">
                       <Image
                         src={fotoSrc(perfume)}
                         alt=""
@@ -238,10 +238,10 @@ export function DiarioInsights({
                     </div>
                   )}
                   <div className="flex flex-col gap-1">
-                    <span className="font-display text-lg font-light text-cream group-hover:text-amber">
+                    <span className="font-display text-lg font-light text-ink group-hover:text-amber">
                       {perfume.nome}
                     </span>
-                    <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-cream/55">
+                    <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-ink/70">
                       {perfume.marca}
                     </span>
                     <span className="mt-2 text-xs italic text-amber/80">
@@ -266,7 +266,7 @@ function Card({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col rounded-sm border border-cream/8 bg-ink-soft p-5 md:p-6">
+    <div className="flex flex-col rounded-sm border border-ink/8 p-5 md:p-6">
       <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber/80">
         {label}
       </span>

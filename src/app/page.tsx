@@ -1,8 +1,12 @@
 import dynamic from "next/dynamic";
 import { Hero } from "@/components/sections/Hero";
-import { CatalogoHighlight } from "@/components/sections/CatalogoHighlight";
 
 // Seções abaixo da dobra carregam sob demanda pra não travar o 1º paint.
+const CatalogoHighlight = dynamic(() =>
+  import("@/components/sections/CatalogoHighlight").then(
+    (m) => m.CatalogoHighlight,
+  ),
+);
 const CuradoriasHighlight = dynamic(() =>
   import("@/components/sections/CuradoriasHighlight").then(
     (m) => m.CuradoriasHighlight,
@@ -11,8 +15,8 @@ const CuradoriasHighlight = dynamic(() =>
 const Ritual = dynamic(() =>
   import("@/components/sections/Ritual").then((m) => m.Ritual),
 );
-const KitDescobridor = dynamic(() =>
-  import("@/components/sections/KitDescobridor").then((m) => m.KitDescobridor),
+const KitsTrio = dynamic(() =>
+  import("@/components/sections/KitsTrio").then((m) => m.KitsTrio),
 );
 const Decants = dynamic(() =>
   import("@/components/sections/Decants").then((m) => m.Decants),
@@ -37,34 +41,34 @@ const Newsletter = dynamic(() =>
 export default function HomePage() {
   return (
     <>
-      {/* 1. Hero — impacto cinematográfico */}
+      {/* 1. Hero, impacto cinematográfico */}
       <Hero />
 
-      {/* 2. Catálogo — 4 destaques + CTA */}
+      {/* 2. Catálogo, 4 destaques + CTA */}
       <CatalogoHighlight />
 
-      {/* 3. Curadorias — 3 destaques + CTA ver todas */}
+      {/* 3. Curadorias, 3 destaques + CTA ver todas */}
       <CuradoriasHighlight />
 
-      {/* 4. O Ritual — quiz olfativo */}
+      {/* 4. O Ritual, quiz olfativo */}
       <Ritual />
 
-      {/* 5. Kit Descobridor — oferta concreta primeira compra */}
-      <KitDescobridor />
-
-      {/* 6. Decants — quebra a objeção "e se eu não gostar" */}
+      {/* 5. Decants, educa o conceito antes da oferta */}
       <Decants />
 
-      {/* 7. Comparador — prévia com 1 exemplo forte */}
+      {/* 6. Trios curados, dois preços fixos como porta de entrada */}
+      <KitsTrio />
+
+      {/* 7. Comparador, prévia com 1 exemplo forte */}
       <ComparadorPreview />
 
-      {/* 8. Mapa olfativo — visual "uau" */}
+      {/* 8. Mapa olfativo, visual "uau" */}
       <MapaOlfativo />
 
-      {/* 9. Manifesto — versão curta */}
+      {/* 9. Manifesto, versão curta */}
       <ManifestoPreview />
 
-      {/* 10. Newsletter — captura */}
+      {/* 10. Newsletter, captura */}
       <Newsletter />
     </>
   );

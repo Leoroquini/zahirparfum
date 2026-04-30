@@ -44,7 +44,7 @@ export function isLowEndDevice(): boolean {
     return true;
   }
 
-  // Mobile por viewport — GPU costuma ser mais fraca
+  // Mobile por viewport, GPU costuma ser mais fraca
   if (window.innerWidth < 768) return true;
 
   return false;

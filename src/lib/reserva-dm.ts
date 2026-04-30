@@ -1,5 +1,4 @@
-import type { Perfume } from "@/data/catalogo";
-import { type ItemLista, labelCurtoDa, precoDa, type VarianteReserva } from "@/lib/lista-store";
+import { type ItemLista, labelDa } from "@/lib/lista-store";
 import { CATALOGO } from "@/data/catalogo";
 import { BRAND } from "@/lib/brand";
 
@@ -17,16 +16,6 @@ function formatMoney(n: number): string {
   })}`;
 }
 
-/** Mensagem pra um único perfume (usada no CTA da página de produto) */
-export function mensagemPerfume(
-  perfume: Perfume,
-  variante: VarianteReserva = "frasco"
-): string {
-  const preco = precoDa(perfume, variante);
-  const variacao = labelCurtoDa(variante);
-  return `Oi! Quero reservar o ${perfume.nome} (${variacao}) — ${formatMoney(preco)}.`;
-}
-
 /** Mensagem pra lista completa */
 export function mensagemLista(itens: ItemLista[]): string {
   if (itens.length === 0) {
@@ -36,8 +25,8 @@ export function mensagemLista(itens: ItemLista[]): string {
   const linhas = itens.map((item, i) => {
     const perfume = CATALOGO.find((p) => p.id === item.perfumeId);
     if (!perfume) return "";
-    const variacao = labelCurtoDa(item.variante);
-    return `${i + 1}. ${perfume.nome} (${variacao}) — ${formatMoney(item.precoSnapshot)}`;
+    const variacao = labelDa(item.variante);
+    return `${i + 1}. ${perfume.nome} (${variacao}), ${formatMoney(item.precoSnapshot)}`;
   });
 
   const total = itens.reduce((sum, i) => sum + i.precoSnapshot, 0);

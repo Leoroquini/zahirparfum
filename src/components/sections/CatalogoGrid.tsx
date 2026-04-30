@@ -148,9 +148,8 @@ export function CatalogoGrid({ hideIntro = false }: { hideIntro?: boolean } = {}
     selFamilias.length + selOcasioes.length + selPreco.length > 0;
 
   return (
-    <section
-      id="catalogo"
-      className="relative border-t border-cream/5 bg-ink px-6 py-28 md:px-12 md:py-40"
+    <section id="catalogo"
+      className="section-veil-light relative border-t border-ink/5 px-6 py-28 md:px-12 md:py-40"
     >
       <div className="mx-auto max-w-[1440px]">
         {!hideIntro && (
@@ -167,12 +166,12 @@ export function CatalogoGrid({ hideIntro = false }: { hideIntro?: boolean } = {}
                 Catálogo · Curadoria
               </span>
 
-              <h2 className="font-display text-4xl font-light leading-[1.05] tracking-tight text-cream md:text-6xl lg:text-7xl">
+              <h2 className="font-display text-4xl font-light leading-[1.05] tracking-tight text-ink md:text-6xl lg:text-7xl">
                 Cada um com uma{" "}
                 <em className="italic text-amber/90">história.</em>
               </h2>
 
-              <p className="mt-2 max-w-2xl text-base leading-relaxed text-cream/60 md:text-lg">
+              <p className="mt-2 max-w-2xl text-base leading-relaxed text-ink/75 md:text-lg">
                 Perfumes selecionados pra quem está começando e pra quem já
                 coleciona. Notas explicadas, comparação direta com clones
                 designer, decants disponíveis nos principais.
@@ -186,13 +185,13 @@ export function CatalogoGrid({ hideIntro = false }: { hideIntro?: boolean } = {}
               transition={{ duration: 1, delay: 0.2, ease: EASE_OUT }}
               className="hidden flex-col gap-2 text-right md:flex"
             >
-              <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-cream/40">
+              <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-ink/75">
                 Coleção atual
               </span>
-              <span className="font-display text-3xl text-cream">
+              <span className="font-display text-3xl text-ink">
                 {CATALOGO.length} fragrâncias
               </span>
-              <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-cream/40">
+              <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-ink/75">
                 {FAMILIAS.length} famílias olfativas
               </span>
             </motion.div>
@@ -205,7 +204,7 @@ export function CatalogoGrid({ hideIntro = false }: { hideIntro?: boolean } = {}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="mt-16 flex flex-col gap-6 border-y border-cream/5 py-8"
+          className="mt-16 flex flex-col gap-6 border-y border-ink/5 py-8"
         >
           <FilterGroup
             label="Família"
@@ -227,7 +226,7 @@ export function CatalogoGrid({ hideIntro = false }: { hideIntro?: boolean } = {}
           />
 
           <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
-            <span className="text-xs text-cream/60">
+            <span className="text-xs text-ink/75">
               {filtered.length === CATALOGO.length
                 ? `Mostrando toda a coleção`
                 : `${filtered.length} ${
@@ -238,16 +237,16 @@ export function CatalogoGrid({ hideIntro = false }: { hideIntro?: boolean } = {}
             <div className="flex items-center gap-4">
               {/* Ordenação */}
               <div className="flex items-center gap-2">
-                <span className="hidden text-[10px] font-sans uppercase tracking-[0.35em] text-cream/40 md:inline">
+                <span className="hidden text-[10px] font-sans uppercase tracking-[0.35em] text-ink/75 md:inline">
                   Ordenar
                 </span>
                 <select
                   value={ordenacao}
                   onChange={(e) => setOrdenacao(e.target.value as Ordenacao)}
-                  className="rounded-full border border-cream/15 bg-ink-soft px-4 py-1.5 text-xs text-cream/85 transition-colors hover:border-amber/50 focus:border-amber focus:outline-none"
+                  className="rounded-full border border-ink/15 px-4 py-1.5 text-xs text-ink/85 transition-colors hover:border-amber/50 focus:border-amber focus:outline-none"
                 >
                   {ORDENACOES.map((o) => (
-                    <option key={o.key} value={o.key} className="bg-ink">
+                    <option key={o.key} value={o.key} className="">
                       {o.label}
                     </option>
                   ))}
@@ -303,7 +302,7 @@ export function CatalogoGrid({ hideIntro = false }: { hideIntro?: boolean } = {}
           className="mt-24 flex flex-col items-center gap-4 text-center"
         >
           <span className="h-px w-16 bg-amber/40" />
-          <p className="max-w-md text-sm italic text-cream/50">
+          <p className="max-w-md text-sm italic text-ink/70">
             O catálogo cresce junto com a curadoria. Novas casas árabes entram
             quando fazem sentido para a proposta da marca.
           </p>
@@ -344,7 +343,7 @@ function FilterGroup({
               className={`group relative overflow-hidden rounded-full border px-4 py-1.5 text-xs transition-all duration-300 ${
                 active
                   ? "border-amber bg-amber text-ink"
-                  : "border-cream/15 text-cream/70 hover:border-amber/50 hover:text-amber"
+                  : "border-ink/15 text-ink/70 hover:border-amber/50 hover:text-amber"
               }`}
             >
               <span className="relative z-10">{item.label}</span>
@@ -369,7 +368,7 @@ function EmptyState({ onReset }: { onReset: () => void }) {
       className="flex flex-col items-center justify-center gap-5 py-20 text-center"
     >
       <span className="font-display text-5xl italic text-amber/40">∅</span>
-      <p className="max-w-sm text-base text-cream/60">
+      <p className="max-w-sm text-base text-ink/75">
         Nenhuma fragrância casa com essa combinação de filtros no momento.
       </p>
       <button

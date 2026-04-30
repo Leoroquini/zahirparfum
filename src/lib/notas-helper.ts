@@ -22,7 +22,7 @@ export function normalizarNota(nota: string): string {
 
 /**
  * Busca info editorial da nota no glossário.
- * Retorna null se a nota não estiver catalogada — o modal usa fallback.
+ * Retorna null se a nota não estiver catalogada, o modal usa fallback.
  */
 export function getInfoNota(nota: string): NotaGlossario | null {
   const key = normalizarNota(nota);

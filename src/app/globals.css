@@ -5,18 +5,19 @@
   --font-display: var(--font-fraunces);
   --font-sans: var(--font-inter);
 
-  /* Paleta — noite brasileira × âmbar árabe */
-  --color-ink: #0a0a0a;
-  --color-ink-soft: #111111;
-  --color-ink-muted: #1a1a1a;
-  --color-smoke: #2a2a28;
+  /* Paleta — dia minimalista × âmbar árabe */
+  --color-cream: #f4e9d4;
+  --color-cream-soft: #faf7f0;
+  --color-cream-muted: #ede5d6;
+  --color-smoke: #e8dcc8;
 
   --color-amber: #c89b3c;
   --color-amber-bright: #e7b659;
   --color-amber-dim: #8c6b26;
 
-  --color-cream: #f4e9d4;
-  --color-cream-dim: #b8ac93;
+  --color-ink: #0a0a0a;
+  --color-ink-soft: #2a2a28;
+  --color-ink-muted: #4a4a48;
 
   --color-wine: #4a1518;
   --color-wine-deep: #2e0e10;
@@ -24,9 +25,9 @@
 
 @layer base {
   :root {
-    color-scheme: dark;
-    --background: #0a0a0a;
-    --foreground: #f4e9d4;
+    color-scheme: light;
+    --background: #f4e9d4;
+    --foreground: #0a0a0a;
   }
 
   * {
@@ -34,45 +35,50 @@
   }
 
   html {
-    background: var(--color-ink);
-    color: var(--color-cream);
+    color: var(--color-ink);
     scroll-behavior: auto;
+    /* Fallback color caso WebGL falhe — mármore vai por cima quando carrega */
+    background-color: #ebe0c7;
   }
 
   body {
-    background: var(--color-ink);
-    color: var(--color-cream);
+    /* TRANSPARENTE — deixa o canvas WebGL do mármore aparecer */
+    background-color: transparent;
+    color: var(--color-ink);
     font-family: var(--font-sans), system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "ss01", "cv11";
     overflow-x: hidden;
+    position: relative;
   }
+  /* Mármore renderizado via WebGL no MarbleBackground component */
 
   h1, h2, h3, h4, h5 {
     font-family: var(--font-display), Georgia, serif;
     letter-spacing: -0.02em;
+    color: var(--color-ink);
   }
 
   ::selection {
     background: var(--color-amber);
-    color: var(--color-ink);
+    color: var(--color-cream);
   }
 
-  /* Scrollbar dark */
+  /* Scrollbar light */
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
   }
   ::-webkit-scrollbar-track {
-    background: var(--color-ink);
+    background: var(--color-cream);
   }
   ::-webkit-scrollbar-thumb {
-    background: var(--color-ink-muted);
+    background: var(--color-cream-muted);
     border-radius: 999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-amber-dim);
+    background: var(--color-amber);
   }
 
   /* Lenis smooth scroll compatibility */
@@ -130,5 +136,296 @@
     box-shadow:
       0 0 40px rgba(200, 155, 60, 0.25),
       0 0 80px rgba(200, 155, 60, 0.12);
+  }
+
+  /* ============================================
+   * MARMOREADO PREMIUM (CSS-only, zero peso)
+   * ============================================
+   * Inspirado nos posts da Zahir — mármore travertino claro
+   * com veios sutis e iluminação diagonal.
+   */
+
+  /* Marmoreado base — claro com veios bem visíveis (igual seu post) */
+  .marble {
+    background-color: #f0e6d0;
+    background-image:
+      /* Luz diagonal forte (soleira de janela) — bem visível */
+      linear-gradient(
+        118deg,
+        rgba(255, 252, 245, 0.95) 0%,
+        rgba(255, 250, 238, 0.7) 12%,
+        rgba(248, 240, 222, 0.3) 28%,
+        transparent 45%,
+        transparent 60%,
+        rgba(220, 200, 175, 0.4) 78%,
+        rgba(195, 175, 145, 0.55) 95%,
+        rgba(180, 158, 128, 0.5) 100%
+      ),
+      /* Veios largos do mármore — manchas grandes */
+      radial-gradient(
+        ellipse 65% 35% at 25% 18%,
+        rgba(200, 180, 150, 0.55) 0%,
+        rgba(200, 180, 150, 0.2) 35%,
+        transparent 65%
+      ),
+      radial-gradient(
+        ellipse 50% 28% at 78% 75%,
+        rgba(170, 145, 115, 0.45) 0%,
+        rgba(170, 145, 115, 0.15) 40%,
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 30% 50% at 60% 30%,
+        rgba(190, 170, 140, 0.3) 0%,
+        transparent 60%
+      ),
+      /* Veios finos diagonais — bem mais visíveis */
+      repeating-linear-gradient(
+        118deg,
+        transparent 0px,
+        transparent 8px,
+        rgba(140, 115, 80, 0.07) 8px,
+        rgba(140, 115, 80, 0.07) 9px,
+        transparent 9px,
+        transparent 80px
+      ),
+      repeating-linear-gradient(
+        62deg,
+        transparent 0px,
+        transparent 12px,
+        rgba(120, 95, 65, 0.05) 12px,
+        rgba(120, 95, 65, 0.05) 13px,
+        transparent 13px,
+        transparent 110px
+      ),
+      /* Veios secundários cruzando */
+      repeating-linear-gradient(
+        145deg,
+        transparent 0px,
+        transparent 20px,
+        rgba(160, 130, 95, 0.04) 20px,
+        rgba(160, 130, 95, 0.04) 22px,
+        transparent 22px,
+        transparent 200px
+      ),
+      /* Base color suave */
+      radial-gradient(
+        circle at 40% 60%,
+        rgba(244, 233, 212, 1) 0%,
+        rgba(232, 218, 192, 1) 100%
+      );
+    background-size:
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      400px 400px,
+      500px 500px,
+      700px 700px,
+      100% 100%;
+  }
+
+  /* Marmoreado sutil — versão mais leve pra alternar */
+  .marble-soft {
+    background-color: #f5ecd8;
+    background-image:
+      linear-gradient(
+        118deg,
+        rgba(255, 253, 248, 0.9) 0%,
+        rgba(252, 246, 230, 0.5) 20%,
+        transparent 40%,
+        transparent 60%,
+        rgba(220, 200, 175, 0.3) 85%,
+        rgba(200, 178, 148, 0.35) 100%
+      ),
+      radial-gradient(
+        ellipse 60% 30% at 28% 22%,
+        rgba(200, 178, 148, 0.4) 0%,
+        rgba(200, 178, 148, 0.12) 40%,
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 40% 25% at 75% 70%,
+        rgba(170, 145, 115, 0.3) 0%,
+        transparent 65%
+      ),
+      repeating-linear-gradient(
+        118deg,
+        transparent 0px,
+        transparent 10px,
+        rgba(140, 115, 80, 0.05) 10px,
+        rgba(140, 115, 80, 0.05) 11px,
+        transparent 11px,
+        transparent 100px
+      ),
+      repeating-linear-gradient(
+        62deg,
+        transparent 0px,
+        transparent 18px,
+        rgba(120, 95, 65, 0.035) 18px,
+        rgba(120, 95, 65, 0.035) 19px,
+        transparent 19px,
+        transparent 160px
+      );
+    background-size:
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      450px 450px,
+      600px 600px;
+  }
+
+  /* Marmoreado escuro (footer/contraste) — travertino antracite */
+  .marble-dark {
+    background-color: #1a1714;
+    background-image:
+      linear-gradient(
+        115deg,
+        rgba(60, 50, 40, 0.6) 0%,
+        rgba(40, 32, 26, 0.4) 25%,
+        transparent 50%,
+        rgba(20, 16, 12, 0.6) 100%
+      ),
+      radial-gradient(
+        ellipse 70% 40% at 30% 30%,
+        rgba(80, 65, 50, 0.3) 0%,
+        transparent 60%
+      ),
+      repeating-linear-gradient(
+        118deg,
+        transparent 0px,
+        transparent 4px,
+        rgba(200, 180, 150, 0.02) 4px,
+        rgba(200, 180, 150, 0.02) 5px,
+        transparent 5px,
+        transparent 70px
+      );
+  }
+
+  /*
+   * VÉU DE SEÇÃO — uniformiza a legibilidade sobre o mármore.
+   * Aplica um overlay cream sutil (~25% opacity) que:
+   * - Não tampa o mármore (você ainda vê os veios)
+   * - Garante contraste mínimo pra textos com opacity baixa
+   * - Cria "zonas de leitura" sem destruir a estética
+   */
+  .section-veil {
+    position: relative;
+  }
+  .section-veil::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(244, 233, 212, 0.55);
+    backdrop-filter: blur(2px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .section-veil > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Versão mais leve — pra seções com mais elementos visuais (cards, imagens) */
+  .section-veil-light {
+    position: relative;
+  }
+  .section-veil-light::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(244, 233, 212, 0.35);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .section-veil-light > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Iluminação diagonal — overlay (luz de janela) BEM VISÍVEL */
+  .light-diagonal {
+    position: relative;
+  }
+  .light-diagonal::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      /* Cone de luz principal */
+      linear-gradient(
+        122deg,
+        rgba(255, 252, 240, 0.7) 0%,
+        rgba(255, 250, 235, 0.55) 8%,
+        rgba(255, 248, 228, 0.3) 22%,
+        rgba(255, 245, 220, 0.1) 38%,
+        transparent 55%,
+        transparent 100%
+      ),
+      /* Sombra suave do lado oposto */
+      linear-gradient(
+        122deg,
+        transparent 0%,
+        transparent 60%,
+        rgba(80, 60, 40, 0.06) 85%,
+        rgba(60, 45, 30, 0.1) 100%
+      );
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: soft-light;
+  }
+  /* Conteúdo dentro de light-diagonal precisa estar acima */
+  .light-diagonal > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Sombra de produto (3D flutuante) */
+  .shadow-product {
+    box-shadow:
+      0 1px 2px rgba(40, 30, 20, 0.04),
+      0 8px 24px rgba(40, 30, 20, 0.08),
+      0 24px 60px rgba(40, 30, 20, 0.12),
+      0 40px 100px rgba(40, 30, 20, 0.08);
+  }
+
+  .shadow-product-hover {
+    box-shadow:
+      0 2px 4px rgba(40, 30, 20, 0.06),
+      0 12px 32px rgba(40, 30, 20, 0.12),
+      0 32px 80px rgba(40, 30, 20, 0.18),
+      0 60px 140px rgba(40, 30, 20, 0.12);
+  }
+
+  /* Sombra editorial (cards) */
+  .shadow-editorial {
+    box-shadow:
+      0 1px 2px rgba(40, 30, 20, 0.03),
+      0 4px 12px rgba(40, 30, 20, 0.06),
+      0 12px 32px rgba(40, 30, 20, 0.08);
+  }
+
+  /* Drop shadow — pra imagens PNG/produtos sem fundo */
+  .drop-shadow-product {
+    filter:
+      drop-shadow(0 4px 8px rgba(40, 30, 20, 0.15))
+      drop-shadow(0 16px 32px rgba(40, 30, 20, 0.12))
+      drop-shadow(0 32px 64px rgba(40, 30, 20, 0.08));
+  }
+
+  /* Tilt 3D no hover (perspective wrapper) */
+  .tilt-3d {
+    transform-style: preserve-3d;
+    transition: transform 700ms cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .tilt-3d:hover {
+    transform: perspective(1200px) rotateX(2deg) rotateY(-2deg) translateY(-4px);
+  }
+
+  /* Reduzir movimento — acessibilidade */
+  @media (prefers-reduced-motion: reduce) {
+    .tilt-3d:hover {
+      transform: none;
+    }
   }
 }

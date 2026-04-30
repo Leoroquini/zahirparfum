@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/layout/PageHero";
 import { Decants } from "@/components/sections/Decants";
-import { KitDescobridor } from "@/components/sections/KitDescobridor";
+import { KitsTrio } from "@/components/sections/KitsTrio";
 
 export const metadata: Metadata = {
   title: "Decants",
@@ -14,19 +14,21 @@ export default function DecantsPage() {
   return (
     <>
       <PageHero
-        eyebrow="Decants · Teste antes"
+        eyebrow="Decants · Antes de pertencer, conheça"
         titulo={
           <>
-            Gaste R$ 40 antes de{" "}
-            <em className="italic text-amber/90">gastar R$ 250.</em>
+            Você lembra do cheiro de quem te marcou.{" "}
+            <em className="italic text-amber/90">
+              Quem te encontra hoje, lembra do seu?
+            </em>
           </>
         }
-        descricao="Decant é o frasco cheio dividido em porções menores — 5 ou 10 mililitros do mesmo perfume original, envasado em frasco próprio com atomizador spray. Dura de duas semanas a dois meses dependendo do uso."
+        descricao="Decant é como o cheiro vira o seu antes de virar gasto. Cinco ou dez mililitros do mesmo perfume original, tempo pra ele se misturar com a sua pele e mudar de personalidade ao longo do dia. Quando alguém pergunta o que é, você já testou todos os finais."
         backgroundGradient="radial-gradient(ellipse at 60% 50%, rgba(200,155,60,0.12), transparent 60%)"
       />
 
       {/* FAQ rápido */}
-      <section className="border-b border-cream/5 bg-ink-soft px-6 py-16 md:px-12 md:py-24">
+      <section className="section-veil-light border-b border-ink/5 px-6 py-16 md:px-12 md:py-24">
         <div className="mx-auto max-w-[1440px]">
           <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
             <span className="mr-3 inline-block h-px w-8 align-middle bg-amber" />
@@ -35,7 +37,7 @@ export default function DecantsPage() {
           <div className="mt-10 grid gap-8 md:grid-cols-2 md:gap-12">
             <Pergunta
               p="É o mesmo perfume do frasco cheio?"
-              r="É. Exato. O que muda é só a quantidade de líquido — envasamos do frasco original da casa, com atomizador próprio."
+              r="É. Exato. O que muda é só a quantidade de líquido, envasamos do frasco original da casa, com atomizador próprio."
             />
             <Pergunta
               p="Quanto dura um decant?"
@@ -43,7 +45,7 @@ export default function DecantsPage() {
             />
             <Pergunta
               p="Tem todos os perfumes em decant?"
-              r="Os principais do catálogo, sim. SKUs menos rotativos ficam sob demanda — avisamos pelo WhatsApp se faz sentido abrir o frasco ou esperar uma leva."
+              r="Os principais do catálogo, sim. SKUs menos rotativos ficam sob demanda, avisamos pelo WhatsApp se faz sentido abrir o frasco ou esperar uma leva."
             />
             <Pergunta
               p="E se eu não gostar?"
@@ -55,7 +57,7 @@ export default function DecantsPage() {
             />
             <Pergunta
               p="Frasco do decant é transparente ou escuro?"
-              r="Escuro (vidro âmbar ou preto) pra proteger da luz — perfume oxida quando fica exposto, e nossos decants foram pensados pra durar."
+              r="Escuro (vidro âmbar ou preto) pra proteger da luz, perfume oxida quando fica exposto, e nossos decants foram pensados pra durar."
             />
           </div>
         </div>
@@ -63,14 +65,17 @@ export default function DecantsPage() {
 
       <Decants hideIntro />
 
-      {/* Kit Descobridor */}
-      <KitDescobridor />
+      {/* Trios curados (Estreia + Coleção) */}
+      <KitsTrio />
+
+      {/* Montar kit próprio */}
+      <MontarKitCallout />
 
       {/* CTA final */}
-      <section className="border-t border-cream/5 bg-ink px-6 py-20 md:px-12 md:py-28">
+      <section className="section-veil-light border-t border-ink/5 px-6 py-20 md:px-12 md:py-28">
         <div className="mx-auto flex max-w-[1440px] flex-col items-center gap-6 text-center">
           <span className="font-display text-3xl italic text-amber/50">·</span>
-          <h2 className="max-w-2xl font-display text-3xl font-light leading-[1.1] tracking-tight text-cream md:text-5xl">
+          <h2 className="max-w-2xl font-display text-3xl font-light leading-[1.1] tracking-tight text-ink md:text-5xl">
             Um bom catálogo começa com{" "}
             <em className="italic text-amber/90">decants testados.</em>
           </h2>
@@ -92,10 +97,62 @@ export default function DecantsPage() {
 function Pergunta({ p, r }: { p: string; r: string }) {
   return (
     <div className="flex flex-col gap-3 border-l-2 border-amber/40 pl-5">
-      <span className="font-display text-xl font-light italic text-cream md:text-2xl">
+      <span className="font-display text-xl font-light italic text-ink md:text-2xl">
         {p}
       </span>
-      <p className="text-sm leading-relaxed text-cream/70">{r}</p>
+      <p className="text-sm leading-relaxed text-ink/70">{r}</p>
     </div>
+  );
+}
+
+function MontarKitCallout() {
+  return (
+    <section className="section-veil-light relative overflow-hidden border-t border-ink/5 px-6 py-20 md:px-12 md:py-28">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-25"
+        style={{
+          background:
+            "radial-gradient(ellipse at 30% 50%, rgba(200,155,60,0.18), transparent 55%)",
+        }}
+      />
+      <div className="relative mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-center lg:gap-20">
+        <div className="flex flex-col gap-5">
+          <span className="inline-flex items-center gap-3 text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
+            <span className="h-px w-8 bg-amber" />
+            Monte o seu
+          </span>
+          <h2 className="max-w-2xl font-display text-3xl font-light leading-[1.05] tracking-tight text-ink md:text-5xl">
+            Quer escolher do{" "}
+            <em className="italic text-amber/90">zero?</em>
+          </h2>
+          <p className="max-w-xl text-base leading-relaxed text-ink/70 md:text-lg">
+            Os trios fechados são curadoria. Mas se você já sabe o que quer,
+            ou quer testar combinações que ninguém montou, abre o montador
+            livre. Escolhe quantos decants quiser, mistura 5ml e 10ml, vê o
+            total somar em tempo real e fecha pelo WhatsApp.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <Link
+            href="/decants/montar"
+            className="group flex items-center justify-between gap-3 rounded-sm border border-amber/40 bg-cream/50 p-6 transition-all hover:-translate-y-1 hover:border-amber hover:shadow-product"
+          >
+            <div className="flex flex-col gap-1.5">
+              <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber-dim">
+                Sem desconto, total liberdade
+              </span>
+              <span className="font-display text-2xl font-light text-ink md:text-3xl">
+                Abrir montador livre
+              </span>
+            </div>
+            <span className="text-2xl text-amber transition-transform duration-500 group-hover:translate-x-1">
+              →
+            </span>
+          </Link>
+        </div>
+      </div>
+    </section>
   );
 }

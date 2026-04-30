@@ -23,7 +23,7 @@ export default function TrocasPage() {
         backgroundGradient="radial-gradient(ellipse at 50% 60%, rgba(200,155,60,0.1), transparent 60%)"
       />
 
-      <section className="bg-ink px-6 py-20 md:px-12 md:py-28">
+      <section className="section-veil-light px-6 py-20 md:px-12 md:py-28">
         <div className="mx-auto max-w-[1200px]">
           <div className="grid gap-16 lg:grid-cols-2 lg:gap-20">
             {/* Quando aceitamos troca */}
@@ -32,7 +32,7 @@ export default function TrocasPage() {
                 <span className="mr-3 inline-block h-px w-8 align-middle bg-amber" />
                 Aceitamos troca quando
               </span>
-              <ul className="flex flex-col gap-4 font-display text-lg font-light leading-[1.3] text-cream/85 md:text-xl">
+              <ul className="flex flex-col gap-4 font-display text-lg font-light leading-[1.3] text-ink/85 md:text-xl">
                 <li className="border-l border-amber/60 pl-4">
                   Você pediu em até 7 dias corridos depois de receber
                 </li>
@@ -54,7 +54,7 @@ export default function TrocasPage() {
                 <span className="mr-3 inline-block h-px w-8 align-middle bg-wine/70" />
                 Não aceitamos quando
               </span>
-              <ul className="flex flex-col gap-4 font-display text-lg font-light leading-[1.3] text-cream/55 md:text-xl">
+              <ul className="flex flex-col gap-4 font-display text-lg font-light leading-[1.3] text-ink/70 md:text-xl">
                 <li className="border-l border-wine/50 pl-4">
                   O frasco foi aberto ou borrifado
                 </li>
@@ -74,7 +74,7 @@ export default function TrocasPage() {
       </section>
 
       {/* Fluxo da troca */}
-      <section className="border-t border-cream/5 bg-ink-soft px-6 py-20 md:px-12 md:py-28">
+      <section className="section-veil-light border-t border-ink/5 px-6 py-20 md:px-12 md:py-28">
         <div className="mx-auto max-w-[1200px]">
           <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
             <span className="mr-3 inline-block h-px w-8 align-middle bg-amber" />
@@ -90,7 +90,7 @@ export default function TrocasPage() {
       </section>
 
       {/* Frete reverso */}
-      <section className="border-t border-cream/5 bg-ink px-6 py-16 md:px-12 md:py-24">
+      <section className="section-veil-light border-t border-ink/5 px-6 py-16 md:px-12 md:py-24">
         <div className="mx-auto max-w-[1200px]">
           <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
             <span className="mr-3 inline-block h-px w-8 align-middle bg-amber" />
@@ -98,20 +98,20 @@ export default function TrocasPage() {
           </span>
           <div className="mt-8 grid gap-8 md:grid-cols-2 md:gap-12">
             <div className="flex flex-col gap-2">
-              <span className="font-display text-2xl font-light text-cream">
+              <span className="font-display text-2xl font-light text-ink">
                 Defeito do produto ou erro nosso
               </span>
-              <p className="text-sm leading-relaxed text-cream/65">
+              <p className="text-sm leading-relaxed text-ink/65">
                 A gente paga o frete reverso completo. Perfume errado, frasco
-                danificado na viagem, tamanho diferente do pedido — nossa
+                danificado na viagem, tamanho diferente do pedido, nossa
                 culpa, nossa responsabilidade.
               </p>
             </div>
             <div className="flex flex-col gap-2">
-              <span className="font-display text-2xl font-light text-cream/70">
+              <span className="font-display text-2xl font-light text-ink/70">
                 Arrependimento (art. 49 CDC)
               </span>
-              <p className="text-sm leading-relaxed text-cream/60">
+              <p className="text-sm leading-relaxed text-ink/75">
                 A política de frete reverso é combinada no atendimento,
                 conforme o caso e a legislação aplicável. Depois que a
                 mercadoria chegar e estiver íntegra, fazemos o ressarcimento
@@ -122,11 +122,11 @@ export default function TrocasPage() {
         </div>
       </section>
 
-      <section className="border-t border-cream/5 bg-ink-soft px-6 py-16 md:px-12 md:py-20">
+      <section className="section-veil-light border-t border-ink/5 px-6 py-16 md:px-12 md:py-20">
         <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-5 text-center">
-          <p className="max-w-2xl text-sm italic text-cream/55 md:text-base">
+          <p className="max-w-2xl text-sm italic text-ink/70 md:text-base">
             Dúvida específica sobre uma troca? Chama no Instagram com o número
-            do pedido — a gente resolve caso a caso.
+            do pedido, a gente resolve caso a caso.
           </p>
           <Link
             href="/contato"
@@ -146,10 +146,10 @@ function Passo({ n, t, d }: { n: string; t: string; d: string }) {
       <span className="font-display text-xs italic text-amber/80">
         Passo {n}
       </span>
-      <span className="font-display text-xl font-light leading-[1.15] text-cream">
+      <span className="font-display text-xl font-light leading-[1.15] text-ink">
         {t}
       </span>
-      <p className="text-sm leading-relaxed text-cream/65">{d}</p>
+      <p className="text-sm leading-relaxed text-ink/65">{d}</p>
     </div>
   );
 }

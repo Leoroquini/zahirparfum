@@ -9,7 +9,7 @@ import { NOTAS } from "@/data/notas";
 export const metadata: Metadata = {
   title: "Catálogo",
   description:
-    "Curadoria completa de perfumes árabes masculinos — fichas técnicas, clones designer, decants e filtros por família olfativa, ocasião e preço.",
+    "Curadoria completa de perfumes árabes masculinos, fichas técnicas, clones designer, decants e filtros por família olfativa, ocasião e preço.",
 };
 
 export default function CatalogoPage() {
@@ -28,7 +28,7 @@ export default function CatalogoPage() {
       />
 
       {/* Meta rápida da coleção */}
-      <section className="border-b border-cream/5 bg-ink-soft px-6 py-10 md:px-12">
+      <section className="section-veil-light border-b border-ink/5 px-6 py-10 md:px-12">
         <div className="mx-auto grid max-w-[1440px] grid-cols-2 gap-6 text-center md:grid-cols-4 md:text-left">
           <MetaStat label="Fragrâncias" value={CATALOGO.length.toString()} />
           <MetaStat label="Famílias" value={FAMILIAS.length.toString()} />
@@ -40,19 +40,19 @@ export default function CatalogoPage() {
       <CatalogoGrid hideIntro />
 
       {/* Explore por nota-assinatura */}
-      <section className="border-t border-cream/5 bg-ink-soft px-6 py-20 md:px-12 md:py-28">
+      <section className="section-veil-light border-t border-ink/5 px-6 py-20 md:px-12 md:py-28">
         <div className="mx-auto max-w-[1440px]">
           <div className="flex flex-col gap-4">
             <span className="inline-flex items-center gap-3 text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
               <span className="h-px w-8 bg-amber" />
               Explore por nota
             </span>
-            <h2 className="max-w-3xl font-display text-3xl font-light leading-[1.1] tracking-tight text-cream md:text-5xl">
+            <h2 className="max-w-3xl font-display text-3xl font-light leading-[1.1] tracking-tight text-ink md:text-5xl">
               Caçando um cheiro{" "}
               <em className="italic text-amber/90">específico?</em>
             </h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-cream/60 md:text-base">
-              Descubra as 4 notas que definem o DNA ZAHIR — e veja quais
+            <p className="max-w-2xl text-sm leading-relaxed text-ink/75 md:text-base">
+              Descubra as 4 notas que definem o DNA ZAHIR, e veja quais
               fragrâncias do catálogo carregam cada uma delas.
             </p>
           </div>
@@ -62,9 +62,9 @@ export default function CatalogoPage() {
               <li key={nota.id}>
                 <Link
                   href={`/nota/${nota.id}`}
-                  className="group flex items-center gap-4 rounded-sm border border-cream/10 bg-ink p-4 transition-all hover:border-amber/40"
+                  className="group flex items-center gap-4 rounded-sm border border-ink/10 p-4 transition-all hover:border-amber/40"
                 >
-                  <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border border-cream/10">
+                  <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border border-ink/10">
                     <Image
                       src={nota.foto}
                       alt=""
@@ -74,10 +74,10 @@ export default function CatalogoPage() {
                     />
                   </div>
                   <div className="flex min-w-0 flex-1 flex-col">
-                    <span className="font-display text-lg font-light text-cream transition-colors group-hover:text-amber">
+                    <span className="font-display text-lg font-light text-ink transition-colors group-hover:text-amber">
                       {nota.nome}
                     </span>
-                    <span className="truncate text-xs italic text-cream/55">
+                    <span className="truncate text-xs italic text-ink/70">
                       {nota.subtitulo}
                     </span>
                   </div>
@@ -100,7 +100,7 @@ function MetaStat({ label, value }: { label: string; value: string }) {
       <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber">
         {label}
       </span>
-      <span className="font-display text-3xl font-light text-cream md:text-4xl">
+      <span className="font-display text-3xl font-light text-ink md:text-4xl">
         {value}
       </span>
     </div>

@@ -1,5 +1,5 @@
 /**
- * Loading skeleton editorial — mantém estética ZAHIR enquanto
+ * Loading skeleton editorial, mantém estética ZAHIR enquanto
  * conteúdo está sendo buscado. Usado por loading.tsx nas rotas.
  */
 export function PageLoading({ label }: { label?: string }) {
@@ -11,11 +11,11 @@ export function PageLoading({ label }: { label?: string }) {
           className="inline-block h-2 w-2 animate-pulse rounded-full bg-amber"
           aria-hidden
         />
-        <span className="font-display text-2xl italic text-cream/80 md:text-3xl">
+        <span className="font-display text-2xl italic text-ink/80 md:text-3xl">
           {label ?? "Um instante"}
           <span className="animate-pulse text-amber">…</span>
         </span>
-        <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-cream/30">
+        <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-ink/70">
           carregando
         </span>
       </div>

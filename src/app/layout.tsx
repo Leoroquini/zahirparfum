@@ -3,11 +3,10 @@ import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { GrainOverlay } from "@/components/motion/GrainOverlay";
+import { MarbleBackground } from "@/components/motion/MarbleBackground";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { TrustBar } from "@/components/layout/TrustBar";
-import { ManifestoFloat } from "@/components/layout/ManifestoFloat";
-import { AjudaFloat } from "@/components/layout/AjudaFloat";
 import { Analytics } from "@/components/analytics/Analytics";
 import { CookieBanner } from "@/components/analytics/CookieBanner";
 import { UtmCapture } from "@/components/analytics/UtmCapture";
@@ -22,7 +21,7 @@ import { BRAND } from "@/lib/brand";
 const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "700"],
   style: ["normal", "italic"],
   display: "swap",
 });
@@ -30,7 +29,7 @@ const fraunces = Fraunces({
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -40,7 +39,7 @@ const SITE_URL =
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${BRAND.fullName} — ${BRAND.tagline}`,
+    default: `${BRAND.fullName}, ${BRAND.tagline}`,
     template: `%s · ${BRAND.fullName}`,
   },
   description: BRAND.manifesto,
@@ -55,7 +54,7 @@ export const metadata: Metadata = {
     "zahir parfums",
   ],
   openGraph: {
-    title: `${BRAND.fullName} — ${BRAND.tagline}`,
+    title: `${BRAND.fullName}, ${BRAND.tagline}`,
     description: BRAND.manifesto,
     locale: "pt_BR",
     type: "website",
@@ -77,7 +76,8 @@ export default function RootLayout({
       className={`${fraunces.variable} ${inter.variable}`}
       suppressHydrationWarning
     >
-      <body className="relative min-h-screen bg-ink text-cream antialiased">
+      <body className="relative min-h-screen text-ink antialiased">
+        <MarbleBackground />
         <SmoothScroll>
           <Navbar />
           <main className="relative">{children}</main>
@@ -86,8 +86,6 @@ export default function RootLayout({
         </SmoothScroll>
         <GrainOverlay />
         <ListaDrawer />
-        <ManifestoFloat />
-        <AjudaFloat />
         <ToastStack />
         <BuscaShortcut />
         <CupomBanner />

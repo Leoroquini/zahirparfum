@@ -1,7 +1,7 @@
 import { CATALOGO, type Perfume } from "@/data/catalogo";
 
 /**
- * Engine do Ritual — quiz olfativo.
+ * Engine do Ritual, quiz olfativo.
  * Cada resposta acumula pontos nas dimensões olfativas.
  * Ao final, cruzamos as top dimensões com as famílias do catálogo
  * pra sugerir 3 perfumes.
@@ -39,10 +39,10 @@ export const PERGUNTAS: Pergunta[] = [
     pergunta: "Qual sua hora favorita do dia?",
     ambiente: "radial-gradient(ellipse at 70% 30%, rgba(231,182,89,0.18), transparent 60%)",
     respostas: [
-      { key: "manha", label: "Manhã — quando o dia começa limpo", scores: { fresco: 3, aquatico: 2 } },
-      { key: "tarde", label: "Tarde — sol alto e foco", scores: { seco: 2, amadeirado: 1 } },
-      { key: "noite", label: "Noite — a cidade acordando", scores: { intenso: 3, amadeirado: 2 } },
-      { key: "madrugada", label: "Madrugada — o mundo em silêncio", scores: { intenso: 2, gourmand: 2, doce: 1 } },
+      { key: "manha", label: "Manhã, quando o dia começa limpo", scores: { fresco: 3, aquatico: 2 } },
+      { key: "tarde", label: "Tarde, sol alto e foco", scores: { seco: 2, amadeirado: 1 } },
+      { key: "noite", label: "Noite, a cidade acordando", scores: { intenso: 3, amadeirado: 2 } },
+      { key: "madrugada", label: "Madrugada, o mundo em silêncio", scores: { intenso: 2, gourmand: 2, doce: 1 } },
     ],
   },
   {
@@ -63,7 +63,7 @@ export const PERGUNTAS: Pergunta[] = [
     pergunta: "O cheiro da sua infância era de…",
     ambiente: "radial-gradient(ellipse at 60% 70%, rgba(122,45,50,0.22), transparent 60%)",
     respostas: [
-      { key: "cozinha", label: "Cozinha da vó — bolo e café", scores: { gourmand: 3, doce: 2 } },
+      { key: "cozinha", label: "Cozinha da vó, bolo e café", scores: { gourmand: 3, doce: 2 } },
       { key: "pai", label: "Perfume do pai no banheiro", scores: { amadeirado: 3, intenso: 1, seco: 1 } },
       { key: "chuva", label: "Chuva caindo no asfalto quente", scores: { aquatico: 3, fresco: 2 } },
       { key: "jardim", label: "Jardim, terra molhada, flor", scores: { fresco: 1, doce: 2 } },
@@ -75,10 +75,10 @@ export const PERGUNTAS: Pergunta[] = [
     pergunta: "Você prefere perfumes que…",
     ambiente: "radial-gradient(ellipse at 50% 50%, rgba(231,182,89,0.18), transparent 55%)",
     respostas: [
-      { key: "gritam", label: "Gritam — querem ser notados", scores: { intenso: 3, gourmand: 2 } },
-      { key: "sussurram", label: "Sussurram — classe no detalhe", scores: { fresco: 2, seco: 2 } },
-      { key: "contam", label: "Contam história — têm camadas", scores: { amadeirado: 2, especiado: 2 } },
-      { key: "fogem", label: "Fogem do óbvio — ninguém usa igual", scores: { especiado: 2, intenso: 2 } },
+      { key: "gritam", label: "Gritam, querem ser notados", scores: { intenso: 3, gourmand: 2 } },
+      { key: "sussurram", label: "Sussurram, classe no detalhe", scores: { fresco: 2, seco: 2 } },
+      { key: "contam", label: "Contam história, têm camadas", scores: { amadeirado: 2, especiado: 2 } },
+      { key: "fogem", label: "Fogem do óbvio, ninguém usa igual", scores: { especiado: 2, intenso: 2 } },
     ],
   },
   {
@@ -87,10 +87,10 @@ export const PERGUNTAS: Pergunta[] = [
     pergunta: "Em qual estação você se sente mais você?",
     ambiente: "radial-gradient(ellipse at 20% 80%, rgba(200,155,60,0.16), transparent 55%)",
     respostas: [
-      { key: "verao", label: "Verão — ar leve, pele aquecida", scores: { fresco: 3, aquatico: 2 } },
-      { key: "primavera", label: "Primavera — começos", scores: { fresco: 2, doce: 1 } },
-      { key: "outono", label: "Outono — luz dourada, leve melancolia", scores: { amadeirado: 2, seco: 1, especiado: 1 } },
-      { key: "inverno", label: "Inverno — casaco e lareira", scores: { intenso: 2, gourmand: 2, amadeirado: 1 } },
+      { key: "verao", label: "Verão, ar leve, pele aquecida", scores: { fresco: 3, aquatico: 2 } },
+      { key: "primavera", label: "Primavera, começos", scores: { fresco: 2, doce: 1 } },
+      { key: "outono", label: "Outono, luz dourada, leve melancolia", scores: { amadeirado: 2, seco: 1, especiado: 1 } },
+      { key: "inverno", label: "Inverno, casaco e lareira", scores: { intenso: 2, gourmand: 2, amadeirado: 1 } },
     ],
   },
   {
@@ -173,42 +173,42 @@ const TITULO_POR_DIMENSAO: Record<Dimensao, { titulo: string; descricao: string 
   fresco: {
     titulo: "O Fresco Urbano",
     descricao:
-      "Você prefere perfumes que respiram leveza e movimento — cítricos que acordam, aquáticos que refrescam, aromáticos que nunca pesam.",
+      "Você prefere perfumes que respiram leveza e movimento, cítricos que acordam, aquáticos que refrescam, aromáticos que nunca pesam.",
   },
   intenso: {
     titulo: "O Noturno Árabe",
     descricao:
-      "Você é feito pra perfume que entra na sala antes de você — orientais densos, madeiras profundas, projeção que marca presença.",
+      "Você é feito pra perfume que entra na sala antes de você, orientais densos, madeiras profundas, projeção que marca presença.",
   },
   doce: {
     titulo: "O Doce Masculino",
     descricao:
-      "Você tem pele pra gourmands — baunilha, café, praliné, âmbar. Perfume que abraça e fica na memória de quem passa.",
+      "Você tem pele pra gourmands, baunilha, café, praliné, âmbar. Perfume que abraça e fica na memória de quem passa.",
   },
   seco: {
     titulo: "O Clássico Seco",
     descricao:
-      "Você gosta da classe sem grito — fougères, amadeirados austeros, aromáticos especiados. Elegância que não precisa performar.",
+      "Você gosta da classe sem grito, fougères, amadeirados austeros, aromáticos especiados. Elegância que não precisa performar.",
   },
   amadeirado: {
     titulo: "O Madeira Moderno",
     descricao:
-      "Sândalo, cedro, vetiver, cashmeran — suas madeiras são a assinatura. Perfume de homem que conversa devagar e com segurança.",
+      "Sândalo, cedro, vetiver, cashmeran, suas madeiras são a assinatura. Perfume de homem que conversa devagar e com segurança.",
   },
   gourmand: {
     titulo: "O Gourmand Profundo",
     descricao:
-      "Tabaco, chocolate amargo, café, baunilha escura — gourmands masculinos que flertam com a sobremesa sem virar doce barato.",
+      "Tabaco, chocolate amargo, café, baunilha escura, gourmands masculinos que flertam com a sobremesa sem virar doce barato.",
   },
   aquatico: {
     titulo: "O Aquático Contemporâneo",
     descricao:
-      "Você busca a sensação de sal, brisa, pele limpa — perfumes que lembram o melhor tipo de verão, mesmo no meio do ano.",
+      "Você busca a sensação de sal, brisa, pele limpa, perfumes que lembram o melhor tipo de verão, mesmo no meio do ano.",
   },
   especiado: {
     titulo: "O Especiado Árabe",
     descricao:
-      "Açafrão, cardamomo, canela, pimenta — especiarias que vêm do mundo árabe pra traduzir calor e mistério no seu perfume.",
+      "Açafrão, cardamomo, canela, pimenta, especiarias que vêm do mundo árabe pra traduzir calor e mistério no seu perfume.",
   },
 };
 

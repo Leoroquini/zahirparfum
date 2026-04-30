@@ -35,7 +35,7 @@ export function CupomBanner() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -50, opacity: 0 }}
           transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
-          className="fixed inset-x-0 top-0 z-[55] border-b border-amber/30 bg-ink/95 px-4 py-2.5 backdrop-blur-xl"
+          className="fixed inset-x-0 top-0 z-[55] border-b border-amber/30 bg-cream/95 px-4 py-2.5 backdrop-blur-xl"
           role="region"
           aria-label="Oferta de boas-vindas"
         >
@@ -47,7 +47,7 @@ export function CupomBanner() {
               >
                 ✦
               </span>
-              <p className="text-xs text-cream md:text-sm">
+              <p className="text-xs text-ink md:text-sm">
                 <span className="hidden font-sans uppercase tracking-[0.3em] text-amber md:inline">
                   Primeira compra
                 </span>
@@ -70,7 +70,7 @@ export function CupomBanner() {
               type="button"
               onClick={dismiss}
               aria-label="Fechar aviso"
-              className="shrink-0 text-xs text-cream/50 transition-colors hover:text-amber"
+              className="shrink-0 text-xs text-ink/70 transition-colors hover:text-amber"
             >
               ×
             </button>

@@ -7,11 +7,11 @@ const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
 export function Hero() {
   return (
-    <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden bg-ink pt-24">
-      {/* CAMADA 1 — Imagem mestre cinematográfica (paisagem + ingredientes + fumaça em uma só cena) */}
+    <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden pt-24">
+      {/* CAMADA 1, Imagem mestre cinematográfica (paisagem + ingredientes + fumaça em uma só cena) */}
       <HeroMasterImage />
 
-      {/* CAMADA 2 — Gradient escurecedor suave pra legibilidade do texto sem esmagar a imagem */}
+      {/* CAMADA 2, Gradient escurecedor suave pra legibilidade do texto sem esmagar a imagem */}
       <DarkeningOverlay />
 
       {/* Conteúdo principal */}
@@ -31,7 +31,13 @@ export function Hero() {
         </motion.div>
 
         {/* Título cinematográfico */}
-        <h1 className="font-display leading-[0.95] tracking-[-0.035em] text-cream">
+        <h1
+          className="font-display leading-[0.95] tracking-[-0.035em] text-ink"
+          style={{
+            textShadow:
+              "0 2px 20px rgba(244, 233, 212, 0.8), 0 0 60px rgba(244, 233, 212, 0.5)",
+          }}
+        >
           <RevealLine delay={0.55}>
             <span className="block text-[clamp(3.5rem,10vw,8.5rem)] font-light">
               O que fica
@@ -42,11 +48,12 @@ export function Hero() {
               className="block text-[clamp(3.5rem,10vw,8.5rem)] font-light italic"
               style={{
                 background:
-                  "linear-gradient(135deg, #F4E9D4 0%, #E7B659 25%, #C89B3C 55%, #8C6B26 100%)",
+                  "linear-gradient(135deg, #8C6B26 0%, #C89B3C 25%, #6B4D1F 55%, #4A3614 100%)",
                 WebkitBackgroundClip: "text",
                 backgroundClip: "text",
                 color: "transparent",
-                filter: "drop-shadow(0 0 30px rgba(231, 182, 89, 0.4)) drop-shadow(0 2px 8px rgba(200, 155, 60, 0.25))",
+                filter:
+                  "drop-shadow(0 2px 12px rgba(244, 233, 212, 0.9)) drop-shadow(0 0 30px rgba(231, 182, 89, 0.3))",
               }}
             >
               depois
@@ -64,12 +71,12 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.1, delay: 1.7, ease: EASE_OUT }}
-          className="mt-14 max-w-xl text-base leading-relaxed text-cream/60 md:text-lg"
+          className="mt-14 max-w-xl rounded-sm bg-cream/40 px-5 py-3 text-base leading-relaxed text-ink/85 backdrop-blur-sm md:text-lg"
         >
-          Perfume árabe masculino pra quem quer cheirar bem —
+          Perfume árabe masculino pra quem quer cheirar bem.
           <br className="hidden md:block" />{" "}
-          e saber{" "}
-          <em className="font-display italic text-cream/90">por que</em> cheira
+          E saber{" "}
+          <em className="font-display italic text-ink">por que</em> cheira
           bem.
         </motion.p>
 
@@ -91,7 +98,7 @@ export function Hero() {
           </a>
           <a
             href="#catalogo"
-            className="inline-flex items-center gap-3 rounded-full border border-cream/20 px-9 py-4 text-[11px] font-sans uppercase tracking-[0.3em] text-cream transition-all duration-500 hover:border-amber hover:text-amber"
+            className="inline-flex items-center gap-3 rounded-full border border-ink/20 px-9 py-4 text-[11px] font-sans uppercase tracking-[0.3em] text-ink transition-all duration-500 hover:border-amber hover:text-amber"
           >
             Ver o Catálogo
           </a>
@@ -105,16 +112,16 @@ export function Hero() {
         transition={{ duration: 1, delay: 2.6 }}
         className="pointer-events-none absolute bottom-10 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 md:flex"
       >
-        <span className="text-[9px] font-sans uppercase tracking-[0.45em] text-cream/40">
+        <span className="text-[9px] font-sans uppercase tracking-[0.45em] text-ink/75">
           Deslize
         </span>
-        <span className="block h-10 w-px animate-pulse bg-gradient-to-b from-cream/60 to-transparent" />
+        <span className="block h-10 w-px animate-pulse bg-gradient-to-b from-ink/60 to-transparent" />
       </motion.div>
 
       {/* Assinatura vertical à esquerda */}
       <div className="pointer-events-none absolute left-6 top-1/2 hidden -translate-y-1/2 rotate-180 md:block">
         <span
-          className="font-sans text-[10px] tracking-[0.5em] text-cream/30"
+          className="font-sans text-[10px] tracking-[0.5em] text-ink/70"
           style={{ writingMode: "vertical-rl" }}
         >
           ZAHIR · 2026
@@ -163,16 +170,13 @@ function HeroMasterImage() {
       className="pointer-events-none absolute inset-0 overflow-hidden"
     >
       <Image
-        src="/hero/landscape.png"
+        src="/hero/hero-master.jpg"
         alt=""
         fill
         priority
-        quality={72}
+        quality={85}
         sizes="100vw"
-        placeholder="blur"
-        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAhEAABAwIHAAAAAAAAAAAAAAABAAIDBRIEBhETITFB/8QAFQEBAQAAAAAAAAAAAAAAAAAAAgP/xAAaEQACAgMAAAAAAAAAAAAAAAAAAQIRAyFB/9oADAMBAAIRAxEAPwCYzE2opTLdhYO7XxDKcHDBWNhDWjoABU5ES3dUKJm6RllUpLZ//9k="
         className="object-cover object-center"
-        style={{ filter: "saturate(1.08) contrast(1.03)" }}
       />
     </motion.div>
   );
@@ -186,20 +190,24 @@ function HeroMasterImage() {
 function DarkeningOverlay() {
   return (
     <>
-      {/* Escurecimento à esquerda — onde o texto principal fica */}
+      {/* Apoio sutil pra navbar */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-ink/70 via-ink/25 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-cream/40 to-transparent"
       />
-      {/* Fade de baixo — chão e CTAs */}
+      {/* Véu cream no centro pra dar legibilidade ao título sobre os perfumes */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-ink via-ink/55 to-transparent"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(244, 233, 212, 0.55) 0%, rgba(244, 233, 212, 0.25) 40%, transparent 70%)",
+        }}
       />
-      {/* Fade do topo — apoia o navbar */}
+      {/* Fade de baixo pra transitar com próxima seção */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-ink/70 to-transparent"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-cream/60 via-cream/20 to-transparent"
       />
     </>
   );

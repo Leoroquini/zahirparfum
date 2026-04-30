@@ -28,18 +28,18 @@ export function DiarioHistorico({
   if (registros.length === 0) return null;
 
   return (
-    <section className="flex flex-col gap-6">
+    <section className="section-veil-light flex flex-col gap-6">
       <div className="flex items-baseline justify-between gap-3">
         <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber">
           Histórico
         </span>
-        <span className="text-xs italic text-cream/55">
+        <span className="text-xs italic text-ink/70">
           {registros.length}{" "}
           {registros.length === 1 ? "registro" : "registros"}
         </span>
       </div>
 
-      <ul className="flex flex-col divide-y divide-cream/8 border-y border-cream/8">
+      <ul className="flex flex-col divide-y divide-cream/8 border-y border-ink/8">
         <AnimatePresence initial={false}>
           {registros.map((r) => (
             <motion.li
@@ -67,13 +67,13 @@ function Linha({ registro }: { registro: RegistroDiario }) {
   if (!perfume) {
     return (
       <div className="flex items-center justify-between gap-4 py-4">
-        <span className="text-sm italic text-cream/55">
+        <span className="text-sm italic text-ink/70">
           (perfume removido do catálogo)
         </span>
         <button
           type="button"
           onClick={() => removeRegistro(registro.id)}
-          className="text-xs italic text-cream/45 underline-offset-4 hover:text-amber hover:underline"
+          className="text-xs italic text-ink/65 underline-offset-4 hover:text-amber hover:underline"
         >
           remover
         </button>
@@ -89,7 +89,7 @@ function Linha({ registro }: { registro: RegistroDiario }) {
         className="group flex shrink-0 items-center gap-3 md:w-64"
       >
         {hasFoto(perfume) && (
-          <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-sm border border-cream/10">
+          <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-sm border border-ink/10">
             <Image
               src={fotoSrc(perfume)}
               alt=""
@@ -100,10 +100,10 @@ function Linha({ registro }: { registro: RegistroDiario }) {
           </div>
         )}
         <div className="flex min-w-0 flex-col">
-          <span className="truncate font-display text-base font-light text-cream group-hover:text-amber">
+          <span className="truncate font-display text-base font-light text-ink group-hover:text-amber">
             {perfume.nome}
           </span>
-          <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-cream/50">
+          <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-ink/70">
             {perfume.marca}
           </span>
         </div>
@@ -113,7 +113,7 @@ function Linha({ registro }: { registro: RegistroDiario }) {
       <div className="flex flex-1 flex-col gap-2">
         <div className="flex flex-wrap items-center gap-2 text-xs">
           {ocasiao && (
-            <span className="rounded-full border border-cream/15 px-2.5 py-0.5 text-cream/80">
+            <span className="rounded-full border border-ink/15 px-2.5 py-0.5 text-ink/80">
               {ocasiao.label}
             </span>
           )}
@@ -123,12 +123,12 @@ function Linha({ registro }: { registro: RegistroDiario }) {
               {sentimento.label}
             </span>
           )}
-          <span className="text-cream/45">
+          <span className="text-ink/65">
             {FORMATADOR_DATA.format(new Date(registro.data))}
           </span>
         </div>
         {registro.observacao && (
-          <p className="text-sm italic leading-relaxed text-cream/75">
+          <p className="text-sm italic leading-relaxed text-ink/75">
             “{registro.observacao}”
           </p>
         )}
@@ -139,7 +139,7 @@ function Linha({ registro }: { registro: RegistroDiario }) {
         type="button"
         onClick={() => removeRegistro(registro.id)}
         aria-label="Remover registro"
-        className="shrink-0 self-start text-xs italic text-cream/45 underline-offset-4 hover:text-amber hover:underline"
+        className="shrink-0 self-start text-xs italic text-ink/65 underline-offset-4 hover:text-amber hover:underline"
       >
         remover
       </button>

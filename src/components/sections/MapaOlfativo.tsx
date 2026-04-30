@@ -59,11 +59,10 @@ export function MapaOlfativo({ hideIntro = false }: { hideIntro?: boolean } = {}
   const perfumesComPosicao = CATALOGO.filter((p) => p.familia);
 
   return (
-    <section
-      id="mapa"
-      className="relative border-t border-cream/5 bg-ink-soft px-6 py-28 md:px-12 md:py-36"
+    <section id="mapa"
+      className="section-veil-light relative border-t border-ink/5 px-6 py-28 md:px-12 md:py-36"
     >
-      <div className="mx-auto max-w-[1440px]">
+      <div className="relative z-10 mx-auto max-w-[1440px]">
         {!hideIntro && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -76,32 +75,32 @@ export function MapaOlfativo({ hideIntro = false }: { hideIntro?: boolean } = {}
               <span className="h-px w-8 bg-amber" />
               Mapa olfativo
             </span>
-            <h2 className="max-w-3xl font-display text-4xl font-light leading-[1.05] tracking-tight text-cream md:text-6xl lg:text-7xl">
+            <h2 className="max-w-3xl font-display text-4xl font-light leading-[1.05] tracking-tight text-ink md:text-6xl lg:text-7xl">
               Todo o catálogo{" "}
               <em className="italic text-amber/90">em um só lugar.</em>
             </h2>
-            <p className="max-w-2xl text-base leading-relaxed text-cream/60 md:text-lg">
+            <p className="max-w-2xl text-base leading-relaxed text-ink/75 md:text-lg">
               Cada fragrância posicionada por perfil olfativo. Passa o mouse pra
               ver, clica pra abrir a ficha.
             </p>
           </motion.div>
         )}
 
-        {/* Alternativa mobile — lista agrupada por família */}
+        {/* Alternativa mobile, lista agrupada por família */}
         <div className={`${hideIntro ? "" : "mt-12 "}md:hidden`}>
           <MapaMobileAlt />
         </div>
 
-        {/* Mapa 2D — só desktop/tablet */}
+        {/* Mapa 2D, só desktop/tablet */}
         <div className={`${hideIntro ? "" : "mt-16 "}hidden gap-8 md:grid lg:grid-cols-[1fr_320px] lg:gap-12`}>
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 1.2, ease: EASE_OUT }}
-            className="relative aspect-square w-full overflow-hidden rounded-sm border border-cream/10 bg-ink md:aspect-[4/3]"
+            className="relative aspect-square w-full overflow-hidden rounded-sm border border-ink/10 md:aspect-[4/3]"
           >
-            {/* Background gradient — sugere temperatura: fresco azul → quente âmbar */}
+            {/* Background gradient, sugere temperatura: fresco azul → quente âmbar */}
             <div
               aria-hidden
               className="absolute inset-0"
@@ -162,7 +161,7 @@ export function MapaOlfativo({ hideIntro = false }: { hideIntro?: boolean } = {}
             ))}
           </motion.div>
 
-          {/* Painel lateral — info do perfume ativo */}
+          {/* Painel lateral, info do perfume ativo */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -186,7 +185,7 @@ export function MapaOlfativo({ hideIntro = false }: { hideIntro?: boolean } = {}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs text-cream/50"
+          className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs text-ink/70"
         >
           <span className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-amber" />
@@ -194,7 +193,7 @@ export function MapaOlfativo({ hideIntro = false }: { hideIntro?: boolean } = {}
           </span>
           <span className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-amber-bright ring-2 ring-amber/30" />
-            ponto ativo — hover ou teclado
+            ponto ativo, hover ou teclado
           </span>
           <span className="italic">
             família olfativa define a posição base · fragrâncias parecidas ficam próximas sem se sobrepor
@@ -248,7 +247,7 @@ function PerfumeDot({
       }}
       className="group absolute -translate-x-1/2 -translate-y-1/2 outline-none"
       style={{ left: `${pos.x * 100}%`, top: `${pos.y * 100}%` }}
-      aria-label={`${perfume.nome} — ${perfume.familia}`}
+      aria-label={`${perfume.nome}, ${perfume.familia}`}
     >
       {/* Ring estático no ponto ativo */}
       {active && (
@@ -273,12 +272,12 @@ function PerfumeDot({
         <motion.span
           initial={{ opacity: 0, y: -4 }}
           animate={{ opacity: 1, y: -8 }}
-          className="pointer-events-none absolute bottom-full left-1/2 mb-1 -translate-x-1/2 whitespace-nowrap rounded-sm border border-amber/30 bg-ink/95 px-3 py-1.5 backdrop-blur-sm"
+          className="pointer-events-none absolute bottom-full left-1/2 mb-1 -translate-x-1/2 whitespace-nowrap rounded-sm border border-amber/30 bg-cream/95 px-3 py-1.5 backdrop-blur-sm"
         >
           <span className="block text-[10px] font-sans uppercase tracking-[0.3em] text-amber">
             Nº {String(perfume.numero).padStart(2, "0")}
           </span>
-          <span className="block font-display text-sm text-cream">
+          <span className="block font-display text-sm text-ink">
             {perfume.nome}
           </span>
         </motion.span>
@@ -328,7 +327,7 @@ function QuadrantHint({
   }[x];
   return (
     <span
-      className={`pointer-events-none absolute max-w-[120px] select-none font-display text-[10px] italic text-cream/25 md:text-xs ${map}`}
+      className={`pointer-events-none absolute max-w-[120px] select-none font-display text-[10px] italic text-ink/25 md:text-xs ${map}`}
     >
       {children}
     </span>
@@ -345,7 +344,7 @@ function InfoPanel({ perfume }: { perfume: Perfume }) {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -12 }}
       transition={{ duration: 0.4, ease: EASE_OUT }}
-      className="flex h-full flex-col gap-5 rounded-sm border border-amber/20 bg-ink p-6 md:p-8"
+      className="flex h-full flex-col gap-5 rounded-sm border border-amber/20 p-6 md:p-8"
     >
       <div className="flex items-baseline gap-3">
         <span className="font-display text-xl italic text-amber/70">
@@ -356,7 +355,7 @@ function InfoPanel({ perfume }: { perfume: Perfume }) {
         </span>
       </div>
 
-      <h3 className="font-display text-3xl font-light leading-[1.1] text-cream md:text-4xl">
+      <h3 className="font-display text-3xl font-light leading-[1.1] text-ink md:text-4xl">
         {perfume.nome}
       </h3>
 
@@ -365,21 +364,21 @@ function InfoPanel({ perfume }: { perfume: Perfume }) {
       )}
 
       {primaryClone && (
-        <p className="text-sm text-cream/70">
+        <p className="text-sm text-ink/70">
           <span className="italic">inspirado em </span>
-          <span className="text-cream/95">{primaryClone}</span>
+          <span className="text-ink/95">{primaryClone}</span>
           {perfume.cloneFidelidade && (
-            <span className="text-cream/50"> · {perfume.cloneFidelidade}</span>
+            <span className="text-ink/70"> · {perfume.cloneFidelidade}</span>
           )}
         </p>
       )}
 
-      <div className="mt-auto flex items-end justify-between gap-3 border-t border-cream/5 pt-5">
+      <div className="mt-auto flex items-end justify-between gap-3 border-t border-ink/5 pt-5">
         <div className="flex flex-col">
-          <span className="text-[9px] font-sans uppercase tracking-[0.3em] text-cream/40">
+          <span className="text-[9px] font-sans uppercase tracking-[0.3em] text-ink/75">
             A partir de
           </span>
-          <span className="font-display text-3xl font-light text-cream">
+          <span className="font-display text-3xl font-light text-ink">
             {perfume.precoVenda !== null
               ? `R$ ${Math.round(perfume.precoVenda)}`
               : "—"}
@@ -405,31 +404,31 @@ function EmptyPanel() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="flex h-full min-h-[280px] flex-col justify-between rounded-sm border border-dashed border-cream/15 p-6 md:p-8"
+      className="flex h-full min-h-[280px] flex-col justify-between rounded-sm border border-dashed border-ink/15 p-6 md:p-8"
     >
       <div className="flex flex-col gap-3">
         <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber/60">
           Como usar
         </span>
-        <p className="text-sm leading-relaxed text-cream/65">
+        <p className="text-sm leading-relaxed text-ink/65">
           Passa o mouse (ou navega com{" "}
-          <kbd className="rounded border border-cream/15 px-1.5 py-0.5 text-[10px] text-cream/80">
+          <kbd className="rounded border border-ink/15 px-1.5 py-0.5 text-[10px] text-ink/80">
             Tab
           </kbd>
           ) por cada ponto pra ver qual fragrância mora naquela posição
           olfativa.
         </p>
       </div>
-      <div className="flex flex-col gap-2 border-t border-cream/5 pt-5">
-        <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-cream/40">
+      <div className="flex flex-col gap-2 border-t border-ink/5 pt-5">
+        <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-ink/75">
           Eixos
         </span>
-        <ul className="flex flex-col gap-1 text-xs text-cream/55">
+        <ul className="flex flex-col gap-1 text-xs text-ink/70">
           <li>
-            <span className="text-cream/80">Horizontal:</span> Fresco → Intenso
+            <span className="text-ink/80">Horizontal:</span> Fresco → Intenso
           </li>
           <li>
-            <span className="text-cream/80">Vertical:</span> Seco → Doce
+            <span className="text-ink/80">Vertical:</span> Seco → Doce
           </li>
         </ul>
       </div>

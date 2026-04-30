@@ -9,7 +9,7 @@ type Props = {
   eyebrow: string;
   titulo: React.ReactNode;
   descricao?: React.ReactNode;
-  /** Gradient de fundo opcional — combina com o contexto da página */
+  /** Gradient de fundo opcional, combina com o contexto da página */
   backgroundGradient?: string;
 };
 
@@ -25,7 +25,7 @@ export function PageHero({
   backgroundGradient,
 }: Props) {
   return (
-    <header className="relative overflow-hidden border-b border-cream/5 px-6 pb-14 pt-32 md:px-12 md:pb-20 md:pt-40">
+    <header className="relative overflow-hidden border-b border-ink/5 px-6 pb-14 pt-32 md:px-12 md:pb-20 md:pt-40">
       {backgroundGradient && (
         <>
           <div
@@ -43,7 +43,7 @@ export function PageHero({
       <div className="relative mx-auto max-w-[1440px]">
         <Link
           href="/"
-          className="group inline-flex items-center gap-2 text-[10px] font-sans uppercase tracking-[0.35em] text-cream/50 transition-colors hover:text-amber"
+          className="group inline-flex items-center gap-2 text-[10px] font-sans uppercase tracking-[0.35em] text-ink/70 transition-colors hover:text-amber"
         >
           <span className="transition-transform duration-300 group-hover:-translate-x-1">
             ←
@@ -62,12 +62,12 @@ export function PageHero({
             {eyebrow}
           </span>
 
-          <h1 className="max-w-5xl font-display text-5xl font-light leading-[1.02] tracking-tight text-cream md:text-7xl lg:text-8xl">
+          <h1 className="max-w-5xl font-display text-5xl font-light leading-[1.02] tracking-tight text-ink md:text-7xl lg:text-8xl">
             {titulo}
           </h1>
 
           {descricao && (
-            <p className="max-w-3xl text-base leading-relaxed text-cream/70 md:text-lg">
+            <p className="max-w-3xl text-base leading-relaxed text-ink/70 md:text-lg">
               {descricao}
             </p>
           )}

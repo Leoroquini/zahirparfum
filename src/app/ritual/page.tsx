@@ -4,7 +4,7 @@ import { Ritual } from "@/components/sections/Ritual";
 import { PERGUNTAS } from "@/data/quiz";
 
 export const metadata: Metadata = {
-  title: "O Ritual — quiz olfativo",
+  title: "O Ritual, quiz olfativo",
   description:
     "Seis perguntas pra descobrir seu perfil olfativo. Sem jargão técnico. Diálogo curto pra te indicar fragrâncias do catálogo que conversam com quem você é hoje.",
 };
@@ -20,12 +20,12 @@ export default function RitualPage() {
             <em className="italic text-amber/90">seu perfil olfativo.</em>
           </>
         }
-        descricao="Sem jargão. Sem checklist técnico. Um diálogo curto pra te indicar três fragrâncias do catálogo que conversam com quem você é hoje — baseadas em momentos, memórias e preferências, não em fórmulas químicas."
+        descricao="Sem jargão. Sem checklist técnico. Um diálogo curto pra te indicar três fragrâncias do catálogo que conversam com quem você é hoje, baseadas em momentos, memórias e preferências, não em fórmulas químicas."
         backgroundGradient="radial-gradient(ellipse at 30% 40%, rgba(231,182,89,0.12), transparent 60%)"
       />
 
       {/* Como funciona */}
-      <section className="border-b border-cream/5 bg-ink-soft px-6 py-14 md:px-12 md:py-20">
+      <section className="section-veil-light border-b border-ink/5 px-6 py-14 md:px-12 md:py-20">
         <div className="mx-auto max-w-[1440px]">
           <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
             <span className="mr-3 inline-block h-px w-8 align-middle bg-amber" />
@@ -35,7 +35,7 @@ export default function RitualPage() {
             <Passo
               numero="01"
               titulo="Responde"
-              descricao="Seis perguntas em tela cheia. Cada uma tem quatro respostas. Não existe certo ou errado — só o que combina mais com você."
+              descricao="Seis perguntas em tela cheia. Cada uma tem quatro respostas. Não existe certo ou errado, só o que combina mais com você."
             />
             <Passo
               numero="02"
@@ -49,9 +49,9 @@ export default function RitualPage() {
             />
           </div>
 
-          <p className="mt-12 max-w-2xl text-sm italic text-cream/55">
+          <p className="mt-12 max-w-2xl text-sm italic text-ink/70">
             O Ritual tem {PERGUNTAS.length} perguntas. Leva entre 90 segundos e 2
-            minutos — tempo de pegar um café.
+            minutos, tempo de pegar um café.
           </p>
         </div>
       </section>
@@ -75,10 +75,10 @@ function Passo({
       <span className="font-display text-sm italic text-amber/70">
         Passo {numero}
       </span>
-      <span className="font-display text-2xl font-light text-cream">
+      <span className="font-display text-2xl font-light text-ink">
         {titulo}
       </span>
-      <p className="text-sm leading-relaxed text-cream/65">{descricao}</p>
+      <p className="text-sm leading-relaxed text-ink/65">{descricao}</p>
     </div>
   );
 }
