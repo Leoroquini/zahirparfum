@@ -98,7 +98,7 @@ export function MapaOlfativo({ hideIntro = false }: { hideIntro?: boolean } = {}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 1.2, ease: EASE_OUT }}
-            className="relative aspect-square w-full overflow-hidden rounded-sm border border-ink/10 md:aspect-[4/3]"
+            className="relative aspect-square w-full overflow-hidden rounded-sm border border-ink/15 bg-cream-soft/85 shadow-[0_1px_0_rgba(255,255,255,0.6)_inset,0_20px_60px_-30px_rgba(42,42,40,0.25)] backdrop-blur-sm md:aspect-[4/3]"
           >
             {/* Background gradient, sugere temperatura: fresco azul → quente âmbar */}
             <div
@@ -106,7 +106,7 @@ export function MapaOlfativo({ hideIntro = false }: { hideIntro?: boolean } = {}
               className="absolute inset-0"
               style={{
                 background:
-                  "linear-gradient(135deg, rgba(74,122,156,0.08) 0%, rgba(42,42,40,0.02) 30%, rgba(200,155,60,0.08) 70%, rgba(122,45,50,0.12) 100%)",
+                  "linear-gradient(135deg, rgba(74,122,156,0.10) 0%, rgba(244,233,212,0) 30%, rgba(200,155,60,0.06) 70%, rgba(122,45,50,0.10) 100%)",
               }}
             />
 
@@ -116,7 +116,7 @@ export function MapaOlfativo({ hideIntro = false }: { hideIntro?: boolean } = {}
               {[0.25, 0.5, 0.75].map((p) => (
                 <div
                   key={`v-${p}`}
-                  className="absolute top-0 h-full w-px bg-cream/5"
+                  className="absolute top-0 h-full w-px bg-ink/10"
                   style={{ left: `${p * 100}%` }}
                 />
               ))}
@@ -124,13 +124,13 @@ export function MapaOlfativo({ hideIntro = false }: { hideIntro?: boolean } = {}
               {[0.25, 0.5, 0.75].map((p) => (
                 <div
                   key={`h-${p}`}
-                  className="absolute left-0 h-px w-full bg-cream/5"
+                  className="absolute left-0 h-px w-full bg-ink/10"
                   style={{ top: `${p * 100}%` }}
                 />
               ))}
               {/* Axes highlighted */}
-              <div className="absolute top-1/2 h-px w-full -translate-y-1/2 bg-amber/20" />
-              <div className="absolute left-1/2 h-full w-px -translate-x-1/2 bg-amber/20" />
+              <div className="absolute top-1/2 h-px w-full -translate-y-1/2 bg-amber/40" />
+              <div className="absolute left-1/2 h-full w-px -translate-x-1/2 bg-amber/40" />
             </div>
 
             {/* Axis labels */}
@@ -253,18 +253,18 @@ function PerfumeDot({
       {active && (
         <span
           aria-hidden
-          className="absolute inset-0 h-3 w-3 rounded-full bg-amber/40"
-          style={{ transform: "scale(2.2)" }}
+          className="absolute inset-0 h-3.5 w-3.5 rounded-full bg-amber-bright/30"
+          style={{ transform: "scale(2.4)" }}
         />
       )}
       {/* Dot */}
       <span
-        className={`relative block h-3 w-3 rounded-full border transition-all duration-300 ${
+        className={`relative block h-3.5 w-3.5 rounded-full border transition-all duration-300 ${
           active
-            ? "border-amber-bright bg-amber-bright ring-4 ring-amber/30 scale-150"
+            ? "border-ink bg-amber-bright ring-2 ring-ink/40 scale-150 shadow-[0_2px_6px_rgba(42,42,40,0.35)]"
             : anyActive
-            ? "border-amber/40 bg-amber/40"
-            : "border-amber/70 bg-amber/80 group-hover:bg-amber-bright group-hover:scale-125"
+            ? "border-ink/40 bg-ink/35"
+            : "border-ink/70 bg-ink/85 shadow-[0_1px_2px_rgba(42,42,40,0.25)] group-hover:bg-amber-bright group-hover:border-ink group-hover:scale-125"
         }`}
       />
       {/* Tooltip */}
@@ -303,7 +303,7 @@ function AxisLabel({
   }[position];
   return (
     <span
-      className={`pointer-events-none absolute z-10 whitespace-nowrap text-[10px] font-sans uppercase tracking-[0.4em] text-amber/70 ${pos}`}
+      className={`pointer-events-none absolute z-10 whitespace-nowrap text-[11px] font-sans uppercase tracking-[0.4em] text-ink/75 ${pos}`}
     >
       {children}
     </span>
@@ -327,7 +327,7 @@ function QuadrantHint({
   }[x];
   return (
     <span
-      className={`pointer-events-none absolute max-w-[120px] select-none font-display text-[10px] italic text-ink/25 md:text-xs ${map}`}
+      className={`pointer-events-none absolute max-w-[120px] select-none font-display text-[11px] italic text-ink/45 md:text-sm ${map}`}
     >
       {children}
     </span>
