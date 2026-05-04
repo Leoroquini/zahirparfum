@@ -11,6 +11,7 @@ import { arquetipoDe } from "@/data/arquetipos";
 import { addItem, useLista } from "@/lib/lista-store";
 import { toast } from "@/lib/toast-store";
 import { RelogioPele } from "./RelogioPele";
+import { PerfumeNavigator } from "./PerfumeNavigator";
 import { PerfumePyramid } from "@/components/ui/PerfumePyramid";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
@@ -34,6 +35,7 @@ type Props = {
 export function PerfumeExperience({ perfume }: Props) {
   return (
     <div className="relative">
+      <PerfumeNavigator perfumeAtual={perfume} />
       <Ato2Encontro perfume={perfume} />
       <Ato3Piramide perfume={perfume} />
       <Ato4Relogio perfume={perfume} />
@@ -54,7 +56,7 @@ function Ato2Encontro({ perfume }: { perfume: Perfume }) {
   const numero = String(perfume.numero).padStart(2, "0");
 
   return (
-    <section className="relative flex min-h-[100svh] items-center overflow-hidden py-24 md:py-32">
+    <section className="relative flex min-h-[calc(100svh-7rem)] items-center overflow-hidden pb-24 pt-8 md:min-h-[calc(100svh-9rem)] md:pb-32 md:pt-10">
       {/* Sombra diagonal sutil (sol entrando) */}
       <motion.div
         aria-hidden
