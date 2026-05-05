@@ -227,7 +227,7 @@ export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
             {/* Camada de mármore como fundo base (mesma textura do site) */}
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-0 opacity-[0.18]"
+              className="pointer-events-none fixed inset-0 z-0 opacity-[0.18]"
               style={{
                 backgroundImage: "url('/textures/marble-bg.jpg')",
                 backgroundSize: "cover",
@@ -256,8 +256,12 @@ export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
               </div>
             </div>
 
-            {/* Conteúdo */}
-            <div className="relative z-10 flex flex-1 items-center justify-center px-6 py-12 md:px-12">
+            {/* Conteúdo — pergunta centraliza verticalmente, resultado deixa rolar normal */}
+            <div
+              className={`relative z-10 flex flex-1 justify-center px-6 py-12 md:px-12 ${
+                step.kind === "resultado" ? "items-start" : "items-center"
+              }`}
+            >
               <AnimatePresence mode="wait">
                 {step.kind === "pergunta" && (
                   <PerguntaView
@@ -304,7 +308,7 @@ function AmbienteBackground({ step }: { step: StepState }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1.5 }}
-      className="pointer-events-none absolute inset-0"
+      className="pointer-events-none fixed inset-0 z-0"
       style={{ background: gradient }}
     />
   );
