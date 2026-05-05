@@ -66,6 +66,10 @@ export const events = {
     track("enviou_lista_dm", { total_itens: total, valor_total: valor }),
   enviouListaWa: (total: number, valor: number) =>
     track("enviou_lista_wa", { total_itens: total, valor_total: valor }),
+  iniciouCheckoutMp: (total: number, valor: number) =>
+    track("iniciou_checkout_mp", { total_itens: total, valor_total: valor }),
+  checkoutMpFalhou: (motivo: string) =>
+    track("checkout_mp_falhou", { motivo }),
 
   // Reserva direta (fora da lista)
   reservaDireta: (slug: string, variante: string, preco: number) =>
