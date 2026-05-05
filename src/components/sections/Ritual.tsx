@@ -219,7 +219,7 @@ export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="fixed inset-0 z-[200] flex flex-col overflow-y-auto bg-cream"
+            className="fixed inset-0 z-[200] overflow-y-auto overscroll-contain bg-cream"
             role="dialog"
             aria-modal="true"
             aria-label="O Ritual, quiz olfativo"
@@ -238,8 +238,8 @@ export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
             {/* Background ambiente que muda por pergunta */}
             <AmbienteBackground step={step} />
 
-            {/* Progress bar no topo */}
-            <div className="relative z-10 border-b border-ink/5 px-6 py-5 md:px-12">
+            {/* Progress bar — sticky no topo do scroll */}
+            <div className="sticky top-0 z-20 border-b border-ink/5 bg-cream/85 px-6 py-5 backdrop-blur-md md:px-12">
               <div className="mx-auto flex max-w-5xl items-center justify-between gap-6">
                 <span className="font-display text-xl italic text-ink">
                   O <span className="text-amber">Ritual</span>
@@ -256,10 +256,12 @@ export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
               </div>
             </div>
 
-            {/* Conteúdo — pergunta centraliza verticalmente, resultado deixa rolar normal */}
+            {/* Conteúdo — pergunta centraliza com min-h, resultado flui natural */}
             <div
-              className={`relative z-10 flex flex-1 justify-center px-6 py-12 md:px-12 ${
-                step.kind === "resultado" ? "items-start" : "items-center"
+              className={`relative z-10 flex justify-center px-6 py-12 md:px-12 ${
+                step.kind === "pergunta"
+                  ? "min-h-[calc(100svh-7rem)] items-center"
+                  : "items-start"
               }`}
             >
               <AnimatePresence mode="wait">
