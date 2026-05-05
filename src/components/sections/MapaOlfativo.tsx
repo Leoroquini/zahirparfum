@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import { CATALOGO, type Perfume } from "@/data/catalogo";
+import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
 import { MapaMobileAlt } from "@/components/ui/MapaMobileAlt";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
@@ -344,8 +346,22 @@ function InfoPanel({ perfume }: { perfume: Perfume }) {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -12 }}
       transition={{ duration: 0.4, ease: EASE_OUT }}
-      className="flex h-full flex-col gap-5 rounded-sm border border-amber/20 p-6 md:p-8"
+      className="flex h-full flex-col gap-5 rounded-sm border border-amber/20 bg-cream-soft/60 p-6 backdrop-blur-sm md:p-8"
     >
+      {/* Foto do perfume */}
+      {hasFoto(perfume) && (
+        <div className="relative -mt-2 flex h-40 w-full items-center justify-center md:h-48">
+          <Image
+            src={fotoSrc(perfume)}
+            alt={perfume.nome}
+            fill
+            sizes="(max-width: 1024px) 60vw, 320px"
+            className="object-contain"
+            priority={false}
+          />
+        </div>
+      )}
+
       <div className="flex items-baseline gap-3">
         <span className="font-display text-xl italic text-amber/70">
           Nº {String(perfume.numero).padStart(2, "0")}
