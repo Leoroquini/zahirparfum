@@ -219,11 +219,22 @@ export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="fixed inset-0 z-[200] flex flex-col overflow-y-auto"
+            className="fixed inset-0 z-[200] flex flex-col overflow-y-auto bg-cream"
             role="dialog"
             aria-modal="true"
             aria-label="O Ritual, quiz olfativo"
           >
+            {/* Camada de mármore como fundo base (mesma textura do site) */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 opacity-[0.18]"
+              style={{
+                backgroundImage: "url('/textures/marble-bg.jpg')",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            />
+
             {/* Background ambiente que muda por pergunta */}
             <AmbienteBackground step={step} />
 
