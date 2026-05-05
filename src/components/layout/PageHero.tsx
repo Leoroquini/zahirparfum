@@ -28,14 +28,20 @@ export function PageHero({
     <header className="relative overflow-hidden border-b border-ink/5 px-6 pb-14 pt-32 md:px-12 md:pb-20 md:pt-40">
       {backgroundGradient && (
         <>
+          {/* Veil cream pra garantir leitura do texto escuro sobre o mármore */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 bg-cream/55"
+          />
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0 opacity-60"
             style={{ background: backgroundGradient }}
           />
+          {/* Fade pra cream embaixo pra suavizar transicao com a proxima secao */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-cream via-cream/30 to-transparent"
           />
         </>
       )}
