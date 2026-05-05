@@ -58,15 +58,22 @@ function Ato2Encontro({ perfume }: { perfume: Perfume }) {
   const jaNaLista5 = lista.some(
     (i) => i.perfumeId === perfume.id && i.variante === "decant-5"
   );
+  const jaNaListaFrasco = lista.some(
+    (i) => i.perfumeId === perfume.id && i.variante === "frasco"
+  );
   const preco5 = perfume.precoVenda
     ? Math.round((perfume.precoVenda * 0.2) / 5) * 5
     : null;
+  const precoFrasco = perfume.precoVenda;
 
-  const handleProvar = () => {
-    if (preco5 === null) return;
-    addItem(perfume, "decant-5");
+  const handleAdd = (variante: "decant-5" | "frasco") => {
+    addItem(perfume, variante);
+    const labels = {
+      "decant-5": "Decant 5ml",
+      frasco: "Frasco cheio",
+    };
     toast.success(
-      "Decant 5ml na sua lista",
+      `${labels[variante]} na sua lista`,
       "Confira a lista no canto direito pra finalizar via Instagram."
     );
   };
@@ -189,56 +196,92 @@ function Ato2Encontro({ perfume }: { perfume: Perfume }) {
             </motion.div>
           )}
 
-          {/* CTA herói — provar antes de comprometer */}
-          {preco5 !== null && (
+          {/* CTA — Provar (decant 5ml) ou Possuir (frasco) */}
+          {preco5 !== null && precoFrasco !== null && (
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 1.8, ease: EASE_OUT }}
               className="flex flex-col gap-3 pt-2"
             >
-              <button
-                type="button"
-                onClick={handleProvar}
-                disabled={jaNaLista5}
-                className={`group/cta flex items-center justify-between gap-4 rounded-full border px-6 py-4 text-left transition-all md:px-7 md:py-5 ${
-                  jaNaLista5
-                    ? "cursor-default border-amber-dim/40 bg-amber-dim/15 text-ink/65"
-                    : "border-ink bg-ink text-cream hover:bg-amber hover:border-amber hover:text-ink hover:shadow-product"
-                }`}
-                aria-label={
-                  jaNaLista5
-                    ? "Decant de 5ml já está na sua lista"
-                    : `Provar Decant 5ml por R$${preco5}`
-                }
-              >
-                <span className="flex flex-col gap-0.5">
-                  <span className="text-[10px] font-sans font-medium uppercase tracking-[0.35em] opacity-75">
-                    {jaNaLista5
-                      ? "Já na sua lista"
-                      : "Provar antes de comprometer"}
-                  </span>
-                  <span className="font-display text-xl font-light leading-tight md:text-2xl">
-                    {jaNaLista5
-                      ? "Confira no canto direito"
-                      : `Decant 5ml · R$ ${preco5}`}
-                  </span>
-                </span>
-                <span
-                  aria-hidden
-                  className={`text-2xl leading-none transition-transform duration-500 ${
-                    jaNaLista5 ? "" : "group-hover/cta:translate-x-1"
+              <div className="grid gap-3 sm:grid-cols-2">
+                {/* Provar — decant 5ml (primário, destacado) */}
+                <button
+                  type="button"
+                  onClick={() => handleAdd("decant-5")}
+                  disabled={jaNaLista5}
+                  className={`group/cta flex items-center justify-between gap-3 rounded-full border px-5 py-3.5 text-left transition-all md:px-6 md:py-4 ${
+                    jaNaLista5
+                      ? "cursor-default border-amber-dim/40 bg-amber-dim/15 text-ink/65"
+                      : "border-ink bg-ink text-cream hover:bg-amber hover:border-amber hover:text-ink hover:shadow-product"
                   }`}
+                  aria-label={
+                    jaNaLista5
+                      ? "Decant de 5ml já está na sua lista"
+                      : `Provar Decant 5ml por R$${preco5}`
+                  }
                 >
-                  {jaNaLista5 ? "✓" : "→"}
-                </span>
-              </button>
+                  <span className="flex flex-col gap-0.5 overflow-hidden">
+                    <span className="text-[9px] font-sans font-medium uppercase tracking-[0.32em] opacity-75">
+                      {jaNaLista5 ? "Na sua lista" : "Provar"}
+                    </span>
+                    <span className="truncate font-display text-lg font-light leading-tight md:text-xl">
+                      {jaNaLista5 ? "✓ Decant 5ml" : `Decant 5ml · R$ ${preco5}`}
+                    </span>
+                  </span>
+                  {!jaNaLista5 && (
+                    <span
+                      aria-hidden
+                      className="shrink-0 text-xl leading-none transition-transform duration-500 group-hover/cta:translate-x-1"
+                    >
+                      →
+                    </span>
+                  )}
+                </button>
+
+                {/* Possuir — frasco cheio (secundário, outline) */}
+                <button
+                  type="button"
+                  onClick={() => handleAdd("frasco")}
+                  disabled={jaNaListaFrasco}
+                  className={`group/cta flex items-center justify-between gap-3 rounded-full border px-5 py-3.5 text-left transition-all md:px-6 md:py-4 ${
+                    jaNaListaFrasco
+                      ? "cursor-default border-amber-dim/40 bg-amber-dim/15 text-ink/65"
+                      : "border-ink/40 bg-cream-soft/60 text-ink hover:border-ink hover:bg-cream hover:shadow-editorial"
+                  }`}
+                  aria-label={
+                    jaNaListaFrasco
+                      ? "Frasco já está na sua lista"
+                      : `Possuir Frasco ${perfume.volume} por R$${precoFrasco}`
+                  }
+                >
+                  <span className="flex flex-col gap-0.5 overflow-hidden">
+                    <span className="text-[9px] font-sans font-medium uppercase tracking-[0.32em] text-amber-dim">
+                      {jaNaListaFrasco ? "Na sua lista" : "Possuir"}
+                    </span>
+                    <span className="truncate font-display text-lg font-light leading-tight md:text-xl">
+                      {jaNaListaFrasco
+                        ? `✓ Frasco ${perfume.volume}`
+                        : `Frasco ${perfume.volume} · R$ ${precoFrasco}`}
+                    </span>
+                  </span>
+                  {!jaNaListaFrasco && (
+                    <span
+                      aria-hidden
+                      className="shrink-0 text-xl leading-none transition-transform duration-500 group-hover/cta:translate-x-1"
+                    >
+                      →
+                    </span>
+                  )}
+                </button>
+              </div>
+
               <button
                 type="button"
                 onClick={scrollToVeredicto}
                 className="self-start text-[10px] font-sans uppercase tracking-[0.35em] text-ink/65 underline-offset-4 transition-colors hover:text-amber-dim hover:underline"
               >
-                ou ver as 3 opções de tamanho ↓
+                ou ver decant 10ml também ↓
               </button>
             </motion.div>
           )}
