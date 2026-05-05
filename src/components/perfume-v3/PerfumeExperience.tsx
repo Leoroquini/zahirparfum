@@ -54,6 +54,28 @@ function Ato2Encontro({ perfume }: { perfume: Perfume }) {
   const arquetipo = arquetipoDe(perfume.id);
   const palavrasNome = perfume.nome.split(" ");
   const numero = String(perfume.numero).padStart(2, "0");
+  const lista = useLista();
+  const jaNaLista5 = lista.some(
+    (i) => i.perfumeId === perfume.id && i.variante === "decant-5"
+  );
+  const preco5 = perfume.precoVenda
+    ? Math.round((perfume.precoVenda * 0.2) / 5) * 5
+    : null;
+
+  const handleProvar = () => {
+    if (preco5 === null) return;
+    addItem(perfume, "decant-5");
+    toast.success(
+      "Decant 5ml na sua lista",
+      "Confira a lista no canto direito pra finalizar via Instagram."
+    );
+  };
+
+  const scrollToVeredicto = () => {
+    document
+      .getElementById("veredicto")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <section className="relative flex min-h-[calc(100svh-7rem)] items-center overflow-hidden pb-24 pt-8 md:min-h-[calc(100svh-9rem)] md:pb-32 md:pt-10">
@@ -164,6 +186,60 @@ function Ato2Encontro({ perfume }: { perfume: Perfume }) {
                   fidelidade {perfume.cloneFidelidade}
                 </span>
               )}
+            </motion.div>
+          )}
+
+          {/* CTA herói — provar antes de comprometer */}
+          {preco5 !== null && (
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 1.8, ease: EASE_OUT }}
+              className="flex flex-col gap-3 pt-2"
+            >
+              <button
+                type="button"
+                onClick={handleProvar}
+                disabled={jaNaLista5}
+                className={`group/cta flex items-center justify-between gap-4 rounded-full border px-6 py-4 text-left transition-all md:px-7 md:py-5 ${
+                  jaNaLista5
+                    ? "cursor-default border-amber-dim/40 bg-amber-dim/15 text-ink/65"
+                    : "border-ink bg-ink text-cream hover:bg-amber hover:border-amber hover:text-ink hover:shadow-product"
+                }`}
+                aria-label={
+                  jaNaLista5
+                    ? "Decant de 5ml já está na sua lista"
+                    : `Provar Decant 5ml por R$${preco5}`
+                }
+              >
+                <span className="flex flex-col gap-0.5">
+                  <span className="text-[10px] font-sans font-medium uppercase tracking-[0.35em] opacity-75">
+                    {jaNaLista5
+                      ? "Já na sua lista"
+                      : "Provar antes de comprometer"}
+                  </span>
+                  <span className="font-display text-xl font-light leading-tight md:text-2xl">
+                    {jaNaLista5
+                      ? "Confira no canto direito"
+                      : `Decant 5ml · R$ ${preco5}`}
+                  </span>
+                </span>
+                <span
+                  aria-hidden
+                  className={`text-2xl leading-none transition-transform duration-500 ${
+                    jaNaLista5 ? "" : "group-hover/cta:translate-x-1"
+                  }`}
+                >
+                  {jaNaLista5 ? "✓" : "→"}
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={scrollToVeredicto}
+                className="self-start text-[10px] font-sans uppercase tracking-[0.35em] text-ink/65 underline-offset-4 transition-colors hover:text-amber-dim hover:underline"
+              >
+                ou ver as 3 opções de tamanho ↓
+              </button>
             </motion.div>
           )}
         </div>
@@ -410,7 +486,7 @@ function Ato6Veredicto({ perfume }: { perfume: Perfume }) {
   const precoFrasco = perfume.precoVenda;
 
   return (
-    <section className="relative py-24 md:py-32">
+    <section id="veredicto" className="relative scroll-mt-24 py-24 md:py-32">
       <div className="mx-auto max-w-[1400px] px-6 md:px-12">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
