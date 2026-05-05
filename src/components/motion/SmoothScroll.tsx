@@ -4,6 +4,12 @@ import Lenis from "lenis";
 import { useEffect } from "react";
 import { isLowEndDevice } from "@/lib/device";
 
+declare global {
+  interface Window {
+    __zahirLenis?: Lenis;
+  }
+}
+
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Lenis é o principal culpado por travamento em devices fracos.
@@ -17,6 +23,9 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       smoothWheel: true,
     });
 
+    // Expõe globalmente pra overlays poderem pausar/resumir
+    window.__zahirLenis = lenis;
+
     let rafId: number;
     function raf(time: number) {
       lenis.raf(time);
@@ -27,6 +36,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     return () => {
       cancelAnimationFrame(rafId);
       lenis.destroy();
+      delete window.__zahirLenis;
     };
   }, []);
 

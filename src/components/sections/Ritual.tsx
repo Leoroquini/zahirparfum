@@ -70,13 +70,17 @@ export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
     setTemProgresso(false);
   };
 
-  // Lock body scroll quando o overlay está aberto
+  // Lock body scroll quando o overlay está aberto + pausa o Lenis
+  // (Lenis intercepta wheel events globalmente — sem .stop() ele
+  // "rouba" o scroll do overlay também).
   useEffect(() => {
     if (!open) return;
     const original = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    window.__zahirLenis?.stop();
     return () => {
       document.body.style.overflow = original;
+      window.__zahirLenis?.start();
     };
   }, [open]);
 
