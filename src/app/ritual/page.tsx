@@ -20,7 +20,7 @@ export default function RitualPage() {
             <em className="italic text-amber/90">seu perfil olfativo.</em>
           </>
         }
-        descricao="Sem jargão. Sem checklist técnico. Um diálogo curto pra te indicar três fragrâncias do catálogo que conversam com quem você é hoje, baseadas em momentos, memórias e preferências, não em fórmulas químicas."
+        descricao="Sem jargão. Sem clichê. Curador de verdade pergunta o que você já amou, o que evita, e como sua pele se comporta — depois cruza com o catálogo. Você sai daqui com 3 fragrâncias da sua zona + 1 pra arriscar."
         backgroundGradient="radial-gradient(ellipse at 30% 40%, rgba(231,182,89,0.12), transparent 60%)"
       />
 
@@ -34,18 +34,18 @@ export default function RitualPage() {
           <div className="mt-10 grid gap-8 md:grid-cols-3 md:gap-10">
             <Passo
               numero="01"
-              titulo="Responde"
-              descricao="Seis perguntas em tela cheia. Cada uma tem quatro respostas. Não existe certo ou errado, só o que combina mais com você."
+              titulo="Responde com honestidade"
+              descricao="Pergunto o que você já amou (Sauvage? Aventus?), o que evita, como sua pele se comporta e como você compra perfume. Sem clichê de revista."
             />
             <Passo
               numero="02"
-              titulo="Recebe um perfil"
-              descricao="Um nome próprio pra seu DNA olfativo (tipo 'O Noturno Árabe' ou 'O Fresco Urbano') + as três dimensões que mais te representam."
+              titulo="Recebe seu perfil + afinidade %"
+              descricao="Um nome pro seu DNA olfativo + as 3 dimensões que mais te representam. Cada perfume vem com nota de afinidade e o porquê foi escolhido."
             />
             <Passo
               numero="03"
-              titulo="Vê três sugestões"
-              descricao="Perfumes do catálogo que casam com seu perfil, ordenados por compatibilidade. Clica pra abrir a ficha completa."
+              titulo="3 da sua zona + 1 pra arriscar"
+              descricao="Curador real não recomenda só o seguro. Você recebe 3 fragrâncias alinhadas e 1 fora da curva — pra quando quiser abrir o repertório."
             />
           </div>
 

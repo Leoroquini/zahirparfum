@@ -6,20 +6,22 @@ import { motion, AnimatePresence } from "motion/react";
 import {
   PERGUNTAS,
   calcularPerfil,
-  perfumesPara,
+  recomendacoesPara,
   type Resposta,
   type Perfil,
+  type Recomendacoes,
+  type RecomendacaoPerfume,
 } from "@/data/quiz";
-import type { Perfume } from "@/data/catalogo";
 import { addItem } from "@/lib/lista-store";
 import { events } from "@/lib/track";
+import { linkWhatsApp, linkInstagram } from "@/lib/reserva-dm";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
 type StepState =
   | { kind: "intro" }
   | { kind: "pergunta"; index: number }
-  | { kind: "resultado"; perfil: Perfil; perfumes: Perfume[] };
+  | { kind: "resultado"; perfil: Perfil; recomendacoes: Recomendacoes };
 
 const RITUAL_STATE_KEY = "zahir-ritual-progresso";
 
@@ -123,8 +125,9 @@ export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
 
     if (nextIndex >= PERGUNTAS.length) {
       const perfil = calcularPerfil(nextRespostas);
-      const perfumes = perfumesPara(perfil, 3);
-      setStep({ kind: "resultado", perfil, perfumes });
+      const recomendacoes = recomendacoesPara(perfil);
+      setStep({ kind: "resultado", perfil, recomendacoes });
+      events.ritualCompleto(perfil.tituloPerfil);
       clearProgress(); // terminou, limpa
     } else {
       // Persiste progresso
@@ -169,9 +172,9 @@ export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
                 <em className="italic text-amber/90">seu perfil olfativo.</em>
               </h2>
               <p className="max-w-2xl text-base leading-relaxed text-ink/75 md:text-lg">
-                Sem jargão. Sem checklist técnico. Um diálogo curto pra te
-                indicar três fragrâncias do catálogo que conversam com quem você
-                é hoje.
+                Como um curador de verdade: pergunto o que você já amou, o que
+                evita, como sua pele se comporta. Você sai com 3 fragrâncias da
+                sua zona + 1 pra arriscar — cada uma com afinidade % e por quê.
               </p>
             </motion.div>
           )}
@@ -256,7 +259,7 @@ export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
                   <ResultadoView
                     key="resultado"
                     perfil={step.perfil}
-                    perfumes={step.perfumes}
+                    recomendacoes={step.recomendacoes}
                     onReset={() => {
                       reset();
                       setStep({ kind: "pergunta", index: 0 });
@@ -363,6 +366,17 @@ function PerguntaView({
         {pergunta.pergunta}
       </motion.h2>
 
+      {pergunta.hint && (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.32 }}
+          className="mx-auto -mt-4 max-w-xl text-sm italic leading-relaxed text-ink/65"
+        >
+          {pergunta.hint}
+        </motion.p>
+      )}
+
       <div className="mt-8 grid gap-3 sm:grid-cols-2">
         {pergunta.respostas.map((r, i) => (
           <motion.button
@@ -400,15 +414,20 @@ function PerguntaView({
 
 function ResultadoView({
   perfil,
-  perfumes,
+  recomendacoes,
   onReset,
   onFechar,
 }: {
   perfil: Perfil;
-  perfumes: Perfume[];
+  recomendacoes: Recomendacoes;
   onReset: () => void;
   onFechar: () => void;
 }) {
+  const todasAsRecs: RecomendacaoPerfume[] = [
+    ...recomendacoes.conforto,
+    ...(recomendacoes.ousadia ? [recomendacoes.ousadia] : []),
+  ];
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -469,21 +488,26 @@ function ResultadoView({
         </motion.div>
       </div>
 
-      {/* Perfumes recomendados */}
+      {/* SUA ZONA DE CONFORTO — 3 perfumes alinhados */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1.5 }}
         className="flex flex-col gap-6"
       >
-        <span className="text-center text-[10px] font-sans uppercase tracking-[0.45em] text-amber/80">
-          Fragrâncias que conversam com você
-        </span>
+        <div className="text-center">
+          <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-amber/80">
+            Sua zona de conforto
+          </span>
+          <p className="mt-2 text-sm italic text-ink/65">
+            Três fragrâncias do catálogo que casam com seu perfil
+          </p>
+        </div>
 
         <div className="grid gap-4 md:grid-cols-3">
-          {perfumes.map((p, i) => (
+          {recomendacoes.conforto.map((rec, i) => (
             <motion.div
-              key={p.id}
+              key={rec.perfume.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
@@ -492,65 +516,53 @@ function ResultadoView({
                 ease: EASE_OUT,
               }}
             >
-              <Link
-                href={`/perfume/${p.id}`}
-                className="group flex h-full flex-col gap-3 rounded-sm border border-amber/30 p-6 transition-all hover:border-amber hover:"
-              >
-                <div className="flex items-baseline justify-between">
-                  <span className="font-display text-lg italic text-amber/70">
-                    Nº {String(p.numero).padStart(2, "0")}
-                  </span>
-                  <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-amber/60">
-                    {["Top escolha", "Segunda opção", "Surpresa"][i] ??
-                      "Sugestão"}
-                  </span>
-                </div>
-                <h3 className="font-display text-2xl font-light leading-[1.1] text-ink transition-colors group-hover:text-amber-bright">
-                  {p.nome}
-                </h3>
-                {p.familia && (
-                  <span className="text-xs italic text-amber/70">
-                    {p.familia}
-                  </span>
-                )}
-                {p.cloneDe?.[0] && (
-                  <p className="mt-1 text-xs text-ink/75">
-                    <span className="italic">inspirado em </span>
-                    {p.cloneDe[0]}
-                  </p>
-                )}
-                <div className="mt-auto flex items-end justify-between border-t border-ink/10 pt-3">
-                  <span className="font-display text-xl text-ink">
-                    R$ {Math.round(p.precoVenda ?? 0)}
-                  </span>
-                  <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-amber transition-transform duration-300 group-hover:translate-x-1">
-                    Abrir →
-                  </span>
-                </div>
-              </Link>
+              <RecCard rec={rec} rank={i} />
             </motion.div>
           ))}
         </div>
 
-        {perfumes.length === 0 && (
+        {recomendacoes.conforto.length === 0 && (
           <p className="text-center text-sm italic text-ink/70">
-            Combinação rara, nenhum perfume do catálogo atual encaixa
-            perfeitamente. Tenta de novo ou explora o mapa olfativo.
+            Combinação rara — seus filtros eliminaram tudo do catálogo. Tenta de
+            novo escolhendo "Nenhum desses" no veto.
           </p>
         )}
       </motion.div>
 
-      {/* Captura de email com cupom 10% */}
+      {/* PRA ARRISCAR — 1 perfume fora da zona */}
+      {recomendacoes.ousadia && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 2.2 }}
+          className="flex flex-col gap-4"
+        >
+          <div className="text-center">
+            <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-amber/80">
+              Pra arriscar
+            </span>
+            <p className="mt-2 text-sm italic text-ink/65">
+              Fora do óbvio, mas pode te surpreender
+            </p>
+          </div>
+
+          <div className="mx-auto w-full max-w-md">
+            <RecCard rec={recomendacoes.ousadia} ousadia />
+          </div>
+        </motion.div>
+      )}
+
+      {/* Captura WhatsApp/Email */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 2.3 }}
+        transition={{ duration: 1, delay: 2.6 }}
       >
-        <CapturaEmailRitual
+        <CapturaContatoRitual
           perfil={perfil}
-          perfumes={perfumes}
+          recomendacoes={todasAsRecs}
           onAddLista={() => {
-            perfumes.forEach((p) => addItem(p, "frasco"));
+            recomendacoes.conforto.forEach((r) => addItem(r.perfume, "frasco"));
           }}
         />
       </motion.div>
@@ -559,7 +571,7 @@ function ResultadoView({
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 2.7 }}
+        transition={{ duration: 1, delay: 2.9 }}
         className="mt-4 flex flex-col items-center gap-3 md:flex-row md:justify-center md:gap-5"
       >
         <button
@@ -581,32 +593,144 @@ function ResultadoView({
   );
 }
 
-/* ---------------- Captura de email com cupom ---------------- */
+/* ---------------- Card de recomendação ---------------- */
 
-function CapturaEmailRitual({
+function RecCard({
+  rec,
+  rank,
+  ousadia = false,
+}: {
+  rec: RecomendacaoPerfume;
+  rank?: number;
+  ousadia?: boolean;
+}) {
+  const labelRank = ousadia
+    ? "Pra abrir o repertório"
+    : ["Top escolha", "Segunda opção", "Terceira"][rank ?? 0] ?? "Sugestão";
+
+  return (
+    <Link
+      href={`/perfume/${rec.perfume.id}`}
+      className={`group flex h-full flex-col gap-3 rounded-sm border p-6 transition-all hover:shadow-product ${
+        ousadia
+          ? "border-amber-dim/40 bg-cream-soft/40"
+          : "border-amber/30 bg-cream-soft/40 hover:border-amber"
+      }`}
+    >
+      <div className="flex items-baseline justify-between gap-2">
+        <span className="font-display text-lg italic text-amber/70">
+          Nº {String(rec.perfume.numero).padStart(2, "0")}
+        </span>
+        <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-amber-dim">
+          {labelRank}
+        </span>
+      </div>
+
+      <h3 className="font-display text-2xl font-light leading-[1.1] text-ink transition-colors group-hover:text-amber-bright">
+        {rec.perfume.nome}
+      </h3>
+
+      {rec.perfume.familia && (
+        <span className="text-xs italic text-amber/70">
+          {rec.perfume.familia}
+        </span>
+      )}
+
+      {rec.perfume.cloneDe?.[0] && (
+        <p className="text-xs text-ink/75">
+          <span className="italic">inspirado em </span>
+          {rec.perfume.cloneDe[0]}
+        </p>
+      )}
+
+      {/* Justificativa "porque" */}
+      <div className="mt-1 rounded-sm border-l-2 border-amber-dim/50 bg-amber-dim/5 px-3 py-2">
+        <span className="block text-[9px] font-sans uppercase tracking-[0.35em] text-amber-dim">
+          Recomendado porque
+        </span>
+        <p className="mt-1 text-xs leading-relaxed text-ink/80">{rec.porque}</p>
+      </div>
+
+      {/* Afinidade + preço */}
+      <div className="mt-auto flex items-end justify-between gap-3 border-t border-ink/10 pt-3">
+        <div className="flex flex-col gap-0.5">
+          <span className="text-[9px] font-sans uppercase tracking-[0.3em] text-ink/65">
+            Afinidade
+          </span>
+          <span className="font-display text-lg text-amber">
+            {rec.afinidade}%
+          </span>
+        </div>
+        <div className="flex flex-col items-end gap-0.5">
+          <span className="text-[9px] font-sans uppercase tracking-[0.3em] text-ink/65">
+            A partir de
+          </span>
+          <span className="font-display text-lg text-ink">
+            R$ {Math.round(rec.perfume.precoVenda ?? 0)}
+          </span>
+        </div>
+      </div>
+
+      <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-amber transition-transform duration-300 group-hover:translate-x-1">
+        Abrir ficha →
+      </span>
+    </Link>
+  );
+}
+
+/* ---------------- Captura: WhatsApp/Instagram + email opcional ---------------- */
+
+function CapturaContatoRitual({
   perfil,
-  perfumes,
+  recomendacoes,
   onAddLista,
 }: {
   perfil: Perfil;
-  perfumes: Perfume[];
+  recomendacoes: RecomendacaoPerfume[];
   onAddLista: () => void;
 }) {
   const [email, setEmail] = useState("");
-  const [state, setState] = useState<"idle" | "submitting" | "success" | "error">("idle");
-  const [error, setError] = useState("");
+  const [emailState, setEmailState] = useState<
+    "idle" | "submitting" | "success" | "error"
+  >("idle");
+  const [emailError, setEmailError] = useState("");
 
-  const onSubmit = async (e: React.FormEvent) => {
+  const mensagem = useMemo(() => {
+    const linhas = [
+      `Olá! Acabei de fazer o Ritual no site da Zahir.`,
+      ``,
+      `Meu perfil: ${perfil.tituloPerfil}`,
+      ``,
+      `Top sugestões pra mim:`,
+      ...recomendacoes.slice(0, 4).map(
+        (r, i) =>
+          `${i + 1}. ${r.perfume.nome} (Nº ${String(r.perfume.numero).padStart(
+            2,
+            "0"
+          )}) — ${r.afinidade}% afinidade${
+            r.tipo === "ousadia" ? " · pra arriscar" : ""
+          }`
+      ),
+      ``,
+      `Posso conversar com vocês sobre as opções?`,
+    ];
+    return linhas.join("\n");
+  }, [perfil, recomendacoes]);
+
+  const waUrl = linkWhatsApp(mensagem);
+  const igUrl = linkInstagram(mensagem);
+
+  const onSubmitEmail = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = email.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
-      setError("E-mail não parece válido");
-      setState("error");
+      setEmailError("E-mail não parece válido");
+      setEmailState("error");
       return;
     }
 
-    setState("submitting");
-    await new Promise((r) => setTimeout(r, 700));
+    setEmailState("submitting");
+    await new Promise((r) => setTimeout(r, 600));
 
     try {
       const existing = JSON.parse(
@@ -619,7 +743,7 @@ function CapturaEmailRitual({
           {
             email: trimmed,
             perfil: perfil.tituloPerfil,
-            perfumes: perfumes.map((p) => p.id),
+            perfumes: recomendacoes.map((r) => r.perfume.id),
             at: Date.now(),
           },
         ])
@@ -629,96 +753,114 @@ function CapturaEmailRitual({
     }
 
     events.ritualEmailCapturado();
-    setState("success");
+    setEmailState("success");
   };
 
-  if (state === "success") {
-    return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6, ease: EASE_OUT }}
-        className="mt-6 rounded-sm border border-amber/50 bg-amber/10 p-6 text-center md:p-8"
-      >
-        <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber">
-          Seu perfil está a caminho
-        </span>
-        <p className="mt-3 font-display text-xl font-light italic text-ink md:text-2xl">
-          Use o cupom{" "}
-          <span className="not-italic font-normal text-amber tracking-wider">
-            RITUAL10
-          </span>{" "}
-          na primeira compra.
-        </p>
-        <p className="mt-3 text-sm italic leading-relaxed text-ink/70">
-          Mande o cupom junto com a reserva no Instagram, a gente aplica em
-          frasco cheio ou decant.
-        </p>
-        <button
-          type="button"
-          onClick={onAddLista}
-          className="mt-5 text-[10px] font-sans uppercase tracking-[0.3em] text-amber underline underline-offset-4 transition-colors hover:text-amber-bright"
-        >
-          Adicionar as 3 sugestões à minha lista
-        </button>
-      </motion.div>
-    );
-  }
-
   return (
-    <form
-      onSubmit={onSubmit}
-      className="mt-6 rounded-sm border border-ink/10 bg-cream/40 p-5 backdrop-blur-sm md:p-7"
-    >
+    <div className="mt-6 flex flex-col gap-5 rounded-sm border border-ink/10 bg-cream/40 p-5 backdrop-blur-sm md:p-7">
       <div className="flex flex-col gap-2 text-center">
         <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber">
           Leve seu perfil
         </span>
         <p className="font-display text-lg font-light italic text-ink md:text-xl">
-          Receba seu perfil + cupom de{" "}
-          <span className="not-italic font-normal text-amber">
-            10% na primeira compra
-          </span>
+          Recebe a curadoria via{" "}
+          <span className="not-italic font-normal text-amber">WhatsApp</span> e
+          fala direto com a gente
         </p>
       </div>
 
-      <div className="mt-5 flex flex-col gap-2 sm:flex-row">
-        <input
-          type="email"
-          required
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            if (state === "error") setState("idle");
-          }}
-          disabled={state === "submitting"}
-          placeholder="seu@email.com"
-          className="flex-1 rounded-full border border-ink/15 bg-cream/60 px-5 py-3 text-sm text-ink placeholder:text-ink/75 focus:border-amber focus:outline-none disabled:opacity-50"
-        />
-        <button
-          type="submit"
-          disabled={state === "submitting"}
-          className="group inline-flex items-center justify-center gap-2 rounded-full bg-amber px-6 py-3 text-[11px] font-sans uppercase tracking-[0.3em] text-ink transition-all hover:bg-amber-bright disabled:opacity-70"
-        >
-          {state === "submitting" ? "Enviando…" : "Receber cupom"}
-          {state !== "submitting" && (
+      {/* Botões de canal */}
+      <div className="grid gap-3 sm:grid-cols-2">
+        {waUrl && (
+          <a
+            href={waUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center justify-center gap-2 rounded-full bg-amber px-6 py-3.5 text-[11px] font-sans uppercase tracking-[0.3em] text-ink transition-all hover:bg-amber-bright"
+          >
+            <span>Receber no WhatsApp</span>
             <span className="transition-transform duration-500 group-hover:translate-x-1">
               →
             </span>
-          )}
-        </button>
+          </a>
+        )}
+        <a
+          href={igUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group inline-flex items-center justify-center gap-2 rounded-full border border-ink/30 bg-cream-soft/60 px-6 py-3.5 text-[11px] font-sans uppercase tracking-[0.3em] text-ink/85 transition-all hover:border-ink hover:bg-cream"
+        >
+          <span>Conversar no Instagram</span>
+          <span className="transition-transform duration-500 group-hover:translate-x-1">
+            →
+          </span>
+        </a>
       </div>
 
-      {state === "error" && (
-        <p className="mt-2 text-xs italic" style={{ color: "#d88b8f" }}>
-          {error}
-        </p>
-      )}
-      {state === "idle" && (
-        <p className="mt-3 text-center text-[10px] italic text-ink/75">
-          Sem spam. A gente avisa só quando sair novidade relevante.
-        </p>
-      )}
-    </form>
+      <button
+        type="button"
+        onClick={onAddLista}
+        className="self-center text-[10px] font-sans uppercase tracking-[0.3em] text-amber underline underline-offset-4 transition-colors hover:text-amber-bright"
+      >
+        Ou adicionar as 3 sugestões à minha lista de reserva
+      </button>
+
+      {/* Email opcional pra cupom */}
+      <div className="mt-2 border-t border-ink/10 pt-5">
+        {emailState === "success" ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, ease: EASE_OUT }}
+            className="rounded-sm border border-amber/40 bg-amber/10 p-4 text-center"
+          >
+            <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber">
+              Cupom liberado
+            </span>
+            <p className="mt-2 font-display text-lg font-light italic text-ink">
+              Use{" "}
+              <span className="not-italic font-normal text-amber tracking-wider">
+                RITUAL10
+              </span>{" "}
+              na primeira compra
+            </p>
+            <p className="mt-2 text-xs italic text-ink/70">
+              Mande o cupom junto com a reserva.
+            </p>
+          </motion.div>
+        ) : (
+          <form onSubmit={onSubmitEmail} className="flex flex-col gap-2">
+            <p className="text-center text-[10px] font-sans uppercase tracking-[0.35em] text-ink/65">
+              Ou pega 10% off pra primeira compra
+            </p>
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (emailState === "error") setEmailState("idle");
+                }}
+                disabled={emailState === "submitting"}
+                placeholder="seu@email.com (opcional)"
+                className="flex-1 rounded-full border border-ink/15 bg-cream/60 px-5 py-2.5 text-sm text-ink placeholder:text-ink/55 focus:border-amber focus:outline-none disabled:opacity-50"
+              />
+              <button
+                type="submit"
+                disabled={emailState === "submitting" || !email}
+                className="rounded-full border border-ink/25 px-5 py-2.5 text-[10px] font-sans uppercase tracking-[0.3em] text-ink/80 transition-all hover:border-amber hover:text-amber disabled:opacity-50"
+              >
+                {emailState === "submitting" ? "Enviando…" : "Receber cupom"}
+              </button>
+            </div>
+            {emailState === "error" && (
+              <p className="text-xs italic" style={{ color: "#d88b8f" }}>
+                {emailError}
+              </p>
+            )}
+          </form>
+        )}
+      </div>
+    </div>
   );
 }
