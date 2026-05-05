@@ -38,6 +38,9 @@ yarn-error.log*
 /informações novas/
 /fotos dos perfumes/
 
+# backup das fotos antigas (substituídas pelas novas oficiais)
+/public/perfumes/_old/
+
 # dev server logs locais
 .dev.log
 zahir-dev*.log
@@ -49,3 +52,5 @@ zahir-start*.log
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.vercel
