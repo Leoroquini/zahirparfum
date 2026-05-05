@@ -477,7 +477,7 @@ function Ato5CrossSell({ perfume }: { perfume: Perfume }) {
 
                 <div className="mt-auto flex items-end justify-between border-t border-ink/10 pt-3">
                   <span className="text-[9px] font-sans uppercase tracking-[0.3em] text-ink/65">
-                    A partir de
+                    Frasco · {p.volume}
                   </span>
                   <span className="font-display text-2xl text-ink">
                     R$ {p.precoVenda}

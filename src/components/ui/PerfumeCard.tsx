@@ -217,7 +217,7 @@ export function PerfumeCard({ perfume, index = 0 }: Props) {
 
             <div className="flex flex-col items-end">
               <span className="text-[9px] font-sans uppercase tracking-[0.3em] text-cream/40">
-                A partir de
+                Frasco · {perfume.volume}
               </span>
               <span className="font-display text-2xl leading-none text-cream">
                 {formatPrice(perfume.precoVenda)}

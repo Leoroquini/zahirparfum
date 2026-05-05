@@ -392,7 +392,7 @@ function InfoPanel({ perfume }: { perfume: Perfume }) {
       <div className="mt-auto flex items-end justify-between gap-3 border-t border-ink/5 pt-5">
         <div className="flex flex-col">
           <span className="text-[9px] font-sans uppercase tracking-[0.3em] text-ink/75">
-            A partir de
+            Frasco · {perfume.volume}
           </span>
           <span className="font-display text-3xl font-light text-ink">
             {perfume.precoVenda !== null

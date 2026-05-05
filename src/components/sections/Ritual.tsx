@@ -684,7 +684,7 @@ function RecCard({
         </div>
         <div className="flex flex-col items-end gap-0.5">
           <span className="text-[9px] font-sans uppercase tracking-[0.3em] text-ink/65">
-            A partir de
+            Frasco · {rec.perfume.volume}
           </span>
           <span className="font-display text-lg text-ink">
             R$ {Math.round(rec.perfume.precoVenda ?? 0)}
