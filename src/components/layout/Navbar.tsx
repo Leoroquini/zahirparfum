@@ -10,9 +10,8 @@ const NAV_LINKS = [
   { href: "/catalogo", label: "Catálogo" },
   { href: "/mapa", label: "Mapa" },
   { href: "/ritual", label: "O Ritual" },
-  { href: "/curadorias", label: "Curadorias" },
-  { href: "/decants", label: "Decants" },
   { href: "/comparador", label: "Comparar" },
+  { href: "/decants", label: "Decants" },
 ];
 
 export function Navbar() {
