@@ -56,6 +56,19 @@ export function fmtPrecoReal(reais: number | null): string {
   return `R$ ${reais.toLocaleString("pt-BR")}`;
 }
 
+/**
+ * Reais com decimais quando houver (R$ 59,90 / R$ 199).
+ * Usado para preços que podem ter centavos (decants com preço fixo).
+ */
+export function fmtPrecoBRL(reais: number | null | undefined): string {
+  if (reais === null || reais === undefined) return "—";
+  const temDecimais = Math.abs(reais - Math.round(reais)) > 0.001;
+  return `R$ ${reais.toLocaleString("pt-BR", {
+    minimumFractionDigits: temDecimais ? 2 : 0,
+    maximumFractionDigits: 2,
+  })}`;
+}
+
 /** Retorna o preço efetivo do frasco (promo se houver) e flag emPromo. */
 export function precoFrasco(p: Perfume): { atual: number | null; cheio: number | null; emPromo: boolean } {
   if (p.precoVenda === null) return { atual: null, cheio: null, emPromo: false };
@@ -142,12 +155,17 @@ export type KitDetectado =
 
 /**
  * Calcula o preço de um decant avulso (sem kit), em centavos.
- * Usa a mesma lógica de precoDa() em lista-store.ts.
+ * Espelha a lógica de precoDa() em lista-store.ts.
  * Mantida aqui pra evitar dependência circular.
  */
 function precoDecantAvulsoCent(perfume: Perfume, tamanho: TamanhoDecant): number {
+  if (tamanho === "10ml") {
+    if (perfume.precoDecant10Cent !== undefined) return perfume.precoDecant10Cent;
+    const base = perfume.precoVenda ?? 0;
+    return Math.max(40, Math.round(base * 0.3)) * 100;
+  }
+  if (perfume.precoDecant5Cent !== undefined) return perfume.precoDecant5Cent;
   const base = perfume.precoVenda ?? 0;
-  if (tamanho === "10ml") return Math.max(40, Math.round(base * 0.3)) * 100;
   return Math.max(25, Math.round(base * 0.2)) * 100;
 }
 

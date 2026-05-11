@@ -16,6 +16,7 @@ import {
 import {
   detectarKit,
   fmtPrecoCent,
+  fmtPrecoBRL,
   type TamanhoDecant,
 } from "@/lib/promo";
 import { events } from "@/lib/track";
@@ -305,7 +306,7 @@ export function MontadorKit() {
                         {tamanhoPadrao}
                       </span>
                       <span className="font-display text-base text-cream md:text-lg">
-                        R$ {preco}
+                        {fmtPrecoBRL(preco)}
                       </span>
                     </div>
                   </div>
@@ -424,7 +425,7 @@ export function MontadorKit() {
                             </div>
                             <div className="flex shrink-0 flex-col items-end gap-1">
                               <span className="font-display text-base text-ink">
-                                R$ {i.preco}
+                                {fmtPrecoBRL(i.preco)}
                               </span>
                               <button
                                 type="button"
@@ -665,7 +666,7 @@ function TotalDisplay({
   // parcial / sem-kit / vazio: mostra soma simples
   return (
     <span className="font-display text-3xl font-light text-ink tabular-nums">
-      R$ {totalSomado}
+      {fmtPrecoBRL(totalSomado)}
     </span>
   );
 }

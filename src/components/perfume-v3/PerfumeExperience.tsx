@@ -8,7 +8,8 @@ import type { Perfume } from "@/data/catalogo";
 import { CATALOGO } from "@/data/catalogo";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
 import { arquetipoDe } from "@/data/arquetipos";
-import { addItem, useLista } from "@/lib/lista-store";
+import { addItem, useLista, precoDa } from "@/lib/lista-store";
+import { fmtPrecoBRL } from "@/lib/promo";
 import { toast } from "@/lib/toast-store";
 import { RelogioPele } from "./RelogioPele";
 import { PerfumeNavigator } from "./PerfumeNavigator";
@@ -61,9 +62,7 @@ function Ato2Encontro({ perfume }: { perfume: Perfume }) {
   const jaNaListaFrasco = lista.some(
     (i) => i.perfumeId === perfume.id && i.variante === "frasco"
   );
-  const preco5 = perfume.precoVenda
-    ? Math.round((perfume.precoVenda * 0.2) / 5) * 5
-    : null;
+  const preco5 = perfume.precoVenda ? precoDa(perfume, "decant-5") : null;
   const precoFrasco = perfume.precoVenda;
   // Promo individual do frasco (sobrescreve precoFrasco no display, mas mantem precoVenda como cheio)
   const precoFrascoPromo =
@@ -234,7 +233,7 @@ function Ato2Encontro({ perfume }: { perfume: Perfume }) {
                   aria-label={
                     jaNaLista5
                       ? "Decant de 5ml já está na sua lista"
-                      : `Provar Decant 5ml por R$${preco5}`
+                      : `Provar Decant 5ml por ${fmtPrecoBRL(preco5)}`
                   }
                 >
                   <span className="flex flex-col gap-0.5 overflow-hidden">
@@ -242,7 +241,7 @@ function Ato2Encontro({ perfume }: { perfume: Perfume }) {
                       {jaNaLista5 ? "Na sua lista" : "Provar"}
                     </span>
                     <span className="truncate font-display text-lg font-light leading-tight md:text-xl">
-                      {jaNaLista5 ? "✓ Decant 5ml" : `Decant 5ml · R$ ${preco5}`}
+                      {jaNaLista5 ? "✓ Decant 5ml" : `Decant 5ml · ${fmtPrecoBRL(preco5)}`}
                     </span>
                   </span>
                   {!jaNaLista5 && (
@@ -555,9 +554,9 @@ function Ato6Veredicto({ perfume }: { perfume: Perfume }) {
 
   if (perfume.precoVenda === null) return null;
 
-  // Preços calculados a partir do frasco cheio
-  const preco5 = Math.round(perfume.precoVenda * 0.2 / 5) * 5; // ~20% do frasco
-  const preco10 = Math.round(perfume.precoVenda * 0.32 / 5) * 5; // ~32% do frasco
+  // Preços via precoDa() — usa precoDecant5/10Cent quando definido por SKU
+  const preco5 = precoDa(perfume, "decant-5");
+  const preco10 = precoDa(perfume, "decant-10");
   const precoFrasco = perfume.precoVenda;
 
   return (
@@ -718,7 +717,7 @@ function Carta({
             Preço
           </span>
           <span className="font-display text-3xl font-light text-ink md:text-4xl">
-            R$ {preco}
+            {fmtPrecoBRL(preco)}
           </span>
         </div>
 

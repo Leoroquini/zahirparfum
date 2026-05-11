@@ -14,6 +14,7 @@ import {
 import { CATALOGO } from "@/data/catalogo";
 import { mensagemLista, linkInstagram, linkWhatsApp } from "@/lib/reserva-dm";
 import { CHECKOUT_MP_ATIVO } from "@/lib/checkout-config";
+import { fmtPrecoBRL } from "@/lib/promo";
 import { events } from "@/lib/track";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
 import { toast } from "@/lib/toast-store";
@@ -234,7 +235,7 @@ export function ListaDrawer() {
                         Subtotal
                       </span>
                       <span className="font-display text-3xl font-light text-ink">
-                        R$ {subtotal.toLocaleString("pt-BR")}
+                        {fmtPrecoBRL(subtotal)}
                       </span>
                     </div>
                     <p className="text-[10px] italic text-ink/55">
@@ -382,7 +383,7 @@ function ListaItemRow({ item }: { item: ItemLista }) {
 
       <div className="flex shrink-0 flex-col items-end gap-1.5 pt-0.5">
         <span className="font-display text-lg font-light text-ink md:text-xl">
-          R$ {item.precoSnapshot}
+          {fmtPrecoBRL(item.precoSnapshot)}
         </span>
         <button
           type="button"

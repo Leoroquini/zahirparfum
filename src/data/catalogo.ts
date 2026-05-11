@@ -59,6 +59,16 @@ export type Perfume = {
    */
   precoPromoCentavos?: number;
   /**
+   * Preço fixo do decant 5ml (em centavos). Quando presente, sobrescreve
+   * o cálculo automático de 20% do frasco em precoDa() / lista-store.ts.
+   */
+  precoDecant5Cent?: number;
+  /**
+   * Preço fixo do decant 10ml (em centavos). Quando presente, sobrescreve
+   * o cálculo automático de 30% do frasco em precoDa() / lista-store.ts.
+   */
+  precoDecant10Cent?: number;
+  /**
    * Arquétipo de persona — frase editorial curta que humaniza o perfume.
    * Padrão: "Usado pelo cara que…" + comportamento concreto.
    * Foca em cena/atitude, não em adjetivo vago.
@@ -82,6 +92,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "6-8h",
     precoMercado: 251.1,
     precoVenda: 289,
+    precoDecant5Cent: 4490,
+    precoDecant10Cent: 5990,
     precoPromoCentavos: 24900,
     selecionadoSemana: true,
     ocasioes: ["noite", "encontro", "inverno", "eventos"],
@@ -106,6 +118,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "6-8h",
     precoMercado: 300,
     precoVenda: 349,
+    precoDecant5Cent: 4990,
+    precoDecant10Cent: 6990,
     precoPromoCentavos: 28900,
     selecionadoSemana: true,
     ocasioes: ["dia", "trabalho", "todas as estações"],
@@ -130,6 +144,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "8-10h",
     precoMercado: 280,
     precoVenda: 349,
+    precoDecant5Cent: 4990,
+    precoDecant10Cent: 6990,
     ocasioes: ["noite", "inverno", "encontro"],
     notas: {
       topo: ["bergamota", "abacaxi", "limão"],
@@ -152,6 +168,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "8-10h",
     precoMercado: 270,
     precoVenda: 289,
+    precoDecant5Cent: 4490,
+    precoDecant10Cent: 5990,
     ocasioes: ["noite", "inverno", "encontro", "eventos especiais"],
     notas: {
       topo: ["pimenta rosa", "tangerina", "açafrão"],
@@ -174,6 +192,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "8-10h",
     precoMercado: 290,
     precoVenda: 319,
+    precoDecant5Cent: 4990,
+    precoDecant10Cent: 6990,
     ocasioes: ["dia", "noite", "versátil", "todas as estações"],
     notas: {
       topo: ["bergamota", "amêndoa amarga"],
@@ -196,6 +216,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "8-10h",
     precoMercado: 196.08,
     precoVenda: 249,
+    precoDecant5Cent: 4490,
+    precoDecant10Cent: 5990,
     selecionadoSemana: true,
     ocasioes: ["noite", "inverno", "encontro"],
     notas: {
@@ -219,6 +241,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "10-12h",
     precoMercado: 223.51,
     precoVenda: 279,
+    precoDecant5Cent: 4490,
+    precoDecant10Cent: 5990,
     ocasioes: ["noite", "inverno", "eventos especiais"],
     notas: {
       topo: [],
@@ -241,6 +265,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "10-14h",
     precoMercado: 257.99,
     precoVenda: 249,
+    precoDecant5Cent: 3990,
+    precoDecant10Cent: 5490,
     precoPromoCentavos: 19900,
     selecionadoSemana: true,
     ocasioes: ["noite", "outono", "inverno", "encontros românticos"],
@@ -264,6 +290,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "10h+",
     precoMercado: 232.32,
     precoVenda: 249,
+    precoDecant5Cent: 4490,
+    precoDecant10Cent: 5990,
     selecionadoSemana: true,
     ocasioes: ["noite", "inverno", "ocasiões especiais"],
     notas: {
@@ -288,6 +316,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "6-8h",
     precoMercado: 180.7,
     precoVenda: 229,
+    precoDecant5Cent: 3990,
+    precoDecant10Cent: 5490,
     selecionadoSemana: true,
     ocasioes: ["dia", "trabalho", "primavera"],
     notas: {
@@ -311,6 +341,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "6-8h",
     precoMercado: 200,
     precoVenda: 249,
+    precoDecant5Cent: 3990,
+    precoDecant10Cent: 5490,
     ocasioes: ["noite", "outono", "inverno", "eventos formais"],
     notas: {
       topo: ["conhaque", "açafrão", "noz-moscada", "maçã"],
@@ -333,6 +365,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "8-10h",
     precoMercado: 200,
     precoVenda: 229,
+    precoDecant5Cent: 3990,
+    precoDecant10Cent: 5490,
     selecionadoSemana: true,
     ocasioes: ["noite", "inverno", "uso masculino marcante"],
     notas: {
@@ -356,6 +390,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "8-10h",
     precoMercado: 195,
     precoVenda: 219,
+    precoDecant5Cent: 3990,
+    precoDecant10Cent: 5490,
     ocasioes: ["dia", "trabalho", "primavera", "verão"],
     notas: {
       topo: ["bergamota", "limão", "pimenta"],
@@ -378,6 +414,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "10h+",
     precoMercado: 245,
     precoVenda: 279,
+    precoDecant5Cent: 4490,
+    precoDecant10Cent: 5990,
     ocasioes: ["noite", "inverno", "eventos especiais"],
     notas: {
       topo: ["pimenta rosa", "açafrão", "toranja"],
@@ -401,6 +439,8 @@ export const CATALOGO: Perfume[] = [
     fixacaoObs: "melhora após maceração",
     precoMercado: 220,
     precoVenda: 259,
+    precoDecant5Cent: 4490,
+    precoDecant10Cent: 5990,
     selecionadoSemana: true,
     ocasioes: ["dia", "trabalho", "primavera", "verão"],
     notas: {
@@ -424,6 +464,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "8-10h",
     precoMercado: 195,
     precoVenda: 249,
+    precoDecant5Cent: 3990,
+    precoDecant10Cent: 5490,
     precoPromoCentavos: 19900,
     selecionadoSemana: true,
     ocasioes: ["noite", "encontro", "eventos"],
@@ -448,6 +490,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "7-9h",
     precoMercado: 210,
     precoVenda: 269,
+    precoDecant5Cent: 4490,
+    precoDecant10Cent: 5990,
     ocasioes: ["dia", "trabalho", "primavera", "verão"],
     notas: {
       topo: ["bergamota", "gengibre", "maçã verde"],
@@ -470,6 +514,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "8-10h",
     precoMercado: 244.34,
     precoVenda: 349,
+    precoDecant5Cent: 4490,
+    precoDecant10Cent: 5990,
     ocasioes: ["noite", "outono", "inverno", "eventos"],
     notas: {
       topo: ["lavanda", "menta", "sálvia"],
@@ -492,6 +538,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "6-8h",
     precoMercado: 250,
     precoVenda: 349,
+    precoDecant5Cent: 4490,
+    precoDecant10Cent: 5990,
     ocasioes: ["dia", "noite", "versátil", "3 estações"],
     notas: {
       topo: ["lavanda", "canela", "tangerina"],
@@ -536,6 +584,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "10-12h",
     precoMercado: 215,
     precoVenda: 249,
+    precoDecant5Cent: 4490,
+    precoDecant10Cent: 5990,
     ocasioes: ["noite", "outono", "inverno", "encontros românticos"],
     notas: {
       topo: ["canela", "noz-moscada", "bergamota"],
@@ -558,6 +608,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "8-10h",
     precoMercado: 290,
     precoVenda: 349,
+    precoDecant5Cent: 4990,
+    precoDecant10Cent: 6990,
     ocasioes: ["noite", "inverno", "eventos especiais"],
     notas: {
       topo: ["grapefruit rosa", "açafrão"],
@@ -580,6 +632,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "8-10h",
     precoMercado: 170,
     precoVenda: 199,
+    precoDecant5Cent: 3990,
+    precoDecant10Cent: 5490,
     ocasioes: ["noite", "inverno", "ocasiões especiais"],
     notas: {
       topo: ["açafrão", "bergamota"],
@@ -602,6 +656,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "6-8h",
     precoMercado: 160,
     precoVenda: 199,
+    precoDecant5Cent: 3990,
+    precoDecant10Cent: 5490,
     ocasioes: ["dia", "noite", "versátil"],
     notas: {
       topo: ["especiarias", "frutas"],
@@ -624,6 +680,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "8-10h",
     precoMercado: 255.36,
     precoVenda: 299,
+    precoDecant5Cent: 4490,
+    precoDecant10Cent: 5990,
     ocasioes: ["noite", "outono", "inverno", "encontro"],
     notas: {
       topo: ["maçã", "canela", "lavanda", "bergamota"],
@@ -646,6 +704,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "10-12h",
     precoMercado: 420,
     precoVenda: 499,
+    precoDecant5Cent: 5990,
+    precoDecant10Cent: 7990,
     ocasioes: ["noite", "inverno", "eventos especiais"],
     notas: {
       topo: ["açafrão", "especiarias"],
@@ -668,6 +728,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "8-10h",
     precoMercado: 320,
     precoVenda: 399,
+    precoDecant5Cent: 4990,
+    precoDecant10Cent: 6990,
     ocasioes: ["dia", "noite", "versátil", "todas as estações"],
     notas: {
       topo: ["bergamota", "gengibre", "frutas cítricas"],
@@ -690,6 +752,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "10h+",
     precoMercado: 290,
     precoVenda: 349,
+    precoDecant5Cent: 4990,
+    precoDecant10Cent: 6990,
     ocasioes: ["noite", "inverno", "encontro"],
     notas: {
       topo: ["menta", "lavanda"],
@@ -712,6 +776,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "8-10h",
     precoMercado: 295,
     precoVenda: 369,
+    precoDecant5Cent: 4990,
+    precoDecant10Cent: 6990,
     ocasioes: ["dia", "trabalho", "primavera", "verão"],
     notas: {
       topo: ["limão", "bergamota", "abacaxi", "pimenta rosa"],
@@ -735,6 +801,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "10h+",
     precoMercado: 314.37,
     precoVenda: 399,
+    precoDecant5Cent: 4990,
+    precoDecant10Cent: 6990,
     ocasioes: ["noite", "inverno", "eventos especiais"],
     notas: {
       topo: ["especiarias", "açafrão"],
@@ -759,6 +827,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "8-10h",
     precoMercado: 290,
     precoVenda: 369,
+    precoDecant5Cent: 4990,
+    precoDecant10Cent: 6990,
     ocasioes: ["noite", "encontro", "eventos"],
     notas: {
       topo: ["bergamota", "abacaxi", "maçã"],
@@ -782,6 +852,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "12h+",
     precoMercado: 360,
     precoVenda: 449,
+    precoDecant5Cent: 5990,
+    precoDecant10Cent: 7990,
     ocasioes: ["noite", "outono", "inverno"],
     ocasioesObs: "intenso, usar com moderação",
     notas: {
@@ -806,6 +878,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "10h+",
     precoMercado: 280,
     precoVenda: 319,
+    precoDecant5Cent: 4490,
+    precoDecant10Cent: 5990,
     ocasioes: ["noite", "outono", "inverno", "eventos especiais"],
     notas: {
       topo: ["maracujá", "notas frutadas", "rosa", "açafrão"],
@@ -829,6 +903,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "10h+",
     precoMercado: 320,
     precoVenda: 399,
+    precoDecant5Cent: 4990,
+    precoDecant10Cent: 6990,
     ocasioes: ["noite", "inverno", "eventos"],
     notas: {
       topo: ["pimenta rosa", "davana"],
@@ -851,6 +927,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "8-10h",
     precoMercado: 184.04,
     precoVenda: 199,
+    precoDecant5Cent: 3990,
+    precoDecant10Cent: 5490,
     ocasioes: ["dia", "noite", "versátil", "todas as estações"],
     notas: {
       topo: ["bergamota"],
@@ -873,6 +951,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "6-8h",
     precoMercado: 180,
     precoVenda: 199,
+    precoDecant5Cent: 3990,
+    precoDecant10Cent: 5490,
     precoPromoCentavos: 16900,
     selecionadoSemana: true,
     ocasioes: ["noite", "inverno", "encontro"],
@@ -897,6 +977,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "8-10h",
     precoMercado: 184.04,
     precoVenda: 199,
+    precoDecant5Cent: 3990,
+    precoDecant10Cent: 5490,
     selecionadoSemana: true,
     ocasioes: ["dia", "noite", "outono", "inverno"],
     notas: {
@@ -921,6 +1003,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "8h",
     precoMercado: 200,
     precoVenda: 249,
+    precoDecant5Cent: 3990,
+    precoDecant10Cent: 5490,
     ocasioes: ["dia", "noite", "versátil"],
     notas: {
       topo: ["bergamota", "gengibre", "maçã verde"],
@@ -943,6 +1027,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "8-12h",
     precoMercado: 350,
     precoVenda: 379,
+    precoDecant5Cent: 4990,
+    precoDecant10Cent: 6990,
     selecionadoSemana: true,
     ocasioes: ["noite", "outono", "inverno", "encontro"],
     notas: {
@@ -967,6 +1053,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "8-10h",
     precoMercado: 290,
     precoVenda: 349,
+    precoDecant5Cent: 4990,
+    precoDecant10Cent: 6990,
     ocasioes: ["dia", "noite", "versátil", "todas as estações"],
     notas: {
       topo: ["bergamota", "abacaxi", "toranja"],
@@ -989,6 +1077,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "10-12h",
     precoMercado: 380,
     precoVenda: 469,
+    precoDecant5Cent: 5990,
+    precoDecant10Cent: 7990,
     ocasioes: ["noite", "inverno", "eventos especiais"],
     notas: {
       topo: ["açafrão", "especiarias"],
@@ -1012,6 +1102,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "10h+",
     precoMercado: 300,
     precoVenda: 349,
+    precoDecant5Cent: 4990,
+    precoDecant10Cent: 6990,
     ocasioes: ["noite", "outono", "inverno", "eventos"],
     notas: {
       topo: ["açafrão", "framboesa"],
@@ -1034,6 +1126,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "10-12h",
     precoMercado: 460,
     precoVenda: 549,
+    precoDecant5Cent: 5990,
+    precoDecant10Cent: 7990,
     ocasioes: ["noite", "eventos especiais", "ocasiões formais"],
     notas: {
       topo: ["bergamota", "açafrão", "pimenta rosa"],

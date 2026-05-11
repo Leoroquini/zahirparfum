@@ -15,9 +15,11 @@ import {
  */
 
 function formatMoney(n: number): string {
+  // Mostra centavos quando houver (R$ 59,90), inteiro quando nao (R$ 199)
+  const temDecimais = Math.abs(n - Math.round(n)) > 0.001;
   return `R$ ${n.toLocaleString("pt-BR", {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
+    minimumFractionDigits: temDecimais ? 2 : 0,
+    maximumFractionDigits: 2,
   })}`;
 }
 
