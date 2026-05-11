@@ -106,10 +106,12 @@ export function MontadorKit() {
     [itensComPerfume],
   );
 
-  // Preço final: usa promo do kit quando aplicavel, senao soma decants
+  // Preço final: kit-promo > kit-completo (preço cheio do kit) > soma avulsa
   const totalFinalCent =
     kitDetectado.tipo === "kit-promo"
       ? kitDetectado.kit.precoPromo
+      : kitDetectado.tipo === "kit-completo"
+      ? kitDetectado.kit.precoCheio
       : totalSomado * 100;
 
   // Catálogo filtrado
@@ -453,24 +455,11 @@ export function MontadorKit() {
             )}
 
             <footer className="border-t border-ink/10 bg-cream/50 px-5 py-5">
-              <div className="mb-4 flex items-baseline justify-between">
-                <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-ink/65">
+              <div className="mb-4 flex items-start justify-between gap-3">
+                <span className="mt-3 text-[10px] font-sans uppercase tracking-[0.35em] text-ink/65">
                   Total
                 </span>
-                {kitDetectado.tipo === "kit-promo" ? (
-                  <div className="flex flex-col items-end">
-                    <span className="text-xs text-ink/55 line-through">
-                      {fmtPrecoCent(kitDetectado.kit.precoCheio)}
-                    </span>
-                    <span className="font-display text-3xl font-light text-amber">
-                      {fmtPrecoCent(kitDetectado.kit.precoPromo)}
-                    </span>
-                  </div>
-                ) : (
-                  <span className="font-display text-3xl font-light text-ink">
-                    R$ {totalSomado}
-                  </span>
-                )}
+                <TotalDisplay detect={kitDetectado} totalSomado={totalSomado} />
               </div>
               <p className="mb-4 text-[11px] italic leading-relaxed text-ink/60">
                 Frete grátis SP capital acima de R$ 99. Demais regiões confirmamos no atendimento.
@@ -525,16 +514,8 @@ type KitStatusProps = {
   tamanhoPadrao: Tamanho;
 };
 
-function KitStatusPanel({ detect, itens, totalUnidades, tamanhoPadrao }: KitStatusProps) {
-  const selecionadosNoKit = itens.filter((i) => i.perfume.selecionadoSemana).length;
-  const kit = detect.tipo === "nenhum"
-    ? (tamanhoPadrao === "5ml"
-        ? { titulo: "Kit Estreia", precoPromo: 6990, precoCheio: 9990 }
-        : { titulo: "Kit Coleção", precoPromo: 9990, precoCheio: 14990 })
-    : detect.kit;
-  const economiaCent = kit.precoCheio - kit.precoPromo;
-
-  // Estado 1: kit-promo (3 selecionados, mesmo tamanho)
+function KitStatusPanel({ detect, itens }: KitStatusProps) {
+  // kit-promo (3 da Selecao, mesmo tamanho)
   if (detect.tipo === "kit-promo") {
     return (
       <div className="border-t border-amber/30 bg-gradient-to-r from-amber/15 via-amber/25 to-amber/15 px-5 py-4">
@@ -545,8 +526,9 @@ function KitStatusPanel({ detect, itens, totalUnidades, tamanhoPadrao }: KitStat
               <strong>{detect.kit.titulo} promocional</strong>
             </p>
             <p className="text-[11px] leading-relaxed text-ink/75">
-              3 perfumes da Seleção da Semana · economia de{" "}
-              <strong className="text-wine">{fmtPrecoCent(economiaCent)}</strong>
+              3 perfumes da Seleção da Semana · economia total de{" "}
+              <strong className="text-wine">{fmtPrecoCent(detect.economiaTotalCent)}</strong>{" "}
+              sobre decants avulsos
             </p>
           </div>
         </div>
@@ -554,21 +536,32 @@ function KitStatusPanel({ detect, itens, totalUnidades, tamanhoPadrao }: KitStat
     );
   }
 
-  // Estado 2: quase-promo (2 dos 3 são selecionados, mesmo tamanho)
-  if (detect.tipo === "quase-promo") {
-    const fora = detect.foraDaSelecao[0];
+  // kit-completo (3 do mesmo tamanho, mas nem todos da Selecao)
+  if (detect.tipo === "kit-completo") {
+    const fora = detect.foraDaSelecao;
+    const foraDaSelecaoQtd = fora.length;
+    const economia = fmtPrecoCent(detect.economiaProximoNivelCent);
     return (
       <div className="border-t border-wine/30 bg-wine/10 px-5 py-4">
         <div className="flex items-start gap-3">
           <span className="mt-0.5 text-lg text-wine">!</span>
           <div className="flex-1">
-            <p className="text-[11px] leading-relaxed text-ink">
-              Você tem <strong>2/3</strong> da Seleção da Semana.{" "}
-              <span className="text-ink/70">
-                Troque{" "}
-                <strong className="text-wine">{fora.perfume.nome}</strong> por outro da Seleção e
-                ganhe {fmtPrecoCent(economiaCent)} de desconto no {detect.kit.titulo}.
-              </span>
+            <p className="font-display text-base leading-tight text-ink">
+              <strong>{detect.kit.titulo}</strong> fechado
+            </p>
+            <p className="mt-1 text-[11px] leading-relaxed text-ink/80">
+              {foraDaSelecaoQtd === 1 ? (
+                <>
+                  Troque{" "}
+                  <strong className="text-wine">{fora[0].perfume.nome}</strong> por
+                  outro da Seleção e ganhe <strong>{economia}</strong> de desconto.
+                </>
+              ) : (
+                <>
+                  Troque os {foraDaSelecaoQtd} perfumes fora da Seleção por modelos
+                  selecionados e ganhe <strong>{economia}</strong> de desconto.
+                </>
+              )}
             </p>
           </div>
         </div>
@@ -576,28 +569,103 @@ function KitStatusPanel({ detect, itens, totalUnidades, tamanhoPadrao }: KitStat
     );
   }
 
-  // Estado 3: menos de 3 ou tamanhos mistos
-  if (totalUnidades < 3) {
-    const restantes = 3 - totalUnidades;
+  // parcial (1 ou 2 itens)
+  if (detect.tipo === "parcial") {
+    const { kitProjetado, faltam, jaSelecionados } = detect;
+    const economia = fmtPrecoCent(kitProjetado.precoCheio - kitProjetado.precoPromo);
+    const faltamSelecao = 3 - jaSelecionados; // quantos da Selecao precisaria adicionar pra promo
+    return (
+      <div className="border-t border-amber/25 bg-amber/10 px-5 py-4">
+        <div className="flex items-start gap-3">
+          <span className="mt-0.5 text-lg text-amber">→</span>
+          <div className="flex-1 space-y-1.5">
+            <p className="text-[11px] leading-relaxed text-ink">
+              Falta{faltam === 1 ? "" : "m"}{" "}
+              <strong>
+                {faltam} decant{faltam === 1 ? "" : "s"}
+              </strong>{" "}
+              {faltam === 1 ? "" : "iguais "}pra fechar o{" "}
+              <strong className="text-ink">{kitProjetado.titulo}</strong> por{" "}
+              <strong>{fmtPrecoCent(kitProjetado.precoCheio)}</strong>.
+            </p>
+            <p className="text-[11px] leading-relaxed text-ink/75">
+              {jaSelecionados === 3 ? (
+                <>Os 3 atuais já são da Seleção — basta adicionar.</>
+              ) : (
+                <>
+                  Se {faltamSelecao === 1 ? "o próximo" : `os ${faltamSelecao} restantes`}{" "}
+                  for{faltamSelecao === 1 ? "" : "em"} da{" "}
+                  <em className="italic text-amber">Seleção da Semana</em>, sai por{" "}
+                  <strong className="text-amber">{fmtPrecoCent(kitProjetado.precoPromo)}</strong>{" "}
+                  (economia de {economia}).
+                </>
+              )}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // sem-kit (>3 itens ou tamanhos misturados)
+  if (detect.tipo === "sem-kit") {
     return (
       <div className="border-t border-ink/10 bg-cream/40 px-5 py-3.5">
         <p className="text-[11px] leading-relaxed text-ink/70">
-          {totalUnidades === 0
-            ? `Adicione 3 decants da Seleção em ${tamanhoPadrao} pra ganhar o ${kit.titulo} por ${fmtPrecoCent(kit.precoPromo)}.`
-            : `Faltam ${restantes} ${restantes === 1 ? "decant" : "decants"} pra completar o ${kit.titulo}. ${selecionadosNoKit > 0 ? `Você já tem ${selecionadosNoKit} da Seleção.` : ""}`}
+          Pra virar Kit Estreia (5ml) ou Kit Coleção (10ml), deixe exatamente 3 decants
+          do mesmo tamanho. Os 3 sendo da Seleção, aplica o preço promocional.
         </p>
       </div>
     );
   }
 
-  // Estado 4: 3+ itens mas sem qualificar (tamanhos diferentes ou menos de 2 selecionados)
+  return null; // vazio: nao renderiza nada (lista vazia ja tem mensagem propria)
+}
+
+/* ---------------- Display de Total (3 niveis quando aplicavel) ---------------- */
+
+function TotalDisplay({
+  detect,
+  totalSomado,
+}: {
+  detect: ReturnType<typeof detectarKit>;
+  totalSomado: number;
+}) {
+  // 3/3 da Selecao: soma riscada + kit cheio riscado + kit promo destacado
+  if (detect.tipo === "kit-promo") {
+    return (
+      <div className="flex flex-col items-end gap-0.5">
+        <span className="text-[11px] text-ink/50 line-through tabular-nums">
+          {fmtPrecoCent(detect.somaIndividualCent)}
+        </span>
+        <span className="text-xs text-ink/55 line-through tabular-nums">
+          {fmtPrecoCent(detect.kit.precoCheio)}
+        </span>
+        <span className="font-display text-3xl font-light text-amber tabular-nums">
+          {fmtPrecoCent(detect.kit.precoPromo)}
+        </span>
+      </div>
+    );
+  }
+
+  // 3 do mesmo tamanho sem 3 da Selecao: soma riscada + kit cheio destacado
+  if (detect.tipo === "kit-completo") {
+    return (
+      <div className="flex flex-col items-end gap-0.5">
+        <span className="text-[11px] text-ink/50 line-through tabular-nums">
+          {fmtPrecoCent(detect.somaIndividualCent)}
+        </span>
+        <span className="font-display text-3xl font-light text-ink tabular-nums">
+          {fmtPrecoCent(detect.kit.precoCheio)}
+        </span>
+      </div>
+    );
+  }
+
+  // parcial / sem-kit / vazio: mostra soma simples
   return (
-    <div className="border-t border-ink/10 bg-cream/40 px-5 py-3.5">
-      <p className="text-[11px] leading-relaxed text-ink/70">
-        {selecionadosNoKit === 0
-          ? "Nenhum da Seleção da Semana no seu kit. Filtra por ★ Apenas Seleção pra ver os 12 modelos da promo."
-          : "Promo de kit aplica com exatamente 3 decants do mesmo tamanho, todos da Seleção da Semana."}
-      </p>
-    </div>
+    <span className="font-display text-3xl font-light text-ink tabular-nums">
+      R$ {totalSomado}
+    </span>
   );
 }

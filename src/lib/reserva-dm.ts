@@ -64,13 +64,24 @@ export function mensagemKitMontador(
   });
 
   if (detect.tipo === "kit-promo") {
-    const totalCent = detect.kit.precoPromo;
     return [
       `Oi, ZAHIR! Quero fechar o ${detect.kit.titulo.toUpperCase()} promocional:`,
       ``,
       ...linhasItens,
       ``,
-      `Valor do kit: ${fmtPrecoCent(totalCent)} (economia de ${fmtPrecoCent(detect.economiaCent)})`,
+      `Valor do kit: ${fmtPrecoCent(detect.kit.precoPromo)} (economia de ${fmtPrecoCent(detect.economiaTotalCent)} sobre os decants avulsos)`,
+      ``,
+      `Pode confirmar o frete e a forma de pagamento?`,
+    ].join("\n");
+  }
+
+  if (detect.tipo === "kit-completo") {
+    return [
+      `Oi, ZAHIR! Quero fechar o ${detect.kit.titulo.toUpperCase()}:`,
+      ``,
+      ...linhasItens,
+      ``,
+      `Valor do kit: ${fmtPrecoCent(detect.kit.precoCheio)}`,
       ``,
       `Pode confirmar o frete e a forma de pagamento?`,
     ].join("\n");

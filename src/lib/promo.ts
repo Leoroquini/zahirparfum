@@ -107,45 +107,113 @@ export type ItemKitMontador = {
   tamanho: TamanhoDecant;
 };
 
+/**
+ * Estados possíveis do montador, do ponto de vista do "fechamento em Kit":
+ *
+ * - vazio: 0 itens
+ * - parcial: 1 ou 2 itens — mostra hint de quanto falta + projeção de preço
+ * - kit-completo: 3 itens, mesmo tamanho, NEM todos da Seleção → preço cheio do kit
+ * - kit-promo: 3 itens, mesmo tamanho, todos da Seleção → preço promo do kit
+ * - sem-kit: 3+ itens com tamanhos misturados, ou >3 itens (caso raro)
+ */
 export type KitDetectado =
+  | { tipo: "vazio" }
+  | {
+      tipo: "parcial";
+      kitProjetado: KitConfig; // baseado no tamanho mais comum do que ja escolheu
+      faltam: number; // 1 ou 2
+      jaSelecionados: number; // quantos dos atuais sao da Selecao
+      somaAtualCent: number;
+    }
+  | {
+      tipo: "kit-completo";
+      kit: KitConfig;
+      somaIndividualCent: number; // o que seria sem o kit (decants avulsos)
+      foraDaSelecao: ItemKitMontador[]; // pelo menos 1
+      economiaProximoNivelCent: number; // quanto mais economiza se virar 3/3
+    }
   | {
       tipo: "kit-promo";
       kit: KitConfig;
-      economiaCent: number;
+      somaIndividualCent: number; // o que seria sem o kit
+      economiaTotalCent: number; // soma individual - precoPromo
     }
-  | {
-      tipo: "quase-promo";
-      kit: KitConfig;
-      foraDaSelecao: ItemKitMontador[];
-      economiaCent: number;
-    }
-  | { tipo: "nenhum" };
+  | { tipo: "sem-kit"; somaAtualCent: number };
 
 /**
- * Detecta se a combinação atual no montador qualifica para um kit promo,
- * ou se está quase lá (2/3 selecionados).
+ * Calcula o preço de um decant avulso (sem kit), em centavos.
+ * Usa a mesma lógica de precoDa() em lista-store.ts.
+ * Mantida aqui pra evitar dependência circular.
+ */
+function precoDecantAvulsoCent(perfume: Perfume, tamanho: TamanhoDecant): number {
+  const base = perfume.precoVenda ?? 0;
+  if (tamanho === "10ml") return Math.max(40, Math.round(base * 0.3)) * 100;
+  return Math.max(25, Math.round(base * 0.2)) * 100;
+}
+
+/**
+ * Detecta o estado atual do montador para fins de exibição de preço e CTA.
  *
- * Regra:
- * - Exatamente 3 itens, todos do mesmo tamanho → considera kit (5ml = Estreia, 10ml = Coleção)
- * - Todos 3 com selecionadoSemana → "kit-promo"
- * - 2 dos 3 selecionados → "quase-promo" com lista de quem está fora
- * - Outros casos → "nenhum"
+ * Importante: o tamanho mais comum dos itens já adicionados é o "kit projetado"
+ * usado nas mensagens de parcial. Se mistura 5ml e 10ml, projeta pelo primeiro.
  */
 export function detectarKit(itens: ItemKitMontador[]): KitDetectado {
-  if (itens.length !== 3) return { tipo: "nenhum" };
-  const t0 = itens[0].tamanho;
-  if (!itens.every((i) => i.tamanho === t0)) return { tipo: "nenhum" };
+  if (itens.length === 0) return { tipo: "vazio" };
 
+  // Soma do que seria comprado avulso (decants individuais)
+  const somaIndividualCent = itens.reduce(
+    (sum, i) => sum + precoDecantAvulsoCent(i.perfume, i.tamanho),
+    0,
+  );
+
+  // Tamanho mais comum (pra projetar qual kit)
+  const cont5 = itens.filter((i) => i.tamanho === "5ml").length;
+  const cont10 = itens.filter((i) => i.tamanho === "10ml").length;
+  const tamanhoProjetado: TamanhoDecant = cont10 >= cont5 ? "10ml" : "5ml";
+  const kitProjetado = kitDoTamanho(tamanhoProjetado);
+
+  // < 3 itens → parcial
+  if (itens.length < 3) {
+    const jaSelecionados = itens.filter(
+      (i) => i.perfume.selecionadoSemana === true,
+    ).length;
+    return {
+      tipo: "parcial",
+      kitProjetado,
+      faltam: 3 - itens.length,
+      jaSelecionados,
+      somaAtualCent: somaIndividualCent,
+    };
+  }
+
+  // > 3 itens ou tamanhos mistos
+  const t0 = itens[0].tamanho;
+  const mesmoTamanho = itens.every((i) => i.tamanho === t0);
+  if (itens.length !== 3 || !mesmoTamanho) {
+    return { tipo: "sem-kit", somaAtualCent: somaIndividualCent };
+  }
+
+  // 3 itens, mesmo tamanho — ou kit completo ou kit promo
   const kit = kitDoTamanho(t0);
-  const selecionados = itens.filter((i) => i.perfume.selecionadoSemana === true);
-  const economiaCent = kit.precoCheio - kit.precoPromo;
+  const selecionados = itens.filter(
+    (i) => i.perfume.selecionadoSemana === true,
+  );
 
   if (selecionados.length === 3) {
-    return { tipo: "kit-promo", kit, economiaCent };
+    return {
+      tipo: "kit-promo",
+      kit,
+      somaIndividualCent,
+      economiaTotalCent: somaIndividualCent - kit.precoPromo,
+    };
   }
-  if (selecionados.length === 2) {
-    const foraDaSelecao = itens.filter((i) => i.perfume.selecionadoSemana !== true);
-    return { tipo: "quase-promo", kit, foraDaSelecao, economiaCent };
-  }
-  return { tipo: "nenhum" };
+
+  // 0, 1 ou 2 dos 3 são da Seleção → cliente paga preço cheio do kit
+  return {
+    tipo: "kit-completo",
+    kit,
+    somaIndividualCent,
+    foraDaSelecao: itens.filter((i) => i.perfume.selecionadoSemana !== true),
+    economiaProximoNivelCent: kit.precoCheio - kit.precoPromo,
+  };
 }
