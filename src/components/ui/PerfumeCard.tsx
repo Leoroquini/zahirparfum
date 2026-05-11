@@ -7,6 +7,7 @@ import type { Perfume } from "@/data/catalogo";
 import { addItem, useLista } from "@/lib/lista-store";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
 import { toast } from "@/lib/toast-store";
+import { precoFrasco } from "@/lib/promo";
 
 /**
  * Gradient escuro de fundo do card, por família olfativa.
@@ -100,6 +101,8 @@ export function PerfumeCard({ perfume, index = 0 }: Props) {
   const isPending = !perfume.marca;
   const lista = useLista();
   const jaNaLista = lista.some((i) => i.perfumeId === perfume.id);
+  const preco = precoFrasco(perfume);
+  const ehSelecionado = perfume.selecionadoSemana === true;
 
   return (
     <motion.div
@@ -157,11 +160,21 @@ export function PerfumeCard({ perfume, index = 0 }: Props) {
           className="absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-t from-ink/95 via-ink/60 to-transparent"
         />
 
-        {/* Número do catálogo */}
+        {/* Número do catálogo + badges */}
         <div className="absolute left-5 top-5 z-10 flex flex-col items-start gap-2">
           <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber/80">
             Nº {String(perfume.numero).padStart(2, "0")}
           </span>
+          {ehSelecionado && (
+            <span className="rounded-full border border-amber bg-amber/85 px-2.5 py-0.5 text-[9px] font-sans font-bold uppercase tracking-[0.28em] text-ink shadow-[0_4px_12px_-2px_rgba(140,107,38,0.55)]">
+              Seleção da Semana
+            </span>
+          )}
+          {preco.emPromo && (
+            <span className="rounded-full border border-wine/70 bg-wine/35 px-2.5 py-0.5 text-[9px] font-sans font-bold uppercase tracking-[0.28em] text-cream backdrop-blur-sm">
+              Promo
+            </span>
+          )}
           {perfume.destaque && <DestaqueBadge destaque={perfume.destaque} />}
         </div>
 
@@ -219,9 +232,20 @@ export function PerfumeCard({ perfume, index = 0 }: Props) {
               <span className="text-[9px] font-sans uppercase tracking-[0.3em] text-cream/40">
                 Frasco · {perfume.volume}
               </span>
-              <span className="font-display text-2xl leading-none text-cream">
-                {formatPrice(perfume.precoVenda)}
-              </span>
+              {preco.emPromo && preco.cheio !== null ? (
+                <div className="flex items-baseline gap-2">
+                  <span className="font-sans text-sm leading-none text-cream/50 line-through">
+                    {formatPrice(preco.cheio)}
+                  </span>
+                  <span className="font-display text-2xl leading-none text-amber">
+                    {formatPrice(preco.atual)}
+                  </span>
+                </div>
+              ) : (
+                <span className="font-display text-2xl leading-none text-cream">
+                  {formatPrice(preco.atual)}
+                </span>
+              )}
             </div>
           </div>
         </div>

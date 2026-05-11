@@ -73,6 +73,7 @@ export function CatalogoGrid({ hideIntro = false }: { hideIntro?: boolean } = {}
   const [selFamilias, setSelFamilias] = useState<string[]>([]);
   const [selOcasioes, setSelOcasioes] = useState<string[]>([]);
   const [selPreco, setSelPreco] = useState<string[]>([]);
+  const [apenasSelecionados, setApenasSelecionados] = useState(false);
   const [ordenacao, setOrdenacao] = useState<Ordenacao>("relevancia");
 
   const toggle = (key: string, list: string[]): string[] =>
@@ -82,10 +83,14 @@ export function CatalogoGrid({ hideIntro = false }: { hideIntro?: boolean } = {}
     setSelFamilias([]);
     setSelOcasioes([]);
     setSelPreco([]);
+    setApenasSelecionados(false);
   };
 
   const filtered = useMemo(() => {
     const base = CATALOGO.filter((p) => {
+      // Apenas Seleção da Semana
+      if (apenasSelecionados && !p.selecionadoSemana) return false;
+
       // Família
       if (selFamilias.length > 0) {
         if (!p.familia || !selFamilias.includes(p.familia)) return false;
@@ -142,10 +147,10 @@ export function CatalogoGrid({ hideIntro = false }: { hideIntro?: boolean } = {}
     }
     // "relevancia" = ordem default (por numero)
     return sorted;
-  }, [selFamilias, selOcasioes, selPreco, ordenacao]);
+  }, [selFamilias, selOcasioes, selPreco, apenasSelecionados, ordenacao]);
 
   const hasFilters =
-    selFamilias.length + selOcasioes.length + selPreco.length > 0;
+    selFamilias.length + selOcasioes.length + selPreco.length > 0 || apenasSelecionados;
 
   return (
     <section id="catalogo"
@@ -206,6 +211,26 @@ export function CatalogoGrid({ hideIntro = false }: { hideIntro?: boolean } = {}
           transition={{ duration: 0.8, delay: 0.3 }}
           className="mt-16 flex flex-col gap-6 border-y border-ink/5 py-8"
         >
+          {/* Toggle Seleção da Semana */}
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber">
+              Curadoria
+            </span>
+            <button
+              type="button"
+              onClick={() => setApenasSelecionados((v) => !v)}
+              aria-pressed={apenasSelecionados}
+              className={`flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[10px] font-sans uppercase tracking-[0.3em] transition-colors ${
+                apenasSelecionados
+                  ? "border-amber bg-amber text-ink"
+                  : "border-amber/40 text-amber hover:border-amber hover:bg-amber/10"
+              }`}
+            >
+              <span className="text-[11px]">★</span>
+              Apenas Seleção da Semana
+            </button>
+          </div>
+
           <FilterGroup
             label="Família"
             items={FAMILIAS.map((f) => ({ key: f, label: f }))}

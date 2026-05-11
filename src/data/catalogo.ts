@@ -48,6 +48,17 @@ export type Perfume = {
   /** Se decant deste SKU está disponível pra reserva (default true; marcar false quando não rola) */
   decantDisponivel?: boolean;
   /**
+   * Marca o SKU como parte da Seleção da Semana — curadoria rotativa.
+   * Ganha badge dourado no card e participa do gatilho de promo do montador.
+   * Editar manualmente toda semana (12 SKUs por vez).
+   */
+  selecionadoSemana?: boolean;
+  /**
+   * Preço promocional individual em centavos. Quando presente, é mostrado
+   * riscando o preçoVenda. Não confundir com promo de kit (essa é por SKU).
+   */
+  precoPromoCentavos?: number;
+  /**
    * Arquétipo de persona — frase editorial curta que humaniza o perfume.
    * Padrão: "Usado pelo cara que…" + comportamento concreto.
    * Foca em cena/atitude, não em adjetivo vago.
@@ -70,7 +81,9 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "6-8h",
     precoMercado: 251.1,
-    precoVenda: 290,
+    precoVenda: 289,
+    precoPromoCentavos: 24900,
+    selecionadoSemana: true,
     ocasioes: ["noite", "encontro", "inverno", "eventos"],
     notas: {
       topo: ["bergamota", "maçã", "limão", "abacaxi", "groselha preta"],
@@ -92,7 +105,9 @@ export const CATALOGO: Perfume[] = [
     projecao: "moderada",
     fixacao: "6-8h",
     precoMercado: 300,
-    precoVenda: 350,
+    precoVenda: 349,
+    precoPromoCentavos: 28900,
+    selecionadoSemana: true,
     ocasioes: ["dia", "trabalho", "todas as estações"],
     notas: {
       topo: ["toranja", "limão", "menta", "pimenta rosa", "coentro"],
@@ -114,7 +129,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "8-10h",
     precoMercado: 280,
-    precoVenda: 350,
+    precoVenda: 349,
     ocasioes: ["noite", "inverno", "encontro"],
     notas: {
       topo: ["bergamota", "abacaxi", "limão"],
@@ -136,7 +151,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "8-10h",
     precoMercado: 270,
-    precoVenda: 290,
+    precoVenda: 289,
     ocasioes: ["noite", "inverno", "encontro", "eventos especiais"],
     notas: {
       topo: ["pimenta rosa", "tangerina", "açafrão"],
@@ -158,7 +173,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "moderada-alta",
     fixacao: "8-10h",
     precoMercado: 290,
-    precoVenda: 320,
+    precoVenda: 319,
     ocasioes: ["dia", "noite", "versátil", "todas as estações"],
     notas: {
       topo: ["bergamota", "amêndoa amarga"],
@@ -180,7 +195,8 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "8-10h",
     precoMercado: 196.08,
-    precoVenda: 250,
+    precoVenda: 249,
+    selecionadoSemana: true,
     ocasioes: ["noite", "inverno", "encontro"],
     notas: {
       topo: ["pimenta preta", "tabaco", "abacaxi"],
@@ -202,7 +218,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "moderada-alta",
     fixacao: "10-12h",
     precoMercado: 223.51,
-    precoVenda: 280,
+    precoVenda: 279,
     ocasioes: ["noite", "inverno", "eventos especiais"],
     notas: {
       topo: [],
@@ -224,7 +240,9 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "10-14h",
     precoMercado: 257.99,
-    precoVenda: 250,
+    precoVenda: 249,
+    precoPromoCentavos: 19900,
+    selecionadoSemana: true,
     ocasioes: ["noite", "outono", "inverno", "encontros românticos"],
     notas: {
       topo: ["canela", "cardamomo", "gengibre"],
@@ -245,7 +263,8 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "10h+",
     precoMercado: 232.32,
-    precoVenda: 250,
+    precoVenda: 249,
+    selecionadoSemana: true,
     ocasioes: ["noite", "inverno", "ocasiões especiais"],
     notas: {
       topo: ["açafrão", "bergamota"],
@@ -268,7 +287,8 @@ export const CATALOGO: Perfume[] = [
     projecao: "moderada-alta",
     fixacao: "6-8h",
     precoMercado: 180.7,
-    precoVenda: 230,
+    precoVenda: 229,
+    selecionadoSemana: true,
     ocasioes: ["dia", "trabalho", "primavera"],
     notas: {
       topo: ["bergamota", "pimenta preta", "gengibre", "toranja"],
@@ -290,7 +310,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "moderada",
     fixacao: "6-8h",
     precoMercado: 200,
-    precoVenda: 250,
+    precoVenda: 249,
     ocasioes: ["noite", "outono", "inverno", "eventos formais"],
     notas: {
       topo: ["conhaque", "açafrão", "noz-moscada", "maçã"],
@@ -312,7 +332,8 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "8-10h",
     precoMercado: 200,
-    precoVenda: 230,
+    precoVenda: 229,
+    selecionadoSemana: true,
     ocasioes: ["noite", "inverno", "uso masculino marcante"],
     notas: {
       topo: ["maçã", "pimenta rosa", "alecrim"],
@@ -334,7 +355,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "8-10h",
     precoMercado: 195,
-    precoVenda: 220,
+    precoVenda: 219,
     ocasioes: ["dia", "trabalho", "primavera", "verão"],
     notas: {
       topo: ["bergamota", "limão", "pimenta"],
@@ -356,7 +377,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "10h+",
     precoMercado: 245,
-    precoVenda: 280,
+    precoVenda: 279,
     ocasioes: ["noite", "inverno", "eventos especiais"],
     notas: {
       topo: ["pimenta rosa", "açafrão", "toranja"],
@@ -379,7 +400,8 @@ export const CATALOGO: Perfume[] = [
     fixacao: "6-8h",
     fixacaoObs: "melhora após maceração",
     precoMercado: 220,
-    precoVenda: 260,
+    precoVenda: 259,
+    selecionadoSemana: true,
     ocasioes: ["dia", "trabalho", "primavera", "verão"],
     notas: {
       topo: ["maçã", "bergamota", "gengibre"],
@@ -401,7 +423,9 @@ export const CATALOGO: Perfume[] = [
     projecao: "moderada-alta",
     fixacao: "8-10h",
     precoMercado: 195,
-    precoVenda: 250,
+    precoVenda: 249,
+    precoPromoCentavos: 19900,
+    selecionadoSemana: true,
     ocasioes: ["noite", "encontro", "eventos"],
     notas: {
       topo: ["toranja", "cardamomo", "pimenta rosa"],
@@ -423,7 +447,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "moderada-alta",
     fixacao: "7-9h",
     precoMercado: 210,
-    precoVenda: 270,
+    precoVenda: 269,
     ocasioes: ["dia", "trabalho", "primavera", "verão"],
     notas: {
       topo: ["bergamota", "gengibre", "maçã verde"],
@@ -445,7 +469,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "8-10h",
     precoMercado: 244.34,
-    precoVenda: 350,
+    precoVenda: 349,
     ocasioes: ["noite", "outono", "inverno", "eventos"],
     notas: {
       topo: ["lavanda", "menta", "sálvia"],
@@ -467,7 +491,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "moderada",
     fixacao: "6-8h",
     precoMercado: 250,
-    precoVenda: 350,
+    precoVenda: 349,
     ocasioes: ["dia", "noite", "versátil", "3 estações"],
     notas: {
       topo: ["lavanda", "canela", "tangerina"],
@@ -489,7 +513,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "moderada-alta",
     fixacao: "8-10h",
     precoMercado: 220,
-    precoVenda: 280,
+    precoVenda: 279,
     ocasioes: ["noite", "outono", "inverno", "eventos"],
     notas: {
       topo: ["especiarias", "açafrão"],
@@ -511,7 +535,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "10-12h",
     precoMercado: 215,
-    precoVenda: 250,
+    precoVenda: 249,
     ocasioes: ["noite", "outono", "inverno", "encontros românticos"],
     notas: {
       topo: ["canela", "noz-moscada", "bergamota"],
@@ -533,7 +557,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "8-10h",
     precoMercado: 290,
-    precoVenda: 350,
+    precoVenda: 349,
     ocasioes: ["noite", "inverno", "eventos especiais"],
     notas: {
       topo: ["grapefruit rosa", "açafrão"],
@@ -555,7 +579,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "8-10h",
     precoMercado: 170,
-    precoVenda: 200,
+    precoVenda: 199,
     ocasioes: ["noite", "inverno", "ocasiões especiais"],
     notas: {
       topo: ["açafrão", "bergamota"],
@@ -577,7 +601,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "moderada",
     fixacao: "6-8h",
     precoMercado: 160,
-    precoVenda: 200,
+    precoVenda: 199,
     ocasioes: ["dia", "noite", "versátil"],
     notas: {
       topo: ["especiarias", "frutas"],
@@ -599,7 +623,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "8-10h",
     precoMercado: 255.36,
-    precoVenda: 300,
+    precoVenda: 299,
     ocasioes: ["noite", "outono", "inverno", "encontro"],
     notas: {
       topo: ["maçã", "canela", "lavanda", "bergamota"],
@@ -621,7 +645,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "10-12h",
     precoMercado: 420,
-    precoVenda: 500,
+    precoVenda: 499,
     ocasioes: ["noite", "inverno", "eventos especiais"],
     notas: {
       topo: ["açafrão", "especiarias"],
@@ -643,7 +667,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "moderada-alta",
     fixacao: "8-10h",
     precoMercado: 320,
-    precoVenda: 400,
+    precoVenda: 399,
     ocasioes: ["dia", "noite", "versátil", "todas as estações"],
     notas: {
       topo: ["bergamota", "gengibre", "frutas cítricas"],
@@ -665,7 +689,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "10h+",
     precoMercado: 290,
-    precoVenda: 350,
+    precoVenda: 349,
     ocasioes: ["noite", "inverno", "encontro"],
     notas: {
       topo: ["menta", "lavanda"],
@@ -687,7 +711,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "8-10h",
     precoMercado: 295,
-    precoVenda: 370,
+    precoVenda: 369,
     ocasioes: ["dia", "trabalho", "primavera", "verão"],
     notas: {
       topo: ["limão", "bergamota", "abacaxi", "pimenta rosa"],
@@ -710,7 +734,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "10h+",
     precoMercado: 314.37,
-    precoVenda: 400,
+    precoVenda: 399,
     ocasioes: ["noite", "inverno", "eventos especiais"],
     notas: {
       topo: ["especiarias", "açafrão"],
@@ -734,7 +758,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "8-10h",
     precoMercado: 290,
-    precoVenda: 370,
+    precoVenda: 369,
     ocasioes: ["noite", "encontro", "eventos"],
     notas: {
       topo: ["bergamota", "abacaxi", "maçã"],
@@ -757,7 +781,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "12h+",
     precoMercado: 360,
-    precoVenda: 450,
+    precoVenda: 449,
     ocasioes: ["noite", "outono", "inverno"],
     ocasioesObs: "intenso, usar com moderação",
     notas: {
@@ -781,7 +805,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "10h+",
     precoMercado: 280,
-    precoVenda: 320,
+    precoVenda: 319,
     ocasioes: ["noite", "outono", "inverno", "eventos especiais"],
     notas: {
       topo: ["maracujá", "notas frutadas", "rosa", "açafrão"],
@@ -804,7 +828,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "10h+",
     precoMercado: 320,
-    precoVenda: 400,
+    precoVenda: 399,
     ocasioes: ["noite", "inverno", "eventos"],
     notas: {
       topo: ["pimenta rosa", "davana"],
@@ -826,7 +850,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "8-10h",
     precoMercado: 184.04,
-    precoVenda: 200,
+    precoVenda: 199,
     ocasioes: ["dia", "noite", "versátil", "todas as estações"],
     notas: {
       topo: ["bergamota"],
@@ -848,7 +872,9 @@ export const CATALOGO: Perfume[] = [
     projecao: "moderada-alta",
     fixacao: "6-8h",
     precoMercado: 180,
-    precoVenda: 200,
+    precoVenda: 199,
+    precoPromoCentavos: 16900,
+    selecionadoSemana: true,
     ocasioes: ["noite", "inverno", "encontro"],
     notas: {
       topo: ["toranja", "cardamomo", "canela", "noz-moscada"],
@@ -870,7 +896,8 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "8-10h",
     precoMercado: 184.04,
-    precoVenda: 200,
+    precoVenda: 199,
+    selecionadoSemana: true,
     ocasioes: ["dia", "noite", "outono", "inverno"],
     notas: {
       topo: ["bergamota"],
@@ -893,7 +920,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "moderada-alta",
     fixacao: "8h",
     precoMercado: 200,
-    precoVenda: 250,
+    precoVenda: 249,
     ocasioes: ["dia", "noite", "versátil"],
     notas: {
       topo: ["bergamota", "gengibre", "maçã verde"],
@@ -915,7 +942,8 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "8-12h",
     precoMercado: 350,
-    precoVenda: 380,
+    precoVenda: 379,
+    selecionadoSemana: true,
     ocasioes: ["noite", "outono", "inverno", "encontro"],
     notas: {
       topo: ["menta", "bergamota"],
@@ -938,7 +966,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "moderada-alta",
     fixacao: "8-10h",
     precoMercado: 290,
-    precoVenda: 350,
+    precoVenda: 349,
     ocasioes: ["dia", "noite", "versátil", "todas as estações"],
     notas: {
       topo: ["bergamota", "abacaxi", "toranja"],
@@ -960,7 +988,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "10-12h",
     precoMercado: 380,
-    precoVenda: 470,
+    precoVenda: 469,
     ocasioes: ["noite", "inverno", "eventos especiais"],
     notas: {
       topo: ["açafrão", "especiarias"],
@@ -983,7 +1011,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "10h+",
     precoMercado: 300,
-    precoVenda: 350,
+    precoVenda: 349,
     ocasioes: ["noite", "outono", "inverno", "eventos"],
     notas: {
       topo: ["açafrão", "framboesa"],
@@ -1005,7 +1033,7 @@ export const CATALOGO: Perfume[] = [
     projecao: "alta",
     fixacao: "10-12h",
     precoMercado: 460,
-    precoVenda: 550,
+    precoVenda: 549,
     ocasioes: ["noite", "eventos especiais", "ocasiões formais"],
     notas: {
       topo: ["bergamota", "açafrão", "pimenta rosa"],

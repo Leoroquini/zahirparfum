@@ -13,6 +13,13 @@
  *  - PEDIDO_NOTIFICA_EMAIL     → email pra onde cai notificação de venda (futuro)
  */
 
+/**
+ * Liga/desliga o checkout via Mercado Pago. Quando false, o site mostra
+ * apenas CTAs de WhatsApp/Instagram e o atendimento fecha o pedido manual.
+ * Para reativar: trocar pra true (o restante da pipeline MP permanece intacto).
+ */
+export const CHECKOUT_MP_ATIVO = false;
+
 export const FRETE = {
   valorPadrao: 25,
   freteGratisAcima: 400,

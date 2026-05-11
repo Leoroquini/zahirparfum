@@ -14,6 +14,7 @@ import { ListaDrawer } from "@/components/ui/ListaDrawer";
 import { ToastStack } from "@/components/ui/ToastStack";
 import { BuscaShortcut } from "@/components/ui/BuscaShortcut";
 import { CupomBanner } from "@/components/marketing/CupomBanner";
+import { FreteSPBanner } from "@/components/marketing/FreteSPBanner";
 import { ExitIntentCapture } from "@/components/marketing/ExitIntentCapture";
 import { ListaRetornoNudge } from "@/components/marketing/ListaRetornoNudge";
 import { BRAND } from "@/lib/brand";
@@ -80,6 +81,7 @@ export default function RootLayout({
         <MarbleBackground />
         <SmoothScroll>
           <Navbar />
+          <FreteSPBanner />
           <main className="relative">{children}</main>
           <TrustBar />
           <Footer />

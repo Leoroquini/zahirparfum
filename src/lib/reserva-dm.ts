@@ -1,6 +1,11 @@
 import { type ItemLista, labelDa } from "@/lib/lista-store";
-import { CATALOGO } from "@/data/catalogo";
+import { CATALOGO, type Perfume } from "@/data/catalogo";
 import { BRAND } from "@/lib/brand";
+import {
+  detectarKit,
+  fmtPrecoCent,
+  type TamanhoDecant,
+} from "@/lib/promo";
 
 /**
  * Monta URLs de DM pré-preenchidas pra Instagram e WhatsApp.
@@ -39,6 +44,47 @@ export function mensagemLista(itens: ItemLista[]): string {
     `Total estimado: ${formatMoney(total)}`,
     ``,
     `Pode me passar o valor com frete e as formas de pagamento?`,
+  ].join("\n");
+}
+
+/**
+ * Mensagem específica do montador de kit. Quando os 3 decants são da Seleção
+ * da Semana e mesmo tamanho, marca como "kit promocional" — caso contrário,
+ * lista item a item (preço cheio).
+ */
+export function mensagemKitMontador(
+  itens: { perfume: Perfume; tamanho: TamanhoDecant; preco: number }[],
+): string {
+  const detect = detectarKit(
+    itens.map((i) => ({ perfume: i.perfume, tamanho: i.tamanho })),
+  );
+
+  const linhasItens = itens.map((it, i) => {
+    return `${i + 1}. ${it.perfume.nome} (decant ${it.tamanho})`;
+  });
+
+  if (detect.tipo === "kit-promo") {
+    const totalCent = detect.kit.precoPromo;
+    return [
+      `Oi, ZAHIR! Quero fechar o ${detect.kit.titulo.toUpperCase()} promocional:`,
+      ``,
+      ...linhasItens,
+      ``,
+      `Valor do kit: ${fmtPrecoCent(totalCent)} (economia de ${fmtPrecoCent(detect.economiaCent)})`,
+      ``,
+      `Pode confirmar o frete e a forma de pagamento?`,
+    ].join("\n");
+  }
+
+  const total = itens.reduce((sum, i) => sum + i.preco, 0);
+  return [
+    `Oi, ZAHIR! Quero fechar este kit:`,
+    ``,
+    ...linhasItens.map((l, i) => `${l} — ${formatMoney(itens[i].preco)}`),
+    ``,
+    `Total: ${formatMoney(total)}`,
+    ``,
+    `Pode confirmar o frete e a forma de pagamento?`,
   ].join("\n");
 }
 

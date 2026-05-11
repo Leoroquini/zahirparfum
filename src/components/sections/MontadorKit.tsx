@@ -1,23 +1,29 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { CATALOGO, type Perfume } from "@/data/catalogo";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
 import { precoDa, type VarianteReserva } from "@/lib/lista-store";
 import {
-  mensagemLista,
+  mensagemKitMontador,
   linkInstagram,
   linkWhatsApp,
 } from "@/lib/reserva-dm";
+import {
+  detectarKit,
+  fmtPrecoCent,
+  type TamanhoDecant,
+} from "@/lib/promo";
 import { events } from "@/lib/track";
 import { toast } from "@/lib/toast-store";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
-type Tamanho = "5ml" | "10ml";
+type Tamanho = TamanhoDecant;
 
 const VARIANTE_POR_TAMANHO: Record<Tamanho, VarianteReserva> = {
   "5ml": "decant-5",
@@ -43,10 +49,20 @@ type ItemLocal = {
  * decidir, fecha aqui mesmo via DM/WA.
  */
 export function MontadorKit() {
+  const searchParams = useSearchParams();
+  const tamanhoInicial: Tamanho =
+    searchParams.get("tamanho") === "5ml" ? "5ml" : "10ml";
   const [itens, setItens] = useState<ItemLocal[]>([]);
   const [busca, setBusca] = useState("");
   const [marcaFiltro, setMarcaFiltro] = useState<string | null>(null);
-  const [tamanhoPadrao, setTamanhoPadrao] = useState<Tamanho>("10ml");
+  const [apenasSelecionados, setApenasSelecionados] = useState(false);
+  const [tamanhoPadrao, setTamanhoPadrao] = useState<Tamanho>(tamanhoInicial);
+
+  // Mantem tamanho da URL caso usuario navegue por links de kit
+  useEffect(() => {
+    const t = searchParams.get("tamanho");
+    if (t === "5ml" || t === "10ml") setTamanhoPadrao(t);
+  }, [searchParams]);
 
   const adicionar = (perfume: Perfume, tamanho: Tamanho) => {
     if (perfume.precoVenda === null) return;
@@ -67,14 +83,41 @@ export function MontadorKit() {
     );
   };
 
-  const total = itens.reduce((sum, i) => sum + i.preco, 0);
+  const totalSomado = itens.reduce((sum, i) => sum + i.preco, 0);
   const totalUnidades = itens.length;
+
+  // Detecta se o kit virou promo automatica
+  const itensComPerfume = useMemo(
+    () =>
+      itens
+        .map((i) => {
+          const perfume = CATALOGO.find((p) => p.id === i.perfumeId);
+          return perfume ? { perfume, tamanho: i.tamanho, preco: i.preco } : null;
+        })
+        .filter((x): x is { perfume: Perfume; tamanho: Tamanho; preco: number } => !!x),
+    [itens],
+  );
+
+  const kitDetectado = useMemo(
+    () =>
+      detectarKit(
+        itensComPerfume.map((i) => ({ perfume: i.perfume, tamanho: i.tamanho })),
+      ),
+    [itensComPerfume],
+  );
+
+  // Preço final: usa promo do kit quando aplicavel, senao soma decants
+  const totalFinalCent =
+    kitDetectado.tipo === "kit-promo"
+      ? kitDetectado.kit.precoPromo
+      : totalSomado * 100;
 
   // Catálogo filtrado
   const catalogoFiltrado = useMemo(() => {
     const q = busca.trim().toLowerCase();
     return CATALOGO.filter((p) => {
       if (p.precoVenda === null) return false;
+      if (apenasSelecionados && !p.selecionadoSemana) return false;
       if (marcaFiltro && p.marca !== marcaFiltro) return false;
       if (!q) return true;
       return (
@@ -84,7 +127,7 @@ export function MontadorKit() {
         (p.cloneDe?.some((c) => c.toLowerCase().includes(q)) ?? false)
       );
     });
-  }, [busca, marcaFiltro]);
+  }, [busca, marcaFiltro, apenasSelecionados]);
 
   const marcasDisponiveis = useMemo(() => {
     const set = new Set<string>();
@@ -92,32 +135,22 @@ export function MontadorKit() {
     return Array.from(set).sort();
   }, []);
 
-  // Conversao para ItemLista pra reaproveitar mensagemLista()
-  const itensParaMensagem = useMemo(
-    () =>
-      itens.map((i) => ({
-        perfumeId: i.perfumeId,
-        variante: VARIANTE_POR_TAMANHO[i.tamanho],
-        precoSnapshot: i.preco,
-        addedAt: 0,
-      })),
-    [itens],
-  );
-
   const handleEnviarWa = () => {
-    const url = linkWhatsApp(mensagemLista(itensParaMensagem));
+    const url = linkWhatsApp(mensagemKitMontador(itensComPerfume));
     if (!url) return;
-    events.enviouListaWa(itens.length, total);
+    events.enviouListaWa(itens.length, totalFinalCent / 100);
     window.open(url, "_blank", "noopener,noreferrer");
     toast.success(
-      "Conversa aberta no WhatsApp",
+      kitDetectado.tipo === "kit-promo"
+        ? `${kitDetectado.kit.titulo} promocional enviado!`
+        : "Conversa aberta no WhatsApp",
       "Confere a lista, envia e a gente responde em minutos.",
     );
   };
 
   const handleEnviarIg = () => {
-    events.enviouListaDm(itens.length, total);
-    const url = linkInstagram(mensagemLista(itensParaMensagem));
+    events.enviouListaDm(itens.length, totalFinalCent / 100);
+    const url = linkInstagram(mensagemKitMontador(itensComPerfume));
     window.open(url, "_blank", "noopener,noreferrer");
     toast.success(
       "Mensagem aberta no Instagram",
@@ -160,15 +193,28 @@ export function MontadorKit() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber">
-                Marca
+              <button
+                type="button"
+                onClick={() => setApenasSelecionados((v) => !v)}
+                aria-pressed={apenasSelecionados}
+                className={`flex items-center gap-2 rounded-full border px-3 py-1 text-[10px] font-sans uppercase tracking-[0.3em] transition-colors ${
+                  apenasSelecionados
+                    ? "border-amber bg-amber text-ink"
+                    : "border-amber/40 text-amber hover:border-amber hover:bg-amber/10"
+                }`}
+              >
+                <span className="text-[11px]">★</span>
+                Apenas Seleção
+              </button>
+              <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber-dim">
+                · Marca
               </span>
               <button
                 type="button"
                 onClick={() => setMarcaFiltro(null)}
                 className={`rounded-full border px-3 py-1 text-[10px] font-sans uppercase tracking-[0.3em] transition-colors ${
                   marcaFiltro === null
-                    ? "border-amber bg-amber text-ink"
+                    ? "border-ink/40 bg-ink/85 text-cream"
                     : "border-ink/15 text-ink/70 hover:border-amber/50 hover:text-amber"
                 }`}
               >
@@ -239,6 +285,12 @@ export function MontadorKit() {
                     aria-hidden
                     className="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-ink/95 via-ink/60 to-transparent"
                   />
+                  {/* Badge Seleção da Semana (canto sup. esquerdo) */}
+                  {p.selecionadoSemana && (
+                    <span className="absolute left-2 top-2 z-10 rounded-full border border-amber bg-amber/85 px-2 py-0.5 text-[8px] font-sans font-bold uppercase tracking-[0.2em] text-ink shadow-[0_4px_10px_-2px_rgba(140,107,38,0.6)]">
+                      ★ Seleção
+                    </span>
+                  )}
                   <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col gap-1 p-3">
                     <span className="text-[8px] font-sans uppercase tracking-[0.35em] text-amber/80">
                       {p.marca}
@@ -390,17 +442,38 @@ export function MontadorKit() {
               )}
             </div>
 
+            {/* Painel de status do Kit (promo automática) */}
+            {totalUnidades > 0 && (
+              <KitStatusPanel
+                detect={kitDetectado}
+                itens={itensComPerfume}
+                totalUnidades={totalUnidades}
+                tamanhoPadrao={tamanhoPadrao}
+              />
+            )}
+
             <footer className="border-t border-ink/10 bg-cream/50 px-5 py-5">
               <div className="mb-4 flex items-baseline justify-between">
                 <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-ink/65">
                   Total
                 </span>
-                <span className="font-display text-3xl font-light text-ink">
-                  R$ {total}
-                </span>
+                {kitDetectado.tipo === "kit-promo" ? (
+                  <div className="flex flex-col items-end">
+                    <span className="text-xs text-ink/55 line-through">
+                      {fmtPrecoCent(kitDetectado.kit.precoCheio)}
+                    </span>
+                    <span className="font-display text-3xl font-light text-amber">
+                      {fmtPrecoCent(kitDetectado.kit.precoPromo)}
+                    </span>
+                  </div>
+                ) : (
+                  <span className="font-display text-3xl font-light text-ink">
+                    R$ {totalSomado}
+                  </span>
+                )}
               </div>
               <p className="mb-4 text-[11px] italic leading-relaxed text-ink/60">
-                Frete confirmado depois do CEP, no atendimento.
+                Frete grátis SP capital acima de R$ 99. Demais regiões confirmamos no atendimento.
               </p>
               <div className="flex flex-col gap-2">
                 <button
@@ -434,11 +507,97 @@ export function MontadorKit() {
               href="/decants"
               className="text-[10px] font-sans uppercase tracking-[0.3em] text-ink/60 hover:text-amber"
             >
-              ← voltar para os trios curados
+              ← voltar para os kits
             </Link>
           </div>
         </aside>
       </div>
     </section>
+  );
+}
+
+/* ---------------- Painel de status do Kit ---------------- */
+
+type KitStatusProps = {
+  detect: ReturnType<typeof detectarKit>;
+  itens: { perfume: Perfume; tamanho: Tamanho; preco: number }[];
+  totalUnidades: number;
+  tamanhoPadrao: Tamanho;
+};
+
+function KitStatusPanel({ detect, itens, totalUnidades, tamanhoPadrao }: KitStatusProps) {
+  const selecionadosNoKit = itens.filter((i) => i.perfume.selecionadoSemana).length;
+  const kit = detect.tipo === "nenhum"
+    ? (tamanhoPadrao === "5ml"
+        ? { titulo: "Kit Estreia", precoPromo: 6990, precoCheio: 9990 }
+        : { titulo: "Kit Coleção", precoPromo: 9990, precoCheio: 14990 })
+    : detect.kit;
+  const economiaCent = kit.precoCheio - kit.precoPromo;
+
+  // Estado 1: kit-promo (3 selecionados, mesmo tamanho)
+  if (detect.tipo === "kit-promo") {
+    return (
+      <div className="border-t border-amber/30 bg-gradient-to-r from-amber/15 via-amber/25 to-amber/15 px-5 py-4">
+        <div className="flex items-start gap-3">
+          <span className="mt-0.5 text-lg text-amber">★</span>
+          <div className="flex-1">
+            <p className="font-display text-base leading-tight text-ink">
+              <strong>{detect.kit.titulo} promocional</strong>
+            </p>
+            <p className="text-[11px] leading-relaxed text-ink/75">
+              3 perfumes da Seleção da Semana · economia de{" "}
+              <strong className="text-wine">{fmtPrecoCent(economiaCent)}</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Estado 2: quase-promo (2 dos 3 são selecionados, mesmo tamanho)
+  if (detect.tipo === "quase-promo") {
+    const fora = detect.foraDaSelecao[0];
+    return (
+      <div className="border-t border-wine/30 bg-wine/10 px-5 py-4">
+        <div className="flex items-start gap-3">
+          <span className="mt-0.5 text-lg text-wine">!</span>
+          <div className="flex-1">
+            <p className="text-[11px] leading-relaxed text-ink">
+              Você tem <strong>2/3</strong> da Seleção da Semana.{" "}
+              <span className="text-ink/70">
+                Troque{" "}
+                <strong className="text-wine">{fora.perfume.nome}</strong> por outro da Seleção e
+                ganhe {fmtPrecoCent(economiaCent)} de desconto no {detect.kit.titulo}.
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Estado 3: menos de 3 ou tamanhos mistos
+  if (totalUnidades < 3) {
+    const restantes = 3 - totalUnidades;
+    return (
+      <div className="border-t border-ink/10 bg-cream/40 px-5 py-3.5">
+        <p className="text-[11px] leading-relaxed text-ink/70">
+          {totalUnidades === 0
+            ? `Adicione 3 decants da Seleção em ${tamanhoPadrao} pra ganhar o ${kit.titulo} por ${fmtPrecoCent(kit.precoPromo)}.`
+            : `Faltam ${restantes} ${restantes === 1 ? "decant" : "decants"} pra completar o ${kit.titulo}. ${selecionadosNoKit > 0 ? `Você já tem ${selecionadosNoKit} da Seleção.` : ""}`}
+        </p>
+      </div>
+    );
+  }
+
+  // Estado 4: 3+ itens mas sem qualificar (tamanhos diferentes ou menos de 2 selecionados)
+  return (
+    <div className="border-t border-ink/10 bg-cream/40 px-5 py-3.5">
+      <p className="text-[11px] leading-relaxed text-ink/70">
+        {selecionadosNoKit === 0
+          ? "Nenhum da Seleção da Semana no seu kit. Filtra por ★ Apenas Seleção pra ver os 12 modelos da promo."
+          : "Promo de kit aplica com exatamente 3 decants do mesmo tamanho, todos da Seleção da Semana."}
+      </p>
+    </div>
   );
 }

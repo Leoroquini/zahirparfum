@@ -13,7 +13,7 @@ import {
 } from "@/lib/lista-store";
 import { CATALOGO } from "@/data/catalogo";
 import { mensagemLista, linkInstagram, linkWhatsApp } from "@/lib/reserva-dm";
-import { calcularFrete, freteLabel } from "@/lib/checkout-config";
+import { CHECKOUT_MP_ATIVO } from "@/lib/checkout-config";
 import { events } from "@/lib/track";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
 import { toast } from "@/lib/toast-store";
@@ -32,8 +32,8 @@ export function ListaDrawer() {
   const [pagandoMp, setPagandoMp] = useState(false);
 
   const subtotal = items.reduce((sum, i) => sum + i.precoSnapshot, 0);
-  const frete = calcularFrete(subtotal);
-  const total = subtotal + frete;
+  // Total/frete agora sao confirmados manualmente pelo atendimento.
+  const total = subtotal;
 
   // Lock scroll quando drawer aberto
   useEffect(() => {
@@ -227,73 +227,60 @@ export function ListaDrawer() {
               {/* Footer, ações */}
               {items.length > 0 && (
                 <footer className="border-t border-ink/5 bg-cream/60 px-6 py-6 md:px-8">
-                  {/* Resumo: subtotal + frete + total */}
+                  {/* Resumo: subtotal (frete confirmado pelo atendimento) */}
                   <div className="mb-4 flex flex-col gap-1.5">
-                    <div className="flex items-baseline justify-between gap-2">
-                      <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-ink/65">
+                    <div className="flex items-baseline justify-between gap-2 border-t border-ink/10 pt-2">
+                      <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-ink/70">
                         Subtotal
                       </span>
-                      <span className="font-sans text-sm tabular-nums text-ink/85">
+                      <span className="font-display text-3xl font-light text-ink">
                         R$ {subtotal.toLocaleString("pt-BR")}
                       </span>
                     </div>
-                    <div className="flex items-baseline justify-between gap-2">
-                      <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-ink/65">
-                        {freteLabel(subtotal)}
-                      </span>
-                      <span className="font-sans text-sm tabular-nums text-ink/85">
-                        {frete === 0 ? "—" : `R$ ${frete}`}
-                      </span>
-                    </div>
-                    <div className="mt-2 flex items-baseline justify-between gap-2 border-t border-ink/10 pt-2">
-                      <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-ink/70">
-                        Total
-                      </span>
-                      <span className="font-display text-3xl font-light text-ink">
-                        R$ {total.toLocaleString("pt-BR")}
-                      </span>
-                    </div>
+                    <p className="text-[10px] italic text-ink/55">
+                      Frete grátis em São Paulo capital acima de R$ 99. Demais regiões confirmamos no atendimento.
+                    </p>
                   </div>
                   <p className="mb-5 text-[11px] italic leading-relaxed text-ink/65">
-                    Pix, cartão até 12x ou boleto. Frete grátis acima de R$ 400.
+                    Atendimento humano pelo WhatsApp · Pix, cartão ou boleto após confirmação.
                   </p>
 
                   <div className="flex flex-col gap-3">
-                    {/* CTA principal: Mercado Pago */}
+                    {/* CTA principal: WhatsApp (todos os pedidos caem no WA do Leo) */}
                     <button
                       type="button"
-                      onClick={handlePagarMp}
-                      disabled={pagandoMp}
-                      className="group flex w-full items-center justify-center gap-3 rounded-full bg-amber px-6 py-4 text-[11px] font-sans uppercase tracking-[0.3em] text-ink transition-all hover:bg-amber-bright disabled:opacity-60"
+                      onClick={handleEnviarWa}
+                      className="group flex w-full items-center justify-center gap-3 rounded-full bg-amber px-6 py-4 text-[11px] font-sans uppercase tracking-[0.3em] text-ink transition-all hover:bg-amber-bright"
                     >
-                      {pagandoMp ? "Abrindo pagamento…" : "Pagar agora"}
-                      {!pagandoMp && (
-                        <span className="transition-transform duration-500 group-hover:translate-x-1">
-                          →
-                        </span>
-                      )}
+                      Fechar pelo WhatsApp
+                      <span className="transition-transform duration-500 group-hover:translate-x-1">
+                        →
+                      </span>
                     </button>
                     <p className="-mt-1 text-center text-[9px] font-sans uppercase tracking-[0.3em] text-ink/55">
-                      Pix · Cartão 12x · Boleto · Mercado Pago
+                      Resposta em 10–20 min · 9h às 22h
                     </p>
 
-                    {/* Alternativas: atendimento humano */}
-                    <div className="mt-2 grid grid-cols-2 gap-2">
+                    {/* Alternativa: Instagram */}
+                    <button
+                      type="button"
+                      onClick={handleEnviarIg}
+                      className="mt-1 rounded-full border border-ink/25 bg-cream/40 px-4 py-3 text-[10px] font-sans uppercase tracking-[0.25em] text-ink/85 transition-all hover:border-amber hover:text-amber"
+                    >
+                      Ou pelo Instagram
+                    </button>
+
+                    {/* Checkout MP — dormente, reativa trocando flag */}
+                    {CHECKOUT_MP_ATIVO && (
                       <button
                         type="button"
-                        onClick={handleEnviarWa}
-                        className="rounded-full border border-ink/25 bg-cream/40 px-4 py-2.5 text-[10px] font-sans uppercase tracking-[0.25em] text-ink/85 transition-all hover:border-amber hover:text-amber"
+                        onClick={handlePagarMp}
+                        disabled={pagandoMp}
+                        className="group flex w-full items-center justify-center gap-3 rounded-full border border-ink/25 bg-cream/40 px-6 py-3 text-[10px] font-sans uppercase tracking-[0.3em] text-ink/85 transition-all hover:border-amber hover:text-amber disabled:opacity-60"
                       >
-                        WhatsApp
+                        {pagandoMp ? "Abrindo pagamento…" : "Pagar online (Pix/Cartão)"}
                       </button>
-                      <button
-                        type="button"
-                        onClick={handleEnviarIg}
-                        className="rounded-full border border-ink/25 bg-cream/40 px-4 py-2.5 text-[10px] font-sans uppercase tracking-[0.25em] text-ink/85 transition-all hover:border-amber hover:text-amber"
-                      >
-                        Instagram
-                      </button>
-                    </div>
+                    )}
                   </div>
 
                   <button

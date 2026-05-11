@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { PageHero } from "@/components/layout/PageHero";
 import { MontadorKit } from "@/components/sections/MontadorKit";
 
@@ -19,11 +20,13 @@ export default function MontarKitPage() {
             <em className="italic text-amber/90">seu jeito.</em>
           </>
         }
-        descricao="Escolha qualquer perfume do catálogo, em 5ml ou 10ml. Total soma em tempo real. Quando estiver pronto, manda pelo WhatsApp."
+        descricao="Escolha qualquer perfume do catálogo, em 5ml ou 10ml. Quando os 3 forem da Seleção da Semana, o preço promocional aplica automático."
         backgroundGradient="radial-gradient(ellipse at 40% 50%, rgba(200,155,60,0.15), transparent 60%)"
       />
 
-      <MontadorKit />
+      <Suspense fallback={null}>
+        <MontadorKit />
+      </Suspense>
     </>
   );
 }

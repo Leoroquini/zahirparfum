@@ -28,12 +28,21 @@ const STORAGE_KEY = "zahir-lista-reserva-v1";
 /* ---------------- Calc de preço por variante ---------------- */
 
 /**
- * Preço de decant baseado no frasco cheio.
+ * Preço de decant baseado no frasco cheio (preço cheio, não promo — decants
+ * não participam da promo individual do frasco).
  * Pisos: 25 (5ml) e 40 (10ml) pra não ficar abaixo do custo da embalagem.
+ *
+ * Para frasco: usa precoPromoCentavos quando disponível (preço promocional
+ * individual do SKU lacrado).
  */
 export function precoDa(perfume: Perfume, variante: VarianteReserva): number {
   const base = perfume.precoVenda ?? 0;
-  if (variante === "frasco") return base;
+  if (variante === "frasco") {
+    if (perfume.precoPromoCentavos !== undefined) {
+      return Math.round(perfume.precoPromoCentavos / 100);
+    }
+    return base;
+  }
   if (variante === "decant-10") return Math.max(40, Math.round(base * 0.3));
   if (variante === "decant-5") return Math.max(25, Math.round(base * 0.2));
   return base;

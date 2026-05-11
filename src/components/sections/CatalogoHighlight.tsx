@@ -44,7 +44,7 @@ export function CatalogoHighlight() {
               <em className="italic text-amber/90">favoritos da casa.</em>
             </h2>
             <p className="text-base leading-relaxed text-ink/75 md:text-lg">
-              Uma amostra da curadoria. O catálogo inteiro tem{" "}
+              Um recorte da curadoria. O catálogo inteiro tem{" "}
               {CATALOGO.length} fragrâncias com filtros, busca e comparação
               direta árabe × designer.
             </p>

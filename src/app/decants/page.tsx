@@ -3,6 +3,7 @@ import Link from "next/link";
 import { PageHero } from "@/components/layout/PageHero";
 import { Decants } from "@/components/sections/Decants";
 import { KitsTrio } from "@/components/sections/KitsTrio";
+import { SelecaoDaSemana } from "@/components/sections/SelecaoDaSemana";
 
 export const metadata: Metadata = {
   title: "Decants",
@@ -63,9 +64,12 @@ export default function DecantsPage() {
         </div>
       </section>
 
+      {/* Hero da Seleção da Semana (12 modelos + kits promo) */}
+      <SelecaoDaSemana />
+
       <Decants hideIntro />
 
-      {/* Trios curados (Estreia + Coleção) */}
+      {/* Cards explicativos dos kits */}
       <KitsTrio />
 
       {/* Montar kit próprio */}

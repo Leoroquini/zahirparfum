@@ -65,6 +65,11 @@ function Ato2Encontro({ perfume }: { perfume: Perfume }) {
     ? Math.round((perfume.precoVenda * 0.2) / 5) * 5
     : null;
   const precoFrasco = perfume.precoVenda;
+  // Promo individual do frasco (sobrescreve precoFrasco no display, mas mantem precoVenda como cheio)
+  const precoFrascoPromo =
+    perfume.precoPromoCentavos !== undefined
+      ? perfume.precoPromoCentavos / 100
+      : null;
 
   const handleAdd = (variante: "decant-5" | "frasco") => {
     addItem(perfume, variante);
@@ -134,10 +139,21 @@ function Ato2Encontro({ perfume }: { perfume: Perfume }) {
             initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.4, ease: EASE_OUT }}
+            className="flex flex-wrap items-center gap-3"
           >
             <span className="text-[10px] font-sans font-medium uppercase tracking-[0.45em] text-amber-dim">
               Nº {numero} · {perfume.marca ?? "Fragrância"}
             </span>
+            {perfume.selecionadoSemana && (
+              <span className="rounded-full border border-amber bg-amber/85 px-2.5 py-0.5 text-[9px] font-sans font-bold uppercase tracking-[0.28em] text-ink shadow-[0_4px_12px_-2px_rgba(140,107,38,0.45)]">
+                ★ Seleção da Semana
+              </span>
+            )}
+            {perfume.precoPromoCentavos !== undefined && (
+              <span className="rounded-full border border-wine/70 bg-wine/15 px-2.5 py-0.5 text-[9px] font-sans font-bold uppercase tracking-[0.28em] text-wine">
+                Promo
+              </span>
+            )}
           </motion.div>
 
           {/* Nome explosivo */}
@@ -259,11 +275,27 @@ function Ato2Encontro({ perfume }: { perfume: Perfume }) {
                     <span className="text-[9px] font-sans font-medium uppercase tracking-[0.32em] text-amber-dim">
                       {jaNaListaFrasco ? "Na sua lista" : "Possuir"}
                     </span>
-                    <span className="truncate font-display text-lg font-light leading-tight md:text-xl">
-                      {jaNaListaFrasco
-                        ? `✓ Frasco ${perfume.volume}`
-                        : `Frasco ${perfume.volume} · R$ ${precoFrasco}`}
-                    </span>
+                    {jaNaListaFrasco ? (
+                      <span className="truncate font-display text-lg font-light leading-tight md:text-xl">
+                        ✓ Frasco {perfume.volume}
+                      </span>
+                    ) : precoFrascoPromo !== null ? (
+                      <span className="flex items-baseline gap-2 truncate">
+                        <span className="font-display text-lg font-light leading-tight md:text-xl">
+                          Frasco {perfume.volume} ·
+                        </span>
+                        <span className="text-sm text-ink/55 line-through">
+                          R$ {precoFrasco}
+                        </span>
+                        <span className="font-display text-lg font-light leading-tight text-wine md:text-xl">
+                          R$ {precoFrascoPromo}
+                        </span>
+                      </span>
+                    ) : (
+                      <span className="truncate font-display text-lg font-light leading-tight md:text-xl">
+                        Frasco {perfume.volume} · R$ {precoFrasco}
+                      </span>
+                    )}
                   </span>
                   {!jaNaListaFrasco && (
                     <span
