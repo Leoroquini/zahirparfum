@@ -6,6 +6,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import { CATALOGO, type Perfume } from "@/data/catalogo";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
+import { rotaPerfume } from "@/lib/genero";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
@@ -361,7 +362,7 @@ function AlternativaCard({
       <div className="grid gap-0 md:grid-cols-[200px_1fr]">
         {/* Foto cinematográfica do árabe */}
         <Link
-          href={`/perfume/${perfume.id}`}
+          href={rotaPerfume(perfume)}
           className="relative block aspect-square overflow-hidden bg-ink md:aspect-auto md:h-full"
           aria-label={`Ver ${perfume.nome}`}
         >
@@ -395,7 +396,7 @@ function AlternativaCard({
         {/* Conteúdo */}
         <div className="flex flex-col gap-4 p-6 md:p-7">
           <Link
-            href={`/perfume/${perfume.id}`}
+            href={rotaPerfume(perfume)}
             className="flex flex-col gap-1.5"
           >
             <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber/85">
@@ -465,7 +466,7 @@ function AlternativaCard({
           {/* CTAs */}
           <div className="mt-2 flex flex-wrap gap-2 border-t border-ink/10 pt-4">
             <Link
-              href={`/perfume/${perfume.id}`}
+              href={rotaPerfume(perfume)}
               className="group/btn inline-flex items-center gap-2 rounded-full bg-amber px-4 py-2 text-[10px] font-sans uppercase tracking-[0.3em] text-ink transition-all hover:bg-amber-bright"
             >
               Ver perfume

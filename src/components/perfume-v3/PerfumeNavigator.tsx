@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { CATALOGO, type Perfume } from "@/data/catalogo";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
+import { getGenero } from "@/lib/genero";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
@@ -14,11 +15,32 @@ type Props = {
   perfumeAtual: Perfume;
 };
 
+/**
+ * Decide a rota da ficha de um perfume conforme o gênero.
+ * Feminino → /ela/perfume/{slug}
+ * Masculino e unissex → /perfume/{slug}
+ *
+ * Mantém o cliente no mundo correto ao navegar entre perfumes.
+ */
+function rotaFichaDe(perfume: Perfume): string {
+  return getGenero(perfume) === "feminino"
+    ? `/ela/perfume/${perfume.id}`
+    : `/perfume/${perfume.id}`;
+}
+
 export function PerfumeNavigator({ perfumeAtual }: Props) {
-  const ordenado = useMemo(
-    () => [...CATALOGO].sort((a, b) => a.numero - b.numero),
-    []
-  );
+  // Filtra catálogo pelo mundo do perfume atual: navegação entre perfumes
+  // não pula entre masc e fem. Unissex aparece nos dois mundos.
+  const generoAtual = getGenero(perfumeAtual);
+  const ordenado = useMemo(() => {
+    const sameWorld = CATALOGO.filter((p) => {
+      const g = getGenero(p);
+      if (generoAtual === "feminino") return g === "feminino" || g === "unissex";
+      // masculino e unissex compartilham o mundo /perfume/* default
+      return g === "masculino" || g === "unissex";
+    });
+    return [...sameWorld].sort((a, b) => a.numero - b.numero);
+  }, [generoAtual]);
   const indexAtual = ordenado.findIndex((p) => p.id === perfumeAtual.id);
   const anterior = indexAtual > 0 ? ordenado[indexAtual - 1] : null;
   const proximo =
@@ -70,7 +92,7 @@ function BarraNavegacao({
       {/* Anterior */}
       {anterior ? (
         <Link
-          href={`/perfume/${anterior.id}`}
+          href={rotaFichaDe(anterior)}
           className="group flex items-center gap-2 rounded-full border border-ink/15 bg-cream-soft/85 px-3 py-2 text-[10px] font-sans uppercase tracking-[0.28em] text-ink/75 backdrop-blur-sm transition-all hover:border-amber/60 hover:bg-cream hover:text-ink md:px-4 md:py-2.5"
           aria-label={`Anterior: ${anterior.nome}`}
         >
@@ -107,7 +129,7 @@ function BarraNavegacao({
       {/* Próximo */}
       {proximo ? (
         <Link
-          href={`/perfume/${proximo.id}`}
+          href={rotaFichaDe(proximo)}
           className="group flex items-center gap-2 rounded-full border border-ink/15 bg-cream-soft/85 px-3 py-2 text-[10px] font-sans uppercase tracking-[0.28em] text-ink/75 backdrop-blur-sm transition-all hover:border-amber/60 hover:bg-cream hover:text-ink md:px-4 md:py-2.5"
           aria-label={`Próximo: ${proximo.nome}`}
         >
@@ -234,7 +256,7 @@ function Picker({
               {filtrados.length === 0 ? (
                 <div className="px-4 py-12 text-center">
                   <span className="font-display text-base italic text-ink/55">
-                    Nenhum perfume encontrado pra "{query}".
+                    Nenhum perfume encontrado pra &ldquo;{query}&rdquo;.
                   </span>
                 </div>
               ) : (
@@ -249,7 +271,7 @@ function Picker({
                             return;
                           }
                           onClose();
-                          router.push(`/perfume/${p.id}`);
+                          router.push(rotaFichaDe(p));
                         }}
                         className={`flex w-full items-center gap-4 rounded-sm px-3 py-2.5 text-left transition-colors hover:bg-amber/10 md:px-4 md:py-3 ${
                           p.id === atualId ? "bg-amber/15" : ""

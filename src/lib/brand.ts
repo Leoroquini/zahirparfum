@@ -5,7 +5,7 @@ export const BRAND = {
   foundedYear: 2026,
   tagline: "O que fica depois que você passa",
   manifesto:
-    "Perfume árabe pensado pro homem brasileiro que quer cheirar bem, e saber por que cheira bem.",
+    "Perfumaria árabe pra quem quer cheirar bem — e saber por que cheira bem.",
   city: "São Paulo",
   audience: "Perfumaria árabe masculina",
   sourcing:

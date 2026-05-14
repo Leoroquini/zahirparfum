@@ -15,19 +15,18 @@ export function Hero() {
       <DarkeningOverlay />
 
       {/* Conteúdo principal */}
-      <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center px-6 text-center">
+      <div className="relative z-10 mr-auto flex w-full max-w-[680px] flex-col items-start px-6 text-left md:ml-12 md:px-12 lg:ml-24">
         {/* Eyebrow */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.35, ease: EASE_OUT }}
-          className="mb-10 flex items-center gap-5"
+          className="mb-10 flex items-center gap-4"
         >
           <span className="h-px w-12 bg-amber/70" />
-          <span className="text-[10px] font-sans uppercase tracking-[0.55em] text-amber">
-            Perfumaria Árabe · Edição Brasil
+          <span className="text-[10px] font-sans uppercase tracking-[0.5em] text-amber">
+            Perfumaria Árabe · Edição Masculina
           </span>
-          <span className="h-px w-12 bg-amber/70" />
         </motion.div>
 
         {/* Título cinematográfico */}
@@ -193,7 +192,7 @@ function HeroMasterImage() {
       className="pointer-events-none absolute inset-0 overflow-hidden"
     >
       <Image
-        src="/hero/hero-master.jpg"
+        src="/hero/hero-ele-v2.webp"
         alt=""
         fill
         priority
@@ -218,13 +217,13 @@ function DarkeningOverlay() {
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-cream/40 to-transparent"
       />
-      {/* Véu cream no centro pra dar legibilidade ao título sobre os perfumes */}
+      {/* Véu cream concentrado no lado esquerdo (atrás do texto) */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(244, 233, 212, 0.55) 0%, rgba(244, 233, 212, 0.25) 40%, transparent 70%)",
+            "radial-gradient(ellipse 55% 70% at 20% 50%, rgba(244, 233, 212, 0.55) 0%, rgba(244, 233, 212, 0.2) 50%, transparent 80%)",
         }}
       />
       {/* Fade de baixo pra transitar com próxima seção */}

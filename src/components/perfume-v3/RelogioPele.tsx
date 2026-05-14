@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
 /**
@@ -132,6 +132,7 @@ const MOMENTOS: Momento[] = [
 export function RelogioPele({ topo, coracao, fundo }: Props) {
   const [hora, setHora] = useState(1);
   const [arrastando, setArrastando] = useState(false);
+  const [relogioSize, setRelogioSize] = useState(0);
   const relogioRef = useRef<HTMLDivElement>(null);
 
   const momento = MOMENTOS[hora];
@@ -144,6 +145,27 @@ export function RelogioPele({ topo, coracao, fundo }: Props) {
       ...fundo.map((n) => ({ nome: n, intensidade: momento.pesos.fundo, nivel: "fundo" as const })),
     ].filter((n) => n.intensidade > 0.05);
   }, [topo, coracao, fundo, momento]);
+
+  // Cor de fundo do relógio muda com o tempo (declarado antes do early return
+  // pra respeitar a regra de hooks)
+  const corFundo = useMemo(() => {
+    if (hora < 3) return "rgba(255, 245, 220, 0.3)"; // manhã
+    if (hora < 6) return "rgba(255, 230, 195, 0.3)"; // meio
+    if (hora < 9) return "rgba(220, 195, 165, 0.3)"; // tarde
+    return "rgba(180, 145, 110, 0.3)"; // noite
+  }, [hora]);
+
+  // Captura tamanho do relógio depois de montar (pra posicionar marcações
+  // sem ler ref durante render — evita mismatch SSR/CSR)
+  useEffect(() => {
+    if (!relogioRef.current) return;
+    const update = () => {
+      if (relogioRef.current) setRelogioSize(relogioRef.current.offsetWidth);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   // Drag handler do ponteiro
   const handleDrag = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -163,14 +185,6 @@ export function RelogioPele({ topo, coracao, fundo }: Props) {
 
   // Ângulo do ponteiro: hora 0 (no topo) = 0°, hora 6 (embaixo) = 180°
   const anguloPonteiro = (hora / 12) * 360;
-
-  // Cor de fundo do relógio muda com o tempo
-  const corFundo = useMemo(() => {
-    if (hora < 3) return "rgba(255, 245, 220, 0.3)"; // manhã
-    if (hora < 6) return "rgba(255, 230, 195, 0.3)"; // meio
-    if (hora < 9) return "rgba(220, 195, 165, 0.3)"; // tarde
-    return "rgba(180, 145, 110, 0.3)"; // noite
-  }, [hora]);
 
   return (
     <div className="grid gap-12 md:grid-cols-[auto_1fr] md:gap-16">
@@ -210,7 +224,7 @@ export function RelogioPele({ topo, coracao, fundo }: Props) {
                 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
                 style={{
                   transform: `translate(-50%, -50%) rotate(${a + 90}deg) translateY(-${
-                    relogioRef.current?.offsetWidth ? relogioRef.current.offsetWidth / 2 - 14 : 160
+                    relogioSize > 0 ? relogioSize / 2 - 14 : 160
                   }px)`,
                 }}
                 aria-label={`Ir para ${MOMENTOS[i].tempo}`}

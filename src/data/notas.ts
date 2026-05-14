@@ -36,7 +36,7 @@ export const NOTAS: Nota[] = [
     subtitulo: "A madeira sagrada",
     origem: "Camboja, Índia, Laos, Emirados",
     paleta: "Defumado · Couro · Medicinal · Úmido",
-    foto: "/hero/note-oud.png",
+    foto: "/hero/note-oud.webp",
     matchKeywords: ["oud", "agarwood", "cypriol"],
     conteudo: {
       oQueE:
@@ -59,7 +59,7 @@ export const NOTAS: Nota[] = [
     subtitulo: "O calor que fica na pele",
     origem: "Ambroxan sintético + resinas orientais",
     paleta: "Quente · Doce · Resinoso · Envolvente",
-    foto: "/hero/note-amber.png",
+    foto: "/hero/note-amber.webp",
     matchKeywords: [
       "âmbar",
       "ambar",
@@ -88,7 +88,7 @@ export const NOTAS: Nota[] = [
     subtitulo: "A flor-símbolo que vira perfume",
     origem: "Mata Atlântica, Brasil",
     paleta: "Floral · Aquoso · Sutil · Sofisticado",
-    foto: "/hero/note-orchid.png",
+    foto: "/hero/note-orchid.webp",
     matchKeywords: [
       "orquídea",
       "orquidea",
@@ -118,7 +118,7 @@ export const NOTAS: Nota[] = [
     subtitulo: "A rosa mais cara do mundo",
     origem: "Bulgária, Turquia, Irã",
     paleta: "Floral · Mel · Frutado · Picante",
-    foto: "/hero/note-rose.png",
+    foto: "/hero/note-rose.webp",
     matchKeywords: ["rosa", "damascena", "rose"],
     conteudo: {
       oQueE:

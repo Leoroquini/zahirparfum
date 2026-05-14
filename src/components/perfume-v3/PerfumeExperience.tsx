@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import type { Perfume } from "@/data/catalogo";
 import { CATALOGO } from "@/data/catalogo";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
@@ -13,7 +12,9 @@ import { fmtPrecoBRL } from "@/lib/promo";
 import { toast } from "@/lib/toast-store";
 import { RelogioPele } from "./RelogioPele";
 import { PerfumeNavigator } from "./PerfumeNavigator";
+import { ParMundo } from "./ParMundo";
 import { PerfumePyramid } from "@/components/ui/PerfumePyramid";
+import { getGenero } from "@/lib/genero";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
@@ -41,6 +42,7 @@ export function PerfumeExperience({ perfume }: Props) {
       <Ato3Piramide perfume={perfume} />
       <Ato4Relogio perfume={perfume} />
       <Ato6Veredicto perfume={perfume} />
+      <ParMundo perfume={perfume} />
       <Ato5CrossSell perfume={perfume} />
     </div>
   );
@@ -436,13 +438,23 @@ function Ato4Relogio({ perfume }: { perfume: Perfume }) {
  * ============================================================ */
 
 function Ato5CrossSell({ perfume }: { perfume: Perfume }) {
-  // Pega 3 perfumes complementares (mesma família, diferente marca)
-  const complementares = CATALOGO.filter(
-    (p) =>
-      p.id !== perfume.id &&
-      p.familia === perfume.familia &&
-      p.precoVenda !== null
-  ).slice(0, 3);
+  // Cross-sell respeitando o mundo do perfume atual: cliente em /ela vê
+  // sugestões femininas (+ unissex), em /ele vê masculinas (+ unissex).
+  // Cross entre mundos fica reservado pro componente ParMundo.
+  const generoAtual = getGenero(perfume);
+  const complementares = CATALOGO.filter((p) => {
+    if (p.id === perfume.id) return false;
+    if (p.familia !== perfume.familia) return false;
+    if (p.precoVenda === null) return false;
+    const g = getGenero(p);
+    if (generoAtual === "feminino") return g === "feminino" || g === "unissex";
+    return g === "masculino" || g === "unissex";
+  }).slice(0, 3);
+
+  const rotaFicha = (p: Perfume) =>
+    getGenero(p) === "feminino"
+      ? `/ela/perfume/${p.id}`
+      : `/perfume/${p.id}`;
 
   if (complementares.length === 0) return null;
 
@@ -476,7 +488,7 @@ function Ato5CrossSell({ perfume }: { perfume: Perfume }) {
               transition={{ duration: 0.9, delay: i * 0.15, ease: EASE_OUT }}
             >
               <Link
-                href={`/perfume/${p.id}`}
+                href={rotaFicha(p)}
                 className="group flex h-full flex-col gap-4 rounded-sm border border-ink/10 bg-cream-soft/60 p-6 backdrop-blur-sm shadow-editorial transition-all hover:border-amber/50 hover:shadow-product hover:-translate-y-1"
               >
                 {/* Foto */}

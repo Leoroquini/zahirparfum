@@ -36,6 +36,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 1,
   };
 
+  // Entradas dos mundos (LP raiz unissex aponta pra ambos via cards Ele/Ela)
+  const mundos = [
+    {
+      url: `${BASE}/ele`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.95,
+    },
+    {
+      url: `${BASE}/ela`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.9,
+    },
+  ];
+
   const secoes = SECOES_DEDICADAS.map((s) => ({
     url: `${BASE}/${s}`,
     lastModified: now,
@@ -73,6 +89,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     home,
+    ...mundos,
     ...secoes,
     ...institucionais,
     ...perfumes,

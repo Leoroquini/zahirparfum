@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import { CATALOGO, FAMILIAS, type Perfume } from "@/data/catalogo";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
+import { rotaPerfume } from "@/lib/genero";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
@@ -77,7 +78,7 @@ function MobilePerfumeRow({ perfume }: { perfume: Perfume }) {
   return (
     <li>
       <Link
-        href={`/perfume/${perfume.id}`}
+        href={rotaPerfume(perfume)}
         className="group flex items-center gap-3 rounded-sm border border-ink/5 bg-cream/50 p-3 transition-colors hover:border-amber/30"
       >
         {hasFoto(perfume) && (

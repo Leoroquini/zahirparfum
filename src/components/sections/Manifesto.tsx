@@ -14,7 +14,7 @@ export function Manifesto({ hideIntro = false }: { hideIntro?: boolean } = {}) {
       {/* Background fotográfico muito escuro pra dar textura */}
       <div aria-hidden className="pointer-events-none absolute inset-0 opacity-20">
         <Image
-          src="/hero/ingredients.png"
+          src="/hero/ingredients.webp"
           alt=""
           fill
           sizes="100vw"

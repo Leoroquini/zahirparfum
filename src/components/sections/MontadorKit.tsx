@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { CATALOGO, type Perfume } from "@/data/catalogo";
+import { filtrarPorGenero } from "@/lib/genero";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
 import { precoDa, type VarianteReserva } from "@/lib/lista-store";
 import {
@@ -49,7 +50,23 @@ type ItemLocal = {
  * estar montando varios cenarios e nao quer poluir a lista de reserva. Se
  * decidir, fecha aqui mesmo via DM/WA.
  */
-export function MontadorKit() {
+/**
+ * Prop `mundo` filtra o catálogo de partida do montador.
+ * - "ele" / "raiz" / undefined → masculinos + unissex
+ * - "ela" → femininos + unissex
+ */
+export function MontadorKit({
+  mundo = "ele",
+}: {
+  mundo?: "ele" | "ela" | "raiz";
+} = {}) {
+  const catalogoBase = useMemo(
+    () =>
+      mundo === "raiz"
+        ? CATALOGO
+        : filtrarPorGenero(CATALOGO, mundo === "ela" ? "feminino" : "masculino"),
+    [mundo],
+  );
   const searchParams = useSearchParams();
   const tamanhoInicial: Tamanho =
     searchParams.get("tamanho") === "5ml" ? "5ml" : "10ml";
@@ -115,10 +132,10 @@ export function MontadorKit() {
       ? kitDetectado.kit.precoCheio
       : totalSomado * 100;
 
-  // Catálogo filtrado
+  // Catálogo filtrado (a partir do catalogoBase do mundo)
   const catalogoFiltrado = useMemo(() => {
     const q = busca.trim().toLowerCase();
-    return CATALOGO.filter((p) => {
+    return catalogoBase.filter((p) => {
       if (p.precoVenda === null) return false;
       if (apenasSelecionados && !p.selecionadoSemana) return false;
       if (marcaFiltro && p.marca !== marcaFiltro) return false;
@@ -130,13 +147,13 @@ export function MontadorKit() {
         (p.cloneDe?.some((c) => c.toLowerCase().includes(q)) ?? false)
       );
     });
-  }, [busca, marcaFiltro, apenasSelecionados]);
+  }, [busca, marcaFiltro, apenasSelecionados, catalogoBase]);
 
   const marcasDisponiveis = useMemo(() => {
     const set = new Set<string>();
-    CATALOGO.forEach((p) => p.marca && set.add(p.marca));
+    catalogoBase.forEach((p) => p.marca && set.add(p.marca));
     return Array.from(set).sort();
-  }, []);
+  }, [catalogoBase]);
 
   const handleEnviarWa = () => {
     const url = linkWhatsApp(mensagemKitMontador(itensComPerfume));
@@ -515,7 +532,7 @@ type KitStatusProps = {
   tamanhoPadrao: Tamanho;
 };
 
-function KitStatusPanel({ detect, itens }: KitStatusProps) {
+function KitStatusPanel({ detect }: KitStatusProps) {
   // kit-promo (3 da Selecao, mesmo tamanho)
   if (detect.tipo === "kit-promo") {
     return (

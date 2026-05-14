@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { CATALOGO, type Perfume, type Projecao } from "@/data/catalogo";
 import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
+import { rotaPerfume } from "@/lib/genero";
 import { addItem, type ItemLista } from "@/lib/lista-store";
 import {
   linkInstagram,
@@ -320,23 +321,25 @@ function ComparacaoView({ a, b }: { a: Perfume; b: Perfume }) {
     );
   };
 
-  const items: ItemLista[] = useMemo(
-    () => [
+  // addedAt é "agora" no momento em que a/b são definidos — capturado uma vez
+  // por par via useMemo (Date.now() é impuro mas só roda quando deps mudam).
+  const items: ItemLista[] = useMemo(() => {
+    const now = Date.now();
+    return [
       {
         perfumeId: a.id,
         variante: "frasco",
         precoSnapshot: a.precoVenda ?? 0,
-        addedAt: Date.now(),
+        addedAt: now,
       },
       {
         perfumeId: b.id,
         variante: "frasco",
         precoSnapshot: b.precoVenda ?? 0,
-        addedAt: Date.now(),
+        addedAt: now,
       },
-    ],
-    [a, b],
-  );
+    ];
+  }, [a, b]);
 
   const totalAmbos = (a.precoVenda ?? 0) + (b.precoVenda ?? 0);
 
@@ -439,7 +442,7 @@ function ComparacaoView({ a, b }: { a: Perfume; b: Perfume }) {
 function FotoLado({ perfume, lado }: { perfume: Perfume; lado: string }) {
   return (
     <Link
-      href={`/perfume/${perfume.id}`}
+      href={rotaPerfume(perfume)}
       className="group relative block aspect-square overflow-hidden rounded-sm border border-ink/10 bg-ink"
     >
       {hasFoto(perfume) && (

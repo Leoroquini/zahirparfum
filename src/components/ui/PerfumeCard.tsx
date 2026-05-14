@@ -6,6 +6,7 @@ import { motion } from "motion/react";
 import type { Perfume } from "@/data/catalogo";
 import { addItem, useLista } from "@/lib/lista-store";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
+import { rotaPerfume } from "@/lib/genero";
 import { toast } from "@/lib/toast-store";
 import { precoFrasco } from "@/lib/promo";
 
@@ -103,6 +104,7 @@ export function PerfumeCard({ perfume, index = 0 }: Props) {
   const jaNaLista = lista.some((i) => i.perfumeId === perfume.id);
   const preco = precoFrasco(perfume);
   const ehSelecionado = perfume.selecionadoSemana === true;
+  const fichaHref = rotaPerfume(perfume);
 
   return (
     <motion.div
@@ -117,7 +119,7 @@ export function PerfumeCard({ perfume, index = 0 }: Props) {
       className="group/wrap relative"
     >
       <Link
-        href={`/perfume/${perfume.id}`}
+        href={fichaHref}
         className="group relative block aspect-square overflow-hidden rounded-sm border border-ink/20 bg-ink shadow-product transition-all duration-700 hover:-translate-y-1 hover:border-amber/60 hover:shadow-product-hover"
       >
         {/* Foto real do perfume (ou gradient fallback) */}

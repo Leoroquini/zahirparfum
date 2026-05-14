@@ -17,6 +17,7 @@ import { CHECKOUT_MP_ATIVO } from "@/lib/checkout-config";
 import { fmtPrecoBRL } from "@/lib/promo";
 import { events } from "@/lib/track";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
+import { rotaPerfume } from "@/lib/genero";
 import { toast } from "@/lib/toast-store";
 import { BRAND } from "@/lib/brand";
 
@@ -350,7 +351,7 @@ function ListaItemRow({ item }: { item: ItemLista }) {
       {/* Thumb */}
       {hasFoto(perfume) && (
         <Link
-          href={`/perfume/${perfume.id}`}
+          href={rotaPerfume(perfume)}
           className="relative block h-20 w-20 shrink-0 overflow-hidden rounded-sm border border-ink/10"
           aria-hidden
           tabIndex={-1}
@@ -371,7 +372,7 @@ function ListaItemRow({ item }: { item: ItemLista }) {
           {labelDa(item.variante)}
         </span>
         <Link
-          href={`/perfume/${perfume.id}`}
+          href={rotaPerfume(perfume)}
           className="font-display text-base font-light leading-tight text-ink transition-colors hover:text-amber md:text-lg"
         >
           {perfume.nome}

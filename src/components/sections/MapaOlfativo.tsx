@@ -5,17 +5,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import { CATALOGO, type Perfume } from "@/data/catalogo";
+import { filtrarPorGenero } from "@/lib/genero";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
+import { rotaPerfume } from "@/lib/genero";
 import { MapaMobileAlt } from "@/components/ui/MapaMobileAlt";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
 /**
- * Mapa olfativo: cada família olfativa tem uma posição base no plano
+ * Mapa olfativo masculino: cada família tem posição base no plano.
  * X: Fresco (0) → Intenso (1)
  * Y: Seco (0) → Doce (1)  [Y=0 topo, Y=1 base, em coords CSS]
  */
-const FAMILY_POS: Record<string, { x: number; y: number }> = {
+const FAMILY_POS_ELE: Record<string, { x: number; y: number }> = {
   "Aquático Marinho": { x: 0.1, y: 0.2 },
   "Amadeirado Aquático": { x: 0.38, y: 0.25 },
   "Aromático Frutado Cítrico": { x: 0.2, y: 0.4 },
@@ -38,10 +40,48 @@ const FAMILY_POS: Record<string, { x: number; y: number }> = {
   "Floral Doce": { x: 0.4, y: 0.78 },
 };
 
-function positionFor(p: Perfume): { x: number; y: number } {
-  const base = FAMILY_POS[p.familia ?? ""] ?? { x: 0.5, y: 0.5 };
-  // Jitter determinístico pra perfumes da mesma família não se sobreporem
-  const jx = ((p.numero * 137) % 100) / 100 - 0.5; // -0.5..0.5
+/**
+ * Mapa olfativo feminino: eixos adaptados ao universo da perfumaria árabe
+ * feminina (briefing 2026-05-12, baseado em pesquisa de mercado).
+ * X: Fresco · Solar (0) → Envolvente · Noite (1)
+ * Y: Floral · Romântico (0) → Gourmand · Comestível (1)
+ *
+ * Famílias dominantes femininas (Gourmand, Floral, Frutal-Floral)
+ * recebem posições proeminentes; Oriental fica no canto premium.
+ */
+const FAMILY_POS_ELA: Record<string, { x: number; y: number }> = {
+  // Frutal-Floral leve (Yara, Lychee Musk, Mayar, Sabah Al Ward)
+  "Floral Frutal": { x: 0.2, y: 0.3 },
+  Frutal: { x: 0.15, y: 0.35 },
+  "Frutal Almíscar": { x: 0.18, y: 0.4 },
+  // Floral clássico (Crystal Rose, Rose Paris)
+  Floral: { x: 0.45, y: 0.18 },
+  "Floral Branco": { x: 0.5, y: 0.2 },
+  "Floral Rosa": { x: 0.55, y: 0.22 },
+  // Floral Oriental (Shagaf Al Ward, Bade'e Al Oud feminino)
+  "Floral Oriental": { x: 0.72, y: 0.28 },
+  "Oriental Floral": { x: 0.75, y: 0.32 },
+  // Gourmand puro (Vanilla Addiction, Sweet Like Candy)
+  Gourmand: { x: 0.5, y: 0.78 },
+  "Floral Doce": { x: 0.35, y: 0.6 },
+  "Gourmand Floral": { x: 0.42, y: 0.7 },
+  // Gourmand árabe envolvente (Khamrah, Kismet Angel)
+  "Oriental Gourmand": { x: 0.72, y: 0.85 },
+  "Gourmand Especiado": { x: 0.78, y: 0.8 },
+  "Amadeirado Gourmand": { x: 0.85, y: 0.78 },
+  // Oriental noturno premium (oud rosé, açafrão)
+  "Oriental Oud": { x: 0.88, y: 0.55 },
+  "Oriental Especiado": { x: 0.82, y: 0.5 },
+  Oriental: { x: 0.85, y: 0.48 },
+  // Famílias compartilhadas mas com peso menor no feminino
+  "Âmbar Oriental": { x: 0.78, y: 0.65 },
+  "Oriental Baunilha": { x: 0.6, y: 0.88 },
+  Amadeirado: { x: 0.85, y: 0.4 },
+};
+
+function positionForEle(p: Perfume): { x: number; y: number } {
+  const base = FAMILY_POS_ELE[p.familia ?? ""] ?? { x: 0.5, y: 0.5 };
+  const jx = ((p.numero * 137) % 100) / 100 - 0.5;
   const jy = ((p.numero * 89) % 100) / 100 - 0.5;
   return {
     x: Math.max(0.06, Math.min(0.94, base.x + jx * 0.075)),
@@ -49,7 +89,38 @@ function positionFor(p: Perfume): { x: number; y: number } {
   };
 }
 
-export function MapaOlfativo({ hideIntro = false }: { hideIntro?: boolean } = {}) {
+function positionForEla(p: Perfume): { x: number; y: number } {
+  const base = FAMILY_POS_ELA[p.familia ?? ""] ?? { x: 0.5, y: 0.5 };
+  const jx = ((p.numero * 137) % 100) / 100 - 0.5;
+  const jy = ((p.numero * 89) % 100) / 100 - 0.5;
+  return {
+    x: Math.max(0.06, Math.min(0.94, base.x + jx * 0.075)),
+    y: Math.max(0.08, Math.min(0.92, base.y + jy * 0.075)),
+  };
+}
+
+/**
+ * Compatibilidade: positionFor() é usada por outros componentes (PerfumeDot
+ * abaixo). Continua apontando pro mapa masculino por default.
+ */
+function positionFor(p: Perfume): { x: number; y: number } {
+  return positionForEle(p);
+}
+
+/**
+ * Prop `mundo`:
+ * - "ele" / "raiz" / undefined → mapa masculino (eixos atuais)
+ * - "ela" → mapa feminino (eixos Floral↔Gourmand, Fresco↔Envolvente)
+ */
+export function MapaOlfativo({
+  hideIntro = false,
+  mundo = "ele",
+}: {
+  hideIntro?: boolean;
+  mundo?: "ele" | "ela" | "raiz";
+} = {}) {
+  const isEla = mundo === "ela";
+  const positionForActive = isEla ? positionForEla : positionForEle;
   const [hovered, setHovered] = useState<string | null>(null);
   const [focused, setFocused] = useState<string | null>(null);
   const activeId = focused ?? hovered;
@@ -57,8 +128,12 @@ export function MapaOlfativo({ hideIntro = false }: { hideIntro?: boolean } = {}
     ? CATALOGO.find((p) => p.id === activeId) ?? null
     : null;
 
-  // Ordena o catálogo pra garantir que perfumes sem família vão pro final (não atrapalham)
-  const perfumesComPosicao = CATALOGO.filter((p) => p.familia);
+  // Filtra catálogo pelo mundo atual antes de aplicar posições
+  const catalogoMundo =
+    mundo === "raiz"
+      ? CATALOGO
+      : filtrarPorGenero(CATALOGO, mundo === "ela" ? "feminino" : "masculino");
+  const perfumesComPosicao = catalogoMundo.filter((p) => p.familia);
 
   return (
     <section id="mapa"
@@ -135,17 +210,32 @@ export function MapaOlfativo({ hideIntro = false }: { hideIntro?: boolean } = {}
               <div className="absolute left-1/2 h-full w-px -translate-x-1/2 bg-amber/40" />
             </div>
 
-            {/* Axis labels */}
-            <AxisLabel position="top">Seco · Especiado</AxisLabel>
-            <AxisLabel position="bottom">Doce · Gourmand</AxisLabel>
-            <AxisLabel position="left">Fresco · Aquático</AxisLabel>
-            <AxisLabel position="right">Intenso · Amadeirado</AxisLabel>
+            {/* Axis labels — diferentes por mundo */}
+            {isEla ? (
+              <>
+                <AxisLabel position="top">Floral · Romântico</AxisLabel>
+                <AxisLabel position="bottom">Gourmand · Comestível</AxisLabel>
+                <AxisLabel position="left">Fresco · Solar</AxisLabel>
+                <AxisLabel position="right">Envolvente · Noite</AxisLabel>
 
-            {/* Quadrant hints */}
-            <QuadrantHint x="top-left">Frescos secos</QuadrantHint>
-            <QuadrantHint x="top-right">Especiados profundos</QuadrantHint>
-            <QuadrantHint x="bottom-left">Florais leves</QuadrantHint>
-            <QuadrantHint x="bottom-right">Ambarados gourmand</QuadrantHint>
+                <QuadrantHint x="top-left">Florais frescos</QuadrantHint>
+                <QuadrantHint x="top-right">Florais envolventes</QuadrantHint>
+                <QuadrantHint x="bottom-left">Doces solares</QuadrantHint>
+                <QuadrantHint x="bottom-right">Gourmand árabe</QuadrantHint>
+              </>
+            ) : (
+              <>
+                <AxisLabel position="top">Seco · Especiado</AxisLabel>
+                <AxisLabel position="bottom">Doce · Gourmand</AxisLabel>
+                <AxisLabel position="left">Fresco · Aquático</AxisLabel>
+                <AxisLabel position="right">Intenso · Amadeirado</AxisLabel>
+
+                <QuadrantHint x="top-left">Frescos secos</QuadrantHint>
+                <QuadrantHint x="top-right">Especiados profundos</QuadrantHint>
+                <QuadrantHint x="bottom-left">Florais leves</QuadrantHint>
+                <QuadrantHint x="bottom-right">Ambarados gourmand</QuadrantHint>
+              </>
+            )}
 
             {/* Perfume dots */}
             {perfumesComPosicao.map((p, i) => (
@@ -155,6 +245,7 @@ export function MapaOlfativo({ hideIntro = false }: { hideIntro?: boolean } = {}
                 index={i}
                 active={activeId === p.id}
                 anyActive={!!activeId}
+                positionFn={positionForActive}
                 onHover={() => setHovered(p.id)}
                 onLeave={() => setHovered(null)}
                 onFocus={() => setFocused(p.id)}
@@ -213,6 +304,7 @@ function PerfumeDot({
   index,
   active,
   anyActive,
+  positionFn,
   onHover,
   onLeave,
   onFocus,
@@ -222,12 +314,13 @@ function PerfumeDot({
   index: number;
   active: boolean;
   anyActive: boolean;
+  positionFn?: (p: Perfume) => { x: number; y: number };
   onHover: () => void;
   onLeave: () => void;
   onFocus: () => void;
   onBlur: () => void;
 }) {
-  const pos = positionFor(perfume);
+  const pos = (positionFn ?? positionFor)(perfume);
 
   return (
     <motion.button
@@ -245,7 +338,7 @@ function PerfumeDot({
       onFocus={onFocus}
       onBlur={onBlur}
       onClick={() => {
-        window.location.href = `/perfume/${perfume.id}`;
+        window.location.href = rotaPerfume(perfume);
       }}
       className="group absolute -translate-x-1/2 -translate-y-1/2 outline-none"
       style={{ left: `${pos.x * 100}%`, top: `${pos.y * 100}%` }}
@@ -401,7 +494,7 @@ function InfoPanel({ perfume }: { perfume: Perfume }) {
           </span>
         </div>
         <Link
-          href={`/perfume/${perfume.id}`}
+          href={rotaPerfume(perfume)}
           className="group inline-flex items-center gap-2 rounded-full border border-amber/50 px-4 py-2 text-[10px] font-sans uppercase tracking-[0.3em] text-amber transition-all hover:border-amber hover:bg-amber hover:text-ink"
         >
           Abrir ficha

@@ -15,6 +15,7 @@ import {
 } from "@/lib/diario-insights";
 import { type RegistroDiario } from "@/lib/diario-store";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
+import { rotaPerfume } from "@/lib/genero";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
@@ -120,7 +121,7 @@ export function DiarioInsights({
         {resumo.perfumeTop && (
           <Card label="Mais usado">
             <Link
-              href={`/perfume/${resumo.perfumeTop.perfume.id}`}
+              href={rotaPerfume(resumo.perfumeTop.perfume)}
               className="group flex items-center gap-3"
             >
               {hasFoto(resumo.perfumeTop.perfume) && (
@@ -173,7 +174,7 @@ export function DiarioInsights({
                 {hits.slice(0, 3).map((h) => (
                   <li key={h.perfume.id}>
                     <Link
-                      href={`/perfume/${h.perfume.id}`}
+                      href={rotaPerfume(h.perfume)}
                       className="group flex items-baseline justify-between gap-3 py-2 transition-colors hover:bg-cream-soft/40"
                     >
                       <span className="truncate font-display text-base font-light text-ink group-hover:text-amber">
@@ -223,7 +224,7 @@ export function DiarioInsights({
             {sugestoes.map(({ perfume, razao }) => (
               <li key={perfume.id}>
                 <Link
-                  href={`/perfume/${perfume.id}`}
+                  href={rotaPerfume(perfume)}
                   className="group flex h-full flex-col gap-3 rounded-sm border border-ink/8 p-4 transition-all hover:border-amber/50"
                 >
                   {hasFoto(perfume) && (

@@ -8,6 +8,7 @@ import {
   getPerfumesComNota,
   normalizarNota,
 } from "@/lib/notas-helper";
+import { rotaPerfume } from "@/lib/genero";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
@@ -180,7 +181,7 @@ function Modal({
                 {perfumes.slice(0, 6).map((p) => (
                   <li key={p.id}>
                     <Link
-                      href={`/perfume/${p.id}`}
+                      href={rotaPerfume(p)}
                       onClick={onClose}
                       className="group flex items-baseline justify-between gap-4 py-3 transition-colors hover:bg-cream-soft/40"
                     >

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import {
@@ -14,6 +15,8 @@ import {
 } from "@/data/quiz";
 import { addItem } from "@/lib/lista-store";
 import { events } from "@/lib/track";
+import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
+import { rotaPerfume } from "@/lib/genero";
 import { linkWhatsApp, linkInstagram } from "@/lib/reserva-dm";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
@@ -155,62 +158,258 @@ export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
   return (
     <>
       {/* Seção visível na home */}
-      <section id="ritual"
-        className="section-veil-light relative border-t border-ink/5 px-6 py-28 md:px-12 md:py-36"
+      <section
+        id="ritual"
+        className="section-veil-light relative border-t border-ink/5 px-6 py-24 md:px-12 md:py-32"
       >
-        <div className="relative z-10 mx-auto grid max-w-[1440px] gap-16 md:grid-cols-[1fr_auto] md:items-end md:gap-24">
-          {!hideIntro && (
+        <div className="relative z-10 mx-auto max-w-[1440px]">
+          <div className="grid gap-12 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-16">
+            {/* Coluna esquerda — texto + CTAs */}
+            {!hideIntro && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 1, ease: EASE_OUT }}
+                className="flex flex-col gap-6"
+              >
+                <span className="inline-flex items-center gap-3 text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
+                  <span className="h-px w-8 bg-amber" />
+                  O Ritual
+                </span>
+
+                <h2 className="font-display text-5xl font-light leading-[1.02] tracking-tight text-ink md:text-6xl lg:text-7xl">
+                  Seis perguntas pra descobrir{" "}
+                  <em className="italic text-amber/90">seu perfil olfativo.</em>
+                </h2>
+
+                <p className="max-w-xl text-base leading-relaxed text-ink/75 md:text-[17px]">
+                  Como um curador de verdade: pergunto o que você já amou, o que
+                  evita, como sua pele se comporta. Você sai com 3 fragrâncias
+                  da sua zona + 1 pra arriscar — cada uma com afinidade % e por
+                  quê.
+                </p>
+
+                {/* CTAs */}
+                <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-3">
+                  <button
+                    type="button"
+                    onClick={handleIniciar}
+                    className="group inline-flex items-center gap-4 rounded-full bg-amber px-8 py-4 text-[11px] font-sans font-bold uppercase tracking-[0.3em] text-ink transition-all hover:bg-amber-bright"
+                  >
+                    <span>
+                      {temProgresso ? "Continuar o Ritual" : "Começar o Ritual"}
+                    </span>
+                    <span className="transition-transform duration-500 group-hover:translate-x-1">
+                      →
+                    </span>
+                  </button>
+
+                  <a
+                    href="#ritual-passos"
+                    className="inline-flex items-center gap-2 text-[11px] font-sans uppercase tracking-[0.3em] text-ink/75 transition-colors hover:text-amber"
+                  >
+                    <span>Como funciona</span>
+                    <span
+                      aria-hidden
+                      className="flex h-4 w-4 items-center justify-center rounded-full border border-current text-[10px]"
+                    >
+                      ⓘ
+                    </span>
+                  </a>
+                </div>
+
+                {temProgresso && (
+                  <button
+                    type="button"
+                    onClick={handleIniciarDoZero}
+                    className="self-start text-[10px] font-sans uppercase tracking-[0.3em] text-ink/65 transition-colors hover:text-amber"
+                  >
+                    ou recomeçar do zero
+                  </button>
+                )}
+              </motion.div>
+            )}
+
+            {/* Coluna direita — frase + still life */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 1, ease: EASE_OUT }}
-              className="flex flex-col gap-6"
+              viewport={{ once: true }}
+              transition={{ duration: 1, delay: 0.2, ease: EASE_OUT }}
+              className="relative flex flex-col items-end gap-6"
             >
-              <span className="inline-flex items-center gap-3 text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
-                <span className="h-px w-8 bg-amber" />
-                O Ritual
-              </span>
-              <h2 className="max-w-3xl font-display text-4xl font-light leading-[1.05] tracking-tight text-ink md:text-6xl lg:text-7xl">
-                Seis perguntas pra descobrir{" "}
-                <em className="italic text-amber/90">seu perfil olfativo.</em>
-              </h2>
-              <p className="max-w-2xl text-base leading-relaxed text-ink/75 md:text-lg">
-                Como um curador de verdade: pergunto o que você já amou, o que
-                evita, como sua pele se comporta. Você sai com 3 fragrâncias da
-                sua zona + 1 pra arriscar — cada uma com afinidade % e por quê.
+              <p className="text-right font-display text-2xl font-light leading-tight text-ink md:text-3xl lg:text-4xl">
+                Não é sobre acertar.
+                <br />É sobre{" "}
+                <em className="italic text-amber/90">se reconhecer.</em>
               </p>
-            </motion.div>
-          )}
 
+              <RitualStillLife />
+            </motion.div>
+          </div>
+
+          {/* 6 cards das perguntas */}
           <motion.div
+            id="ritual-passos"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.2, ease: EASE_OUT }}
-            className="flex flex-col items-start gap-2 md:items-end"
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.9, delay: 0.15, ease: EASE_OUT }}
+            className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6"
           >
-            <button
-              type="button"
-              onClick={handleIniciar}
-              className="group relative inline-flex items-center gap-4 overflow-hidden rounded-full bg-amber px-9 py-5 text-xs font-sans uppercase tracking-[0.3em] text-ink transition-all duration-500 hover:bg-amber-bright"
+            <RitualEtapa
+              n={1}
+              titulo="O que você já amou"
+              sub="Descubro seus perfumes marcantes e referências."
+              icon={
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                >
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                </svg>
+              }
+            />
+            <RitualEtapa
+              n={2}
+              titulo="O que você evita"
+              sub="Entendo o que não combina com você."
+              icon={
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                >
+                  <path d="M12 2C9 6 7 9 7 13a5 5 0 0 0 10 0c0-4-2-7-5-11z" />
+                </svg>
+              }
+            />
+            <RitualEtapa
+              n={3}
+              titulo="Sua pele"
+              sub="Analisamos sua pele, clima e ocasião."
+              icon={
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                >
+                  <path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0" />
+                  <path d="M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0" />
+                  <path d="M2 7c2-2 4-2 6 0s4 2 6 0 4-2 6 0" />
+                </svg>
+              }
+            />
+            <RitualEtapa
+              n={4}
+              titulo="Suas preferências"
+              sub="Estilo, intensidade, memória e presença."
+              icon={
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                >
+                  <path d="M12 3l2 5 5 .8-3.6 3.5.9 5L12 14.8 7.7 17.3l.9-5L5 8.8 10 8z" />
+                </svg>
+              }
+            />
+            <RitualEtapa
+              n={5}
+              titulo="Curadoria"
+              sub="Seleciono 3 fragrâncias da sua zona + 1 pra arriscar."
+              icon={
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                >
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="m20 20-4.3-4.3" />
+                </svg>
+              }
+            />
+            <RitualEtapa
+              n={6}
+              titulo="Seu resultado"
+              sub="Você recebe afinidade % e o motivo de cada escolha."
+              icon={
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                >
+                  <line x1="19" y1="5" x2="5" y2="19" />
+                  <circle cx="7" cy="7" r="2.5" />
+                  <circle cx="17" cy="17" r="2.5" />
+                </svg>
+              }
+            />
+          </motion.div>
+
+          {/* Selo de confidencialidade */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9, delay: 0.3 }}
+            className="mt-10 flex items-center justify-center gap-3 text-amber/85"
+          >
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
             >
-              <span>
-                {temProgresso ? "Continuar o Ritual" : "Começar o Ritual"}
-              </span>
-              <span className="transition-transform duration-500 group-hover:translate-x-1">
-                →
-              </span>
-            </button>
-            {temProgresso && (
-              <button
-                type="button"
-                onClick={handleIniciarDoZero}
-                className="text-[10px] font-sans uppercase tracking-[0.3em] text-ink/70 transition-colors hover:text-amber"
-              >
-                ou recomeçar do zero
-              </button>
-            )}
+              <rect x="4" y="11" width="16" height="10" rx="2" />
+              <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+            </svg>
+            <span className="text-[10px] font-sans uppercase tracking-[0.35em]">
+              100% confidencial · Suas respostas não são armazenadas
+            </span>
           </motion.div>
         </div>
       </section>
@@ -294,6 +493,363 @@ export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+/* ---------------- Still life ilustrado (coluna direita) ---------------- */
+
+function RitualStillLife() {
+  return (
+    <div
+      className="relative w-full max-w-[520px]"
+      style={{ aspectRatio: "5 / 3.4" }}
+    >
+      {/* Vinheta de luz */}
+      <div
+        aria-hidden
+        className="absolute inset-0 rounded-md"
+        style={{
+          background:
+            "radial-gradient(ellipse at 65% 38%, rgba(231,182,89,0.25), transparent 65%)",
+        }}
+      />
+
+      {/* Bandeja de mármore */}
+      <svg
+        viewBox="0 0 500 340"
+        className="relative h-full w-full"
+        aria-hidden
+      >
+        <defs>
+          <linearGradient id="tray" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#f4e9d4" />
+            <stop offset="1" stopColor="#ede5d6" />
+          </linearGradient>
+          <linearGradient id="bottleGlass" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#3d2210" />
+            <stop offset="0.5" stopColor="#6a3d1e" />
+            <stop offset="1" stopColor="#2a1810" />
+          </linearGradient>
+          <radialGradient id="bottleShine" cx="0.3" cy="0.25" r="0.5">
+            <stop offset="0" stopColor="rgba(255,220,160,0.7)" />
+            <stop offset="1" stopColor="rgba(255,220,160,0)" />
+          </radialGradient>
+          <linearGradient id="glassCup" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="rgba(255,255,255,0.4)" />
+            <stop offset="1" stopColor="rgba(200,155,60,0.35)" />
+          </linearGradient>
+          <linearGradient id="compassFace" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#f4e9d4" />
+            <stop offset="1" stopColor="#e0cfa8" />
+          </linearGradient>
+          <radialGradient id="compassRing" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0.85" stopColor="#c89b3c" />
+            <stop offset="1" stopColor="#8c6b26" />
+          </radialGradient>
+        </defs>
+
+        {/* Bandeja oval (mármore) */}
+        <ellipse
+          cx="250"
+          cy="260"
+          rx="230"
+          ry="50"
+          fill="url(#tray)"
+          stroke="#c89b3c"
+          strokeWidth="1"
+          opacity="0.9"
+        />
+        <ellipse
+          cx="250"
+          cy="258"
+          rx="220"
+          ry="44"
+          fill="#faf7f0"
+          opacity="0.5"
+        />
+
+        {/* Sombra geral */}
+        <ellipse
+          cx="250"
+          cy="288"
+          rx="220"
+          ry="14"
+          fill="rgba(0,0,0,0.08)"
+        />
+
+        {/* Caderno "RITUAL ZAHIR" — atrás à esquerda */}
+        <g transform="translate(180, 90)">
+          <rect
+            x="0"
+            y="0"
+            width="120"
+            height="150"
+            rx="3"
+            fill="#ede5d6"
+            stroke="#c89b3c"
+            strokeWidth="0.8"
+          />
+          <rect
+            x="6"
+            y="6"
+            width="108"
+            height="138"
+            rx="2"
+            fill="none"
+            stroke="#c89b3c"
+            strokeWidth="0.5"
+            opacity="0.6"
+          />
+          {/* Z monograma */}
+          <g transform="translate(60, 38)" textAnchor="middle">
+            <circle cx="0" cy="0" r="14" fill="none" stroke="#c89b3c" strokeWidth="0.8" />
+            <text
+              x="0"
+              y="5"
+              fontFamily="serif"
+              fontSize="18"
+              fontStyle="italic"
+              fill="#c89b3c"
+            >
+              Z
+            </text>
+          </g>
+          <text
+            x="60"
+            y="80"
+            textAnchor="middle"
+            fontFamily="serif"
+            fontSize="11"
+            letterSpacing="3"
+            fill="#1a0e08"
+          >
+            RITUAL
+          </text>
+          <text
+            x="60"
+            y="96"
+            textAnchor="middle"
+            fontFamily="serif"
+            fontSize="11"
+            letterSpacing="3"
+            fill="#1a0e08"
+          >
+            ZAHIR
+          </text>
+          <line
+            x1="20"
+            y1="108"
+            x2="100"
+            y2="108"
+            stroke="#c89b3c"
+            strokeWidth="0.5"
+            opacity="0.6"
+          />
+          <text
+            x="60"
+            y="124"
+            textAnchor="middle"
+            fontFamily="serif"
+            fontSize="7"
+            letterSpacing="2"
+            fill="#1a0e08"
+            opacity="0.7"
+          >
+            DESCUBRA O QUE
+          </text>
+          <text
+            x="60"
+            y="135"
+            textAnchor="middle"
+            fontFamily="serif"
+            fontSize="7"
+            letterSpacing="2"
+            fill="#1a0e08"
+            opacity="0.7"
+          >
+            COMBINA COM VOCÊ.
+          </text>
+        </g>
+
+        {/* Frasco escuro com tampa dourada — centro */}
+        <g transform="translate(295, 80)">
+          {/* Tampa */}
+          <rect
+            x="18"
+            y="0"
+            width="34"
+            height="22"
+            rx="2"
+            fill="url(#compassRing)"
+          />
+          <rect
+            x="22"
+            y="-4"
+            width="26"
+            height="6"
+            rx="1"
+            fill="#c89b3c"
+          />
+          {/* Pescoço */}
+          <rect x="25" y="22" width="20" height="12" fill="#3d2210" />
+          {/* Corpo */}
+          <path
+            d="M 8 34 L 62 34 L 64 50 L 64 158 Q 64 168 54 168 L 16 168 Q 6 168 6 158 L 6 50 Z"
+            fill="url(#bottleGlass)"
+            stroke="#c89b3c"
+            strokeWidth="0.8"
+          />
+          {/* Brilho */}
+          <ellipse cx="22" cy="80" rx="6" ry="40" fill="url(#bottleShine)" />
+          {/* Selo Z no centro */}
+          <circle
+            cx="35"
+            cy="100"
+            r="11"
+            fill="none"
+            stroke="#c89b3c"
+            strokeWidth="0.7"
+          />
+          <text
+            x="35"
+            y="105"
+            textAnchor="middle"
+            fontFamily="serif"
+            fontSize="13"
+            fontStyle="italic"
+            fill="#c89b3c"
+          >
+            Z
+          </text>
+        </g>
+
+        {/* Bússola — frente à esquerda */}
+        <g transform="translate(110, 200)">
+          {/* Anel */}
+          <circle cx="40" cy="40" r="40" fill="url(#compassRing)" />
+          <circle cx="40" cy="40" r="34" fill="url(#compassFace)" />
+          {/* Marcas cardeais */}
+          {[0, 90, 180, 270].map((deg) => (
+            <line
+              key={deg}
+              x1="40"
+              y1="10"
+              x2="40"
+              y2="16"
+              stroke="#1a0e08"
+              strokeWidth="1.2"
+              transform={`rotate(${deg} 40 40)`}
+            />
+          ))}
+          {/* Marcas intermediárias */}
+          {[45, 135, 225, 315].map((deg) => (
+            <line
+              key={deg}
+              x1="40"
+              y1="12"
+              x2="40"
+              y2="15"
+              stroke="#1a0e08"
+              strokeWidth="0.6"
+              transform={`rotate(${deg} 40 40)`}
+            />
+          ))}
+          {/* Agulha N-S */}
+          <polygon
+            points="40,16 44,40 40,42 36,40"
+            fill="#8c1d1d"
+          />
+          <polygon
+            points="40,64 44,40 40,42 36,40"
+            fill="#1a0e08"
+          />
+          <circle cx="40" cy="40" r="2.5" fill="#c89b3c" />
+          {/* Letras N/S/E/W */}
+          <text x="40" y="9" textAnchor="middle" fontFamily="serif" fontSize="6" fill="#1a0e08">N</text>
+          <text x="40" y="77" textAnchor="middle" fontFamily="serif" fontSize="6" fill="#1a0e08">S</text>
+        </g>
+
+        {/* Copo de cristal — frente à direita */}
+        <g transform="translate(400, 175)">
+          {/* Base */}
+          <ellipse cx="34" cy="100" rx="32" ry="6" fill="rgba(0,0,0,0.1)" />
+          {/* Copo */}
+          <path
+            d="M 6 30 Q 6 28 8 28 L 60 28 Q 62 28 62 30 L 60 92 Q 60 100 50 100 L 18 100 Q 8 100 8 92 Z"
+            fill="url(#glassCup)"
+            stroke="#c89b3c"
+            strokeWidth="0.8"
+            opacity="0.85"
+          />
+          {/* Líquido âmbar */}
+          <path
+            d="M 12 70 L 56 70 L 56 90 Q 56 96 48 96 L 20 96 Q 12 96 12 90 Z"
+            fill="rgba(200,155,60,0.55)"
+          />
+          {/* Padrão facetado */}
+          {[1, 2, 3].map((i) => (
+            <line
+              key={i}
+              x1={14 + i * 12}
+              y1="32"
+              x2={14 + i * 12}
+              y2="92"
+              stroke="#c89b3c"
+              strokeWidth="0.4"
+              opacity="0.4"
+            />
+          ))}
+          {[1, 2].map((i) => (
+            <line
+              key={i}
+              x1="8"
+              y1={40 + i * 15}
+              x2="62"
+              y2={40 + i * 15}
+              stroke="#c89b3c"
+              strokeWidth="0.4"
+              opacity="0.4"
+            />
+          ))}
+          {/* Brilho */}
+          <ellipse cx="20" cy="50" rx="2.5" ry="14" fill="rgba(255,255,255,0.55)" />
+        </g>
+
+        {/* Pétalas/decoração */}
+        <g opacity="0.7">
+          <ellipse cx="220" cy="270" rx="14" ry="5" fill="#8c6b26" opacity="0.4" transform="rotate(-20 220 270)" />
+          <ellipse cx="200" cy="266" rx="10" ry="4" fill="#c89b3c" opacity="0.5" transform="rotate(15 200 266)" />
+        </g>
+      </svg>
+    </div>
+  );
+}
+
+/* ---------------- Card de etapa (1-6 embaixo) ---------------- */
+
+function RitualEtapa({
+  n,
+  titulo,
+  sub,
+  icon,
+}: {
+  n: number;
+  titulo: string;
+  sub: string;
+  icon: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col gap-3 rounded-md border border-ink/10 bg-cream-soft/70 p-4 transition-colors hover:border-amber/40 sm:p-5">
+      <span className="flex h-10 w-10 items-center justify-center rounded-full border border-amber/35 bg-amber/10 text-amber">
+        {icon}
+      </span>
+      <div className="flex flex-col gap-1.5">
+        <span className="text-[13px] font-sans font-medium text-ink">
+          {n}. {titulo}
+        </span>
+        <span className="text-xs leading-snug text-ink/65">{sub}</span>
+      </div>
+    </div>
   );
 }
 
@@ -545,7 +1101,7 @@ function ResultadoView({
         {recomendacoes.conforto.length === 0 && (
           <p className="text-center text-sm italic text-ink/70">
             Combinação rara — seus filtros eliminaram tudo do catálogo. Tenta de
-            novo escolhendo "Nenhum desses" no veto.
+            novo escolhendo &ldquo;Nenhum desses&rdquo; no veto.
           </p>
         )}
       </motion.div>
@@ -628,16 +1184,30 @@ function RecCard({
   const labelRank = ousadia
     ? "Pra abrir o repertório"
     : ["Top escolha", "Segunda opção", "Terceira"][rank ?? 0] ?? "Sugestão";
+  const showPhoto = hasFoto(rec.perfume);
 
   return (
     <Link
-      href={`/perfume/${rec.perfume.id}`}
-      className={`group flex h-full flex-col gap-3 rounded-sm border p-6 transition-all hover:shadow-product ${
+      href={rotaPerfume(rec.perfume)}
+      className={`group flex h-full flex-col gap-3 overflow-hidden rounded-sm border transition-all hover:shadow-product ${
         ousadia
           ? "border-amber-dim/40 bg-cream-soft/40"
           : "border-amber/30 bg-cream-soft/40 hover:border-amber"
       }`}
     >
+      {showPhoto && (
+        <div className="relative aspect-square overflow-hidden bg-cream-soft">
+          <Image
+            src={fotoSrc(rec.perfume)}
+            alt={rec.perfume.nome}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-contain transition-transform duration-[1200ms] group-hover:scale-105"
+            style={{ padding: "8%" }}
+          />
+        </div>
+      )}
+      <div className="flex flex-1 flex-col gap-3 px-6 pb-6 pt-3">
       <div className="flex items-baseline justify-between gap-2">
         <span className="font-display text-lg italic text-amber/70">
           Nº {String(rec.perfume.numero).padStart(2, "0")}
@@ -695,6 +1265,7 @@ function RecCard({
       <span className="text-[10px] font-sans uppercase tracking-[0.3em] text-amber transition-transform duration-300 group-hover:translate-x-1">
         Abrir ficha →
       </span>
+      </div>
     </Link>
   );
 }

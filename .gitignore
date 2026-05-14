@@ -37,9 +37,13 @@ yarn-error.log*
 # local references (Gemini images + source .md — não versionar)
 /informações novas/
 /fotos dos perfumes/
+/fotos novas/
 
 # backup das fotos antigas (substituídas pelas novas oficiais)
 /public/perfumes/_old/
+
+# backup automático do script optimize-images.mjs
+/public/_backup_pre_optimize/
 
 # dev server logs locais
 .dev.log

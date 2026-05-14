@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
+import { useMundo } from "@/lib/mundo";
 
 const STORAGE_KEY = "zahir-cupom-banner-dismissed";
 
@@ -10,17 +11,23 @@ const STORAGE_KEY = "zahir-cupom-banner-dismissed";
  * Banner dismissible no topo da página pra primeiro acesso.
  * Mostra cupom RITUAL10 e leva pro quiz.
  * Lembra da dispensa em localStorage (não reaparece).
+ *
+ * NÃO aparece na LP raiz (vestíbulo) — atrapalha a experiência editorial
+ * de escolha de mundo. Volta a aparecer em /ele e /ela.
  */
 export function CupomBanner() {
   const [visible, setVisible] = useState(false);
+  const mundo = useMundo();
 
   useEffect(() => {
+    // Nunca aparece no vestíbulo
+    if (mundo === "raiz") return;
     // Checa se já dispensou
     if (localStorage.getItem(STORAGE_KEY) === "1") return;
     // Delay pequeno pra não parecer agressivo
     const t = setTimeout(() => setVisible(true), 1200);
     return () => clearTimeout(t);
-  }, []);
+  }, [mundo]);
 
   const dismiss = () => {
     localStorage.setItem(STORAGE_KEY, "1");

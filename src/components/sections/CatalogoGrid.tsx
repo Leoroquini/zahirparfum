@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { CATALOGO, FAMILIAS } from "@/data/catalogo";
+import { filtrarPorGenero } from "@/lib/genero";
 import { PerfumeCard } from "@/components/ui/PerfumeCard";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
@@ -69,7 +70,28 @@ const ORDENACOES: { key: Ordenacao; label: string }[] = [
   { key: "novos", label: "Mais recentes" },
 ];
 
-export function CatalogoGrid({ hideIntro = false }: { hideIntro?: boolean } = {}) {
+/**
+ * Prop `mundo`:
+ * - "ele" / undefined → filtra masculinos + unissex
+ * - "ela" → filtra femininos + unissex
+ * - "raiz" → todo o catálogo (mix)
+ */
+export function CatalogoGrid({
+  hideIntro = false,
+  mundo = "ele",
+}: {
+  hideIntro?: boolean;
+  mundo?: "ele" | "ela" | "raiz";
+} = {}) {
+  // Base do catálogo filtrada pelo mundo — memoizado pra estabilizar o useMemo
+  // do filtered abaixo (referência muda a cada render se não memoizar)
+  const CATALOGO_MUNDO = useMemo(
+    () =>
+      mundo === "raiz"
+        ? CATALOGO
+        : filtrarPorGenero(CATALOGO, mundo === "ela" ? "feminino" : "masculino"),
+    [mundo],
+  );
   const [selFamilias, setSelFamilias] = useState<string[]>([]);
   const [selOcasioes, setSelOcasioes] = useState<string[]>([]);
   const [selPreco, setSelPreco] = useState<string[]>([]);
@@ -87,7 +109,7 @@ export function CatalogoGrid({ hideIntro = false }: { hideIntro?: boolean } = {}
   };
 
   const filtered = useMemo(() => {
-    const base = CATALOGO.filter((p) => {
+    const base = CATALOGO_MUNDO.filter((p) => {
       // Apenas Seleção da Semana
       if (apenasSelecionados && !p.selecionadoSemana) return false;
 
@@ -144,10 +166,23 @@ export function CatalogoGrid({ hideIntro = false }: { hideIntro?: boolean } = {}
           (destaquePrio[b.destaque ?? ""] ?? 0) -
           (destaquePrio[a.destaque ?? ""] ?? 0)
       );
+    } else {
+      // "relevancia" = ordem por numero ascendente.
+      // Em /ela e /ele com mundo definido, unissex entram no FIM
+      // pra não bagunçar a numeração principal do mundo (ex.: Vulcan
+      // Feu nº 29 unissex não deve aparecer entre fem nº 1 e nº 13).
+      const isMundoPuro = mundo === "ele" || mundo === "ela";
+      sorted.sort((a, b) => {
+        if (isMundoPuro) {
+          const aIsUnissex = (a.genero ?? "masculino") === "unissex";
+          const bIsUnissex = (b.genero ?? "masculino") === "unissex";
+          if (aIsUnissex !== bIsUnissex) return aIsUnissex ? 1 : -1;
+        }
+        return a.numero - b.numero;
+      });
     }
-    // "relevancia" = ordem default (por numero)
     return sorted;
-  }, [selFamilias, selOcasioes, selPreco, apenasSelecionados, ordenacao]);
+  }, [selFamilias, selOcasioes, selPreco, apenasSelecionados, ordenacao, CATALOGO_MUNDO, mundo]);
 
   const hasFilters =
     selFamilias.length + selOcasioes.length + selPreco.length > 0 || apenasSelecionados;
@@ -252,7 +287,7 @@ export function CatalogoGrid({ hideIntro = false }: { hideIntro?: boolean } = {}
 
           <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
             <span className="text-xs text-ink/75">
-              {filtered.length === CATALOGO.length
+              {filtered.length === CATALOGO_MUNDO.length
                 ? `Mostrando toda a coleção`
                 : `${filtered.length} ${
                     filtered.length === 1 ? "fragrância" : "fragrâncias"

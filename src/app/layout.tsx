@@ -4,9 +4,7 @@ import "./globals.css";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { GrainOverlay } from "@/components/motion/GrainOverlay";
 import { MarbleBackground } from "@/components/motion/MarbleBackground";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
-import { TrustBar } from "@/components/layout/TrustBar";
+import { Chrome } from "@/components/layout/Chrome";
 import { Analytics } from "@/components/analytics/Analytics";
 import { CookieBanner } from "@/components/analytics/CookieBanner";
 import { UtmCapture } from "@/components/analytics/UtmCapture";
@@ -14,7 +12,6 @@ import { ListaDrawer } from "@/components/ui/ListaDrawer";
 import { ToastStack } from "@/components/ui/ToastStack";
 import { BuscaShortcut } from "@/components/ui/BuscaShortcut";
 import { CupomBanner } from "@/components/marketing/CupomBanner";
-import { FreteSPBanner } from "@/components/marketing/FreteSPBanner";
 import { ExitIntentCapture } from "@/components/marketing/ExitIntentCapture";
 import { ListaRetornoNudge } from "@/components/marketing/ListaRetornoNudge";
 import { BRAND } from "@/lib/brand";
@@ -80,11 +77,7 @@ export default function RootLayout({
       <body className="relative min-h-screen text-ink antialiased">
         <MarbleBackground />
         <SmoothScroll>
-          <Navbar />
-          <FreteSPBanner />
-          <main className="relative">{children}</main>
-          <TrustBar />
-          <Footer />
+          <Chrome>{children}</Chrome>
         </SmoothScroll>
         <GrainOverlay />
         <ListaDrawer />

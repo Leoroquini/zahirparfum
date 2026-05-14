@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { useMundo } from "@/lib/mundo";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
@@ -9,10 +10,32 @@ type FormState = "idle" | "submitting" | "success" | "error";
 
 /**
  * Captura de e-mail pra pré-lançamento / lista de interesse.
- * Por enquanto só armazena no front (console + localStorage), integração real
- * com Mailerlite/Klaviyo fica como tarefa pós-lançamento.
+ *
+ * Segmentação automática por mundo:
+ * - /        → zahir-interest (lista geral)
+ * - /ele/*   → zahir-interest-ele (lista masculina)
+ * - /ela/*   → zahir-interest-ela (lista feminina)
+ *
+ * Quando integrar com Mailerlite/Klaviyo, isso vira tag/segment direto.
  */
 export function Newsletter() {
+  const mundo = useMundo();
+  const storageKey =
+    mundo === "ele"
+      ? "zahir-interest-ele"
+      : mundo === "ela"
+        ? "zahir-interest-ela"
+        : "zahir-interest";
+  const titulo =
+    mundo === "ela"
+      ? "Primeiro acesso aos lançamentos femininos."
+      : mundo === "ele"
+        ? "Primeiro acesso aos lançamentos."
+        : "Primeiro acesso aos lançamentos.";
+  const subtitulo =
+    mundo === "ela"
+      ? "Sem spam. Só: novos perfumes femininos entrando, decants novos abertos, curadorias e descobertas."
+      : "Sem spam. Só: novos perfumes entrando, decants novos abertos, e curadorias temáticas quando a gente publicar.";
   const [email, setEmail] = useState("");
   const [state, setState] = useState<FormState>("idle");
   const [error, setError] = useState<string>("");
@@ -37,14 +60,15 @@ export function Newsletter() {
     // Fake delay pra feedback visual, troca por fetch quando a integração real estiver pronta
     await new Promise((r) => setTimeout(r, 900));
 
-    // Salva localmente (não envia pra lugar nenhum ainda)
+    // Salva localmente segmentado por mundo (não envia pra lugar nenhum ainda)
     try {
-      const existing = JSON.parse(
-        localStorage.getItem("zahir-interest") ?? "[]"
-      );
+      const existing = JSON.parse(localStorage.getItem(storageKey) ?? "[]");
       localStorage.setItem(
-        "zahir-interest",
-        JSON.stringify([...existing, { email: trimmed, at: Date.now() }])
+        storageKey,
+        JSON.stringify([
+          ...existing,
+          { email: trimmed, mundo, at: Date.now() },
+        ]),
       );
     } catch {
       // silent
@@ -72,12 +96,14 @@ export function Newsletter() {
               Lista de interesse
             </span>
             <h2 className="max-w-xl font-display text-3xl font-light leading-[1.05] tracking-tight text-ink md:text-5xl">
-              Primeiro acesso{" "}
-              <em className="italic text-amber/90">aos lançamentos.</em>
+              {titulo.split("aos lançamentos")[0]}
+              <em className="italic text-amber/90">
+                aos lançamentos
+                {titulo.includes("femininos") ? " femininos" : ""}.
+              </em>
             </h2>
             <p className="max-w-xl text-base leading-relaxed text-ink/75">
-              Sem spam. Só: novos perfumes entrando, decants novos abertos, e
-              curadorias temáticas quando a gente publicar.
+              {subtitulo}
             </p>
           </div>
 

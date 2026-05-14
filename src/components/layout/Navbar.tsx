@@ -5,8 +5,13 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { BRAND } from "@/lib/brand";
 import { cn } from "@/lib/cn";
+import { useMundo } from "@/lib/mundo";
 
-const NAV_LINKS = [
+/**
+ * NAV_LINKS_ELE — masculino (rotas atuais). Curadorias removidas a pedido do
+ * Leo em 2026-05-12: vão aparecer só na página /curadorias dedicada.
+ */
+const NAV_LINKS_ELE = [
   { href: "/catalogo", label: "Catálogo" },
   { href: "/mapa", label: "Mapa" },
   { href: "/ritual", label: "O Ritual" },
@@ -14,16 +19,38 @@ const NAV_LINKS = [
   { href: "/decants", label: "Decants" },
 ];
 
+const NAV_LINKS_ELA = [
+  { href: "/ela/catalogo", label: "Catálogo" },
+  { href: "/ela/mapa", label: "Mapa" },
+  { href: "/ela/ritual", label: "O Ritual" },
+  { href: "/ela/comparador", label: "Comparar" },
+  { href: "/ela/decants", label: "Decants" },
+];
+
+const NAV_LINKS_RAIZ = NAV_LINKS_ELE;
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const mundo = useMundo();
+  const NAV_LINKS =
+    mundo === "ela"
+      ? NAV_LINKS_ELA
+      : mundo === "ele"
+        ? NAV_LINKS_ELE
+        : NAV_LINKS_RAIZ;
+
+  // Na LP raiz (vestíbulo), navbar só aparece quando rola pra baixo do hero.
+  // Hero é 100vh, então usa threshold maior pra esconder durante o vestíbulo.
+  const isRaiz = mundo === "raiz";
+  const scrollThreshold = isRaiz ? 600 : 40;
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => setScrolled(window.scrollY > scrollThreshold);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [scrollThreshold]);
 
   // Lock scroll when mobile menu is open
   useEffect(() => {
@@ -44,6 +71,12 @@ export function Navbar() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [menuOpen]);
+
+  // Em /, navbar fica oculta enquanto vestíbulo está visível
+  // (early return DEPOIS de todos os hooks pra respeitar rules-of-hooks)
+  if (isRaiz && !scrolled && !menuOpen) {
+    return null;
+  }
 
   return (
     <>
@@ -86,8 +119,40 @@ export function Navbar() {
             ))}
           </nav>
 
-          {/* Right side: Busca + Instagram link + Hamburger (mobile) */}
-          <div className="flex items-center gap-4 md:gap-5">
+          {/* Right side: Toggle Ele/Ela + Busca + Instagram + Hamburger */}
+          <div className="flex items-center gap-3 md:gap-4">
+            {mundo !== "raiz" && (
+              <div
+                role="group"
+                aria-label="Trocar entre linha masculina e feminina"
+                className="hidden items-center rounded-full border border-ink/15 p-0.5 text-[10px] font-sans uppercase tracking-[0.28em] sm:flex"
+              >
+                <Link
+                  href="/ele"
+                  aria-current={mundo === "ele" ? "page" : undefined}
+                  className={cn(
+                    "rounded-full px-3 py-1 transition-colors",
+                    mundo === "ele"
+                      ? "bg-amber text-ink"
+                      : "text-ink/75 hover:text-amber",
+                  )}
+                >
+                  Ele
+                </Link>
+                <Link
+                  href="/ela"
+                  aria-current={mundo === "ela" ? "page" : undefined}
+                  className={cn(
+                    "rounded-full px-3 py-1 transition-colors",
+                    mundo === "ela"
+                      ? "bg-amber text-ink"
+                      : "text-ink/75 hover:text-amber",
+                  )}
+                >
+                  Ela
+                </Link>
+              </div>
+            )}
             <Link
               href="/buscar"
               aria-label="Buscar (atalho: tecla /)"
@@ -162,6 +227,36 @@ export function Navbar() {
             transition={{ duration: 0.4 }}
             className="fixed inset-0 z-40 flex flex-col overflow-y-auto bg-cream/95 pt-24 backdrop-blur-2xl lg:hidden"
           >
+            {/* Toggle Ele/Ela no topo do menu mobile */}
+            <div className="flex justify-center gap-2 px-6 pb-3">
+              <Link
+                href="/ele"
+                onClick={() => setMenuOpen(false)}
+                aria-current={mundo === "ele" ? "page" : undefined}
+                className={cn(
+                  "flex-1 rounded-full border py-2.5 text-center text-[11px] font-sans uppercase tracking-[0.3em] transition-colors",
+                  mundo === "ele"
+                    ? "border-amber bg-amber text-ink"
+                    : "border-ink/15 text-ink/75",
+                )}
+              >
+                Para ele
+              </Link>
+              <Link
+                href="/ela"
+                onClick={() => setMenuOpen(false)}
+                aria-current={mundo === "ela" ? "page" : undefined}
+                className={cn(
+                  "flex-1 rounded-full border py-2.5 text-center text-[11px] font-sans uppercase tracking-[0.3em] transition-colors",
+                  mundo === "ela"
+                    ? "border-amber bg-amber text-ink"
+                    : "border-ink/15 text-ink/75",
+                )}
+              >
+                Para ela
+              </Link>
+            </div>
+
             <nav className="flex flex-col gap-1 px-6 py-8">
               {NAV_LINKS.map((link, i) => (
                 <motion.div

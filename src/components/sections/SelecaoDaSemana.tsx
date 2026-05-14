@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import { CATALOGO, type Perfume } from "@/data/catalogo";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
+import { rotaPerfume } from "@/lib/genero";
 import {
   KIT_ESTREIA,
   KIT_COLECAO,
@@ -149,7 +150,7 @@ export function SelecaoDaSemana() {
 function SelecaoMiniCard({ perfume }: { perfume: Perfume }) {
   return (
     <Link
-      href={`/perfume/${perfume.id}`}
+      href={rotaPerfume(perfume)}
       className="group flex flex-col overflow-hidden rounded-sm border border-ink/15 bg-cream-soft/60 transition-all hover:-translate-y-1 hover:border-amber/60 hover:shadow-product"
     >
       <div className="relative aspect-square w-full bg-ink">

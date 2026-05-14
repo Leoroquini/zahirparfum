@@ -11,6 +11,7 @@ import {
   type RegistroDiario,
 } from "@/lib/diario-store";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
+import { rotaPerfume } from "@/lib/genero";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
@@ -85,7 +86,7 @@ function Linha({ registro }: { registro: RegistroDiario }) {
     <div className="flex flex-col gap-3 py-5 md:flex-row md:items-start md:gap-5">
       {/* Foto + nome */}
       <Link
-        href={`/perfume/${perfume.id}`}
+        href={rotaPerfume(perfume)}
         className="group flex shrink-0 items-center gap-3 md:w-64"
       >
         {hasFoto(perfume) && (

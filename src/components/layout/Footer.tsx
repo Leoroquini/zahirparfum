@@ -1,7 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import { BRAND } from "@/lib/brand";
+import { useMundo } from "@/lib/mundo";
 
-const NAVIGATE = [
+const NAVIGATE_ELE = [
   { href: "/catalogo", label: "Catálogo" },
   { href: "/mapa", label: "Mapa olfativo" },
   { href: "/ritual", label: "O Ritual, quiz olfativo" },
@@ -12,7 +15,18 @@ const NAVIGATE = [
   { href: "/diario", label: "Diário olfativo" },
 ];
 
+const NAVIGATE_ELA = [
+  { href: "/ela/catalogo", label: "Catálogo" },
+  { href: "/ela/mapa", label: "Mapa olfativo" },
+  { href: "/ela/ritual", label: "O Ritual, quiz olfativo" },
+  { href: "/ela/comparador", label: "Árabe × Designer" },
+  { href: "/ela/decants", label: "Decants, teste antes" },
+];
+
 export function Footer() {
+  const mundo = useMundo();
+  const NAVIGATE =
+    mundo === "ela" ? NAVIGATE_ELA : NAVIGATE_ELE;
   return (
     <footer
       className="relative border-t border-ink/8 px-6 py-20 md:px-12"
