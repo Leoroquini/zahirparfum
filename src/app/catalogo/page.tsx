@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { PageHero } from "@/components/layout/PageHero";
+import { CatalogoHero } from "@/components/sections/CatalogoHero";
 import { CatalogoGrid } from "@/components/sections/CatalogoGrid";
 import { CATALOGO, FAMILIAS, MARCAS } from "@/data/catalogo";
 import { NOTAS } from "@/data/notas";
+import { filtrarPorGenero } from "@/lib/genero";
 
 export const metadata: Metadata = {
   title: "Catálogo",
@@ -13,29 +14,14 @@ export const metadata: Metadata = {
 };
 
 export default function CatalogoPage() {
+  const masculinos = filtrarPorGenero(CATALOGO, "masculino");
   return (
     <>
-      <PageHero
-        eyebrow="Catálogo · Curadoria"
-        titulo={
-          <>
-            Cada um com uma{" "}
-            <em className="italic text-amber/90">história.</em>
-          </>
-        }
-        descricao="Perfumes selecionados pra quem está começando e pra quem já coleciona. Notas explicadas, comparação direta com clones designer, decants disponíveis nos principais."
-        backgroundGradient="radial-gradient(ellipse at 70% 30%, rgba(200,155,60,0.12), transparent 60%)"
+      <CatalogoHero
+        totalFragrancias={masculinos.length}
+        totalFamilias={FAMILIAS.length}
+        totalMarcas={MARCAS.length}
       />
-
-      {/* Meta rápida da coleção */}
-      <section className="section-veil-light border-b border-ink/5 px-6 py-10 md:px-12">
-        <div className="mx-auto grid max-w-[1440px] grid-cols-2 gap-6 text-center md:grid-cols-4 md:text-left">
-          <MetaStat label="Fragrâncias" value={CATALOGO.length.toString()} />
-          <MetaStat label="Famílias" value={FAMILIAS.length.toString()} />
-          <MetaStat label="Casas árabes" value={MARCAS.length.toString()} />
-          <MetaStat label="Curadoria" value="Árabe" />
-        </div>
-      </section>
 
       <CatalogoGrid hideIntro />
 
@@ -91,18 +77,5 @@ export default function CatalogoPage() {
         </div>
       </section>
     </>
-  );
-}
-
-function MetaStat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex flex-col gap-1">
-      <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber">
-        {label}
-      </span>
-      <span className="font-display text-3xl font-light text-ink md:text-4xl">
-        {value}
-      </span>
-    </div>
   );
 }

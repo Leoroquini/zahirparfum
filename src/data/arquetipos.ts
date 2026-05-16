@@ -33,8 +33,8 @@ export const ARQUETIPOS: Record<string, string> = {
   "khamrah-qahwa":
     "Usado pelo cara que pede café curto depois do segundo drink. Adocicado o suficiente pra virar vício, forte o suficiente pra ficar na jaqueta dela.",
 
-  "khamrah-preto-teriaq":
-    "Usado pelo cara que fuma charuto no inverno e acende incenso em casa. Perfume que não pede licença, ocupa o cômodo inteiro.",
+  "khamrah-preto":
+    "Usado pelo cara que conhece a história antes de conhecer a fórmula. Tâmaras, canela, baunilha — o original que abriu o caminho da família Khamrah inteira.",
 
   "al-noble-safeer":
     "Usado pelo cara que monta apresentação às 8h e manda o deck pro cliente antes das 10h. Elegância de hoje, não de 1998.",
@@ -68,9 +68,6 @@ export const ARQUETIPOS: Record<string, string> = {
 
   "maahir-black-edition":
     "Usado pelo cara que toma uísque defumado num bar de poltrona de couro. Tabaco, baunilha e cacau, o atalho árabe pro Tobacco Vanille.",
-
-  khamrah:
-    "Usado pelo cara que conhece a história antes de conhecer a fórmula. Tâmaras, canela, baunilha, o original que abriu o caminho da família inteira.",
 
   emeer:
     "Usado pelo cara que prefere oud com rosa turca a oud sozinho. Nicho-style com pegada Penhaligon's, sem o ticket de Penhaligon's.",

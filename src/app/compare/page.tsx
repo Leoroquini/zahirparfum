@@ -1,14 +1,13 @@
 "use client";
 
-import { Suspense, useMemo, useState, useEffect } from "react";
+import { Suspense, useMemo, useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { CATALOGO, type Perfume, type Projecao } from "@/data/catalogo";
-import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
-import { rotaPerfume } from "@/lib/genero";
+import { rotaPerfume, getGenero, type GeneroFiltro } from "@/lib/genero";
 import { addItem, type ItemLista } from "@/lib/lista-store";
 import {
   linkInstagram,
@@ -64,43 +63,18 @@ function CompareContent() {
 
   return (
     <article className="relative">
-      <header className="px-6 pb-10 pt-32 md:px-12 md:pb-14 md:pt-40">
-        <div className="mx-auto max-w-[1440px]">
-          <Breadcrumb
-            items={[
-              { label: "Home", href: "/" },
-              { label: "Catálogo", href: "/catalogo" },
-              { label: "Comparar" },
-            ]}
-          />
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: EASE_OUT }}
-            className="mt-8 flex flex-col gap-6"
-          >
-            <span className="inline-flex items-center gap-3 text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
-              <span className="h-px w-8 bg-amber" />
-              Comparar 2 a 2
-            </span>
-            <h1 className="max-w-3xl font-display text-4xl font-light leading-[1.05] tracking-tight text-ink md:text-6xl lg:text-7xl">
-              Dois frascos,{" "}
-              <em className="italic text-amber/90">uma decisão.</em>
-            </h1>
-            <p className="max-w-2xl text-base leading-relaxed text-ink/75 md:text-lg">
-              Coloca dois perfumes do catálogo lado a lado. Veja a pirâmide
-              olfativa de cada um, quais notas eles compartilham, qual projeta
-              mais, qual dura mais, qual sai mais barato. Útil quando você está
-              em dúvida entre dois do mesmo perfil.
-            </p>
-          </motion.div>
-        </div>
-      </header>
+      <CompareHero />
 
       {/* Seletores + comparação */}
-      <section className="section-veil-light px-6 py-16 md:px-12 md:py-20">
+      <section className="section-veil-light px-6 py-16 md:px-12 md:py-24">
         <div className="mx-auto max-w-[1440px]">
+          <div className="mb-8 flex items-center gap-3 md:mb-10">
+            <span className="h-px w-8 bg-amber" />
+            <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
+              Escolha os dois frascos
+            </span>
+          </div>
+
           {/* Seletores */}
           <div className="grid gap-4 md:grid-cols-2 md:gap-6">
             <SeletorSlot
@@ -139,6 +113,288 @@ export default function ComparePage() {
   );
 }
 
+/* ---------------- Hero ---------------- */
+
+function CompareHero() {
+  return (
+    <header className="relative overflow-hidden border-b border-ink/5 px-6 pb-16 pt-32 md:px-12 md:pb-24 md:pt-40">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-cream/60"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-60"
+        style={{
+          background:
+            "radial-gradient(ellipse at 25% 35%, rgba(231,182,89,0.14), transparent 60%)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-cream via-cream/30 to-transparent"
+      />
+
+      <div className="relative mx-auto max-w-[1440px]">
+        <div className="grid gap-12 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: EASE_OUT }}
+            className="flex flex-col gap-7"
+          >
+            <span className="inline-flex items-center gap-3 text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
+              <span className="h-px w-8 bg-amber" />
+              Comparador · 2 a 2
+            </span>
+
+            <h1 className="max-w-2xl font-display text-5xl font-light leading-[1.04] tracking-tight text-ink md:text-6xl lg:text-7xl">
+              Dois frascos,{" "}
+              <em className="italic text-amber/90">uma decisão.</em>
+            </h1>
+
+            <p className="max-w-xl text-base leading-relaxed text-ink/75 md:text-[17px]">
+              Coloca dois perfumes do catálogo lado a lado. Pirâmide olfativa,
+              notas em comum, projeção, fixação e preço — pra você decidir
+              quando estiver em dúvida entre dois do mesmo perfil.
+            </p>
+
+            {/* Trust signals */}
+            <ul className="mt-2 flex flex-wrap gap-x-8 gap-y-4 text-ink/75">
+              <TrustItem
+                label="87 perfumes"
+                sub="masculino e feminino"
+                icon={
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden
+                  >
+                    <path d="M4 7h16M4 12h16M4 17h10" />
+                  </svg>
+                }
+              />
+              <TrustItem
+                label="Pirâmide"
+                sub="topo, coração, fundo"
+                icon={
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden
+                  >
+                    <path d="m12 3 9 17H3z" />
+                    <path d="M7 13h10M9.5 17h5" />
+                  </svg>
+                }
+              />
+              <TrustItem
+                label="Quem ganha"
+                sub="projeção · fixação · preço"
+                icon={
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden
+                  >
+                    <path d="M6 4h12v6a6 6 0 0 1-12 0z" />
+                    <path d="M9 20h6M12 16v4M5 6H3a3 3 0 0 0 3 4M19 6h2a3 3 0 0 1-3 4" />
+                  </svg>
+                }
+              />
+            </ul>
+          </motion.div>
+
+          {/* Slot reservado pra imagem */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.15, ease: EASE_OUT }}
+            className="relative hidden lg:block"
+            aria-hidden
+          >
+            <div className="relative aspect-[5/6] w-full overflow-hidden border border-amber/15 bg-cream/40">
+              <div
+                className="absolute inset-0 opacity-70"
+                style={{
+                  background:
+                    "radial-gradient(ellipse at 70% 30%, rgba(231,182,89,0.18), transparent 65%), radial-gradient(ellipse at 30% 80%, rgba(231,182,89,0.10), transparent 60%)",
+                }}
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="font-display text-xs italic tracking-[0.3em] text-ink/30">
+                  imagem em breve
+                </span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* 4 cards de benefício */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.3, ease: EASE_OUT }}
+          className="mt-16 grid grid-cols-2 gap-3 md:mt-24 md:grid-cols-4 md:gap-4"
+        >
+          <BenefitCard
+            n="01"
+            titulo="Lado a lado"
+            descricao="As duas pirâmides na mesma tela, não num PDF que ninguém abre."
+            icon={
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <rect x="3" y="4" width="7" height="16" rx="1" />
+                <rect x="14" y="4" width="7" height="16" rx="1" />
+              </svg>
+            }
+          />
+          <BenefitCard
+            n="02"
+            titulo="Notas em comum"
+            descricao="O que se repete entre os dois aparece destacado em amber."
+            icon={
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <circle cx="9" cy="12" r="6" />
+                <circle cx="15" cy="12" r="6" />
+              </svg>
+            }
+          />
+          <BenefitCard
+            n="03"
+            titulo="Quem ganha em quê"
+            descricao="Projeção, fixação, preço — quem leva cada eixo, sem firula."
+            icon={
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <path d="M4 20V10M12 20V4M20 20v-7" />
+              </svg>
+            }
+          />
+          <BenefitCard
+            n="04"
+            titulo="Levar os dois"
+            descricao="Decidiu pelos dois? Adiciona à lista e fecha por WhatsApp ou DM."
+            icon={
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <path d="M6 6h15l-2 9H8z" />
+                <circle cx="9" cy="20" r="1.4" />
+                <circle cx="18" cy="20" r="1.4" />
+                <path d="M3 4h3" />
+              </svg>
+            }
+          />
+        </motion.div>
+      </div>
+    </header>
+  );
+}
+
+function TrustItem({
+  label,
+  sub,
+  icon,
+}: {
+  label: string;
+  sub: string;
+  icon: React.ReactNode;
+}) {
+  return (
+    <li className="flex items-center gap-3">
+      <span className="flex h-9 w-9 items-center justify-center rounded-full border border-amber/30 text-amber">
+        {icon}
+      </span>
+      <span className="flex flex-col leading-tight">
+        <span className="font-display text-sm text-ink">{label}</span>
+        <span className="text-[11px] text-ink/55">{sub}</span>
+      </span>
+    </li>
+  );
+}
+
+function BenefitCard({
+  n,
+  titulo,
+  descricao,
+  icon,
+}: {
+  n: string;
+  titulo: string;
+  descricao: string;
+  icon: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col gap-3 border border-amber/15 bg-cream/40 p-5 md:p-6">
+      <div className="flex items-center justify-between">
+        <span className="flex h-10 w-10 items-center justify-center rounded-full border border-amber/30 text-amber">
+          {icon}
+        </span>
+        <span className="font-display text-xs italic text-amber/70">{n}</span>
+      </div>
+      <span className="font-display text-lg font-light text-ink md:text-xl">
+        {titulo}
+      </span>
+      <p className="text-[13px] leading-relaxed text-ink/65">{descricao}</p>
+    </div>
+  );
+}
+
 /* ---------------- Seletor de slot ---------------- */
 
 function SeletorSlot({
@@ -153,6 +409,10 @@ function SeletorSlot({
   outroSlug: string;
 }) {
   const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [genero, setGenero] = useState<GeneroFiltro>("todos");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -161,96 +421,259 @@ function SeletorSlot({
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
+  // Fecha ao clicar fora
+  useEffect(() => {
+    if (!open) return;
+    const onClick = (e: MouseEvent) => {
+      if (!wrapperRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, [open]);
+
+  // Focus no input ao abrir
+  useEffect(() => {
+    if (open) {
+      // pequeno delay pra esperar a animação montar o input
+      const t = setTimeout(() => inputRef.current?.focus(), 50);
+      return () => clearTimeout(t);
+    }
+    setQuery("");
+  }, [open]);
+
+  // Catálogo filtrado: gênero + busca por texto (nome, marca, família, notas)
+  const filtrados = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return CATALOGO.filter((p) => {
+      // filtro de gênero
+      if (genero !== "todos") {
+        const g = getGenero(p);
+        if (g !== genero && g !== "unissex") return false;
+      }
+      if (!q) return true;
+      const haystack = [
+        p.nome,
+        p.marca ?? "",
+        p.familia ?? "",
+        ...p.notas.topo,
+        ...p.notas.coracao,
+        ...p.notas.fundo,
+        ...(p.cloneDe ?? []),
+      ]
+        .join(" ")
+        .toLowerCase();
+      return haystack.includes(q);
+    });
+  }, [query, genero]);
+
   return (
-    <div className="relative">
+    <div ref={wrapperRef} className="relative">
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className={`group flex w-full items-center gap-4 rounded-sm border p-4 transition-all md:p-5 ${
+        className={`group flex w-full items-center gap-4 border p-4 transition-all md:p-5 ${
           selecionado
-            ? "border-amber/40 hover:border-amber"
-            : "border-dashed border-ink/20 bg-cream-soft/30 hover:border-amber/60"
+            ? "border-amber/40 bg-cream/60 hover:border-amber"
+            : "border-dashed border-ink/20 bg-cream-soft/30 hover:border-amber/60 hover:bg-cream/40"
         }`}
       >
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-amber bg-amber/10 font-display text-lg italic text-amber">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-amber bg-amber/10 font-display text-lg italic text-amber">
           {label}
         </span>
         {selecionado ? (
           <div className="flex min-w-0 flex-1 items-center gap-3">
             {hasFoto(selecionado) && (
-              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-sm border border-ink/10">
+              <div className="relative h-14 w-14 shrink-0 overflow-hidden border border-ink/10 bg-ink/5">
                 <Image
                   src={fotoSrc(selecionado)}
                   alt=""
                   fill
-                  sizes="48px"
+                  sizes="56px"
                   className="object-cover"
                 />
               </div>
             )}
             <div className="flex min-w-0 flex-col text-left">
               <span className="text-[9px] font-sans uppercase tracking-[0.35em] text-amber/80">
-                {selecionado.marca}
+                {selecionado.marca} · {getGenero(selecionado) === "feminino" ? "Feminino" : getGenero(selecionado) === "unissex" ? "Unissex" : "Masculino"}
               </span>
-              <span className="truncate font-display text-lg font-light text-ink">
+              <span className="truncate font-display text-lg font-light text-ink md:text-xl">
                 {selecionado.nome}
               </span>
             </div>
           </div>
         ) : (
-          <span className="flex-1 text-left text-sm italic text-ink/70">
-            Escolher perfume…
-          </span>
+          <div className="flex min-w-0 flex-1 flex-col text-left">
+            <span className="text-[9px] font-sans uppercase tracking-[0.35em] text-amber/70">
+              Slot {label}
+            </span>
+            <span className="text-sm italic text-ink/70">
+              Escolher perfume…
+            </span>
+          </div>
         )}
-        <span className="text-xs text-ink/70">{open ? "▲" : "▼"}</span>
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden
+          className={`shrink-0 text-ink/60 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+        >
+          <path d="m6 9 6 6 6-6" />
+        </svg>
       </button>
 
       {/* Dropdown */}
-      {open && (
-        <motion.div
-          initial={{ opacity: 0, y: -5 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="absolute left-0 right-0 top-full z-20 mt-2 max-h-80 overflow-y-auto rounded-sm border border-amber/30 bg-cream shadow-[0_16px_40px_rgba(0,0,0,0.18)]"
-        >
-          <ul>
-            {CATALOGO.map((p) => {
-              const jaEhOutro = p.id === outroSlug;
-              return (
-                <li key={p.id}>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.18, ease: EASE_OUT }}
+            className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden border border-amber/30 bg-cream shadow-[0_24px_60px_rgba(0,0,0,0.22)]"
+          >
+            {/* Busca + filtro de gênero */}
+            <div className="border-b border-ink/10 bg-cream-soft/40 p-3 md:p-4">
+              <label className="relative block">
+                <span className="sr-only">Buscar perfume</span>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                  className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink/50"
+                >
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="m20 20-4.3-4.3" />
+                </svg>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Buscar por nome, marca, família ou nota…"
+                  className="w-full border border-ink/15 bg-cream py-2.5 pl-10 pr-3 text-sm text-ink placeholder:italic placeholder:text-ink/50 focus:border-amber focus:outline-none"
+                />
+              </label>
+
+              <div
+                role="tablist"
+                aria-label="Filtrar por gênero"
+                className="mt-3 flex gap-1.5 rounded-sm bg-cream p-1"
+              >
+                {[
+                  { v: "todos", l: "Todos" },
+                  { v: "masculino", l: "Masculino" },
+                  { v: "feminino", l: "Feminino" },
+                ].map((t) => (
                   <button
+                    key={t.v}
                     type="button"
-                    onClick={() => {
-                      if (jaEhOutro) return;
-                      onSelect(p.id);
-                      setOpen(false);
-                    }}
-                    disabled={jaEhOutro}
-                    className={`flex w-full items-center gap-3 border-b border-ink/5 px-4 py-3 text-left transition-colors ${
-                      jaEhOutro
-                        ? "cursor-not-allowed opacity-40"
-                        : "hover:bg-cream-soft/70"
+                    role="tab"
+                    aria-selected={genero === t.v}
+                    onClick={() => setGenero(t.v as GeneroFiltro)}
+                    className={`flex-1 px-3 py-1.5 text-[10px] font-sans uppercase tracking-[0.3em] transition-colors ${
+                      genero === t.v
+                        ? "bg-amber/15 text-amber"
+                        : "text-ink/65 hover:text-amber"
                     }`}
                   >
-                    {hasFoto(p) && (
-                      <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-sm border border-ink/10">
-                        <Image src={fotoSrc(p)} alt="" fill sizes="40px" className="object-cover" />
-                      </div>
-                    )}
-                    <div className="flex min-w-0 flex-col">
-                      <span className="text-[9px] font-sans uppercase tracking-[0.35em] text-amber/70">
-                        Nº {String(p.numero).padStart(2, "0")} · {p.marca ?? "—"}
-                      </span>
-                      <span className="truncate font-display text-base text-ink">
-                        {p.nome}
-                      </span>
-                    </div>
+                    {t.l}
                   </button>
-                </li>
-              );
-            })}
-          </ul>
-        </motion.div>
-      )}
+                ))}
+              </div>
+            </div>
+
+            {/* Lista */}
+            <div className="max-h-[420px] overflow-y-auto">
+              {filtrados.length === 0 ? (
+                <div className="px-4 py-10 text-center">
+                  <p className="text-sm italic text-ink/60">
+                    Nada encontrado pra “{query}”.
+                  </p>
+                </div>
+              ) : (
+                <ul>
+                  {filtrados.map((p) => {
+                    const jaEhOutro = p.id === outroSlug;
+                    const g = getGenero(p);
+                    return (
+                      <li key={p.id}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (jaEhOutro) return;
+                            onSelect(p.id);
+                            setOpen(false);
+                          }}
+                          disabled={jaEhOutro}
+                          className={`flex w-full items-center gap-3 border-b border-ink/5 px-4 py-3 text-left transition-colors ${
+                            jaEhOutro
+                              ? "cursor-not-allowed opacity-40"
+                              : "hover:bg-cream-soft/70"
+                          }`}
+                        >
+                          {hasFoto(p) ? (
+                            <div className="relative h-12 w-12 shrink-0 overflow-hidden border border-ink/10 bg-ink/5">
+                              <Image src={fotoSrc(p)} alt="" fill sizes="48px" className="object-cover" />
+                            </div>
+                          ) : (
+                            <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-ink/10 bg-cream-soft/60 font-display text-xs italic text-ink/40">
+                              Nº{p.numero}
+                            </div>
+                          )}
+                          <div className="flex min-w-0 flex-1 flex-col">
+                            <span className="text-[9px] font-sans uppercase tracking-[0.35em] text-amber/70">
+                              {p.marca ?? "—"} · {p.familia ?? "—"}
+                            </span>
+                            <span className="truncate font-display text-base text-ink">
+                              {p.nome}
+                            </span>
+                          </div>
+                          <span
+                            className={`shrink-0 rounded-full border px-2 py-0.5 text-[9px] font-sans uppercase tracking-[0.3em] ${
+                              g === "feminino"
+                                ? "border-rose-300/60 text-rose-400/90"
+                                : g === "unissex"
+                                  ? "border-ink/25 text-ink/65"
+                                  : "border-amber/40 text-amber/85"
+                            }`}
+                          >
+                            {g === "feminino" ? "F" : g === "unissex" ? "U" : "M"}
+                          </span>
+                          {jaEhOutro && (
+                            <span className="shrink-0 text-[9px] italic text-ink/45">
+                              já no slot
+                            </span>
+                          )}
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
+
+            {/* Footer com contagem */}
+            <div className="border-t border-ink/10 bg-cream-soft/40 px-4 py-2 text-center">
+              <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-ink/55">
+                {filtrados.length} {filtrados.length === 1 ? "perfume" : "perfumes"}
+              </span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -263,9 +686,11 @@ function EmptyState() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="mt-16 flex flex-col items-center gap-5 rounded-sm border border-dashed border-ink/15 py-16 text-center"
+      className="mt-16 flex flex-col items-center gap-5 border border-dashed border-ink/15 py-20 text-center"
     >
-      <span className="font-display text-4xl italic text-amber/40">A × B</span>
+      <span className="font-display text-5xl italic text-amber/40">
+        A <span className="text-amber/30">×</span> B
+      </span>
       <p className="max-w-md text-base text-ink/65">
         Escolhe dois perfumes acima pra ver a comparação lado a lado.
       </p>
@@ -443,7 +868,7 @@ function FotoLado({ perfume, lado }: { perfume: Perfume; lado: string }) {
   return (
     <Link
       href={rotaPerfume(perfume)}
-      className="group relative block aspect-square overflow-hidden rounded-sm border border-ink/10 bg-ink"
+      className="group relative block aspect-square overflow-hidden border border-ink/10 bg-ink"
     >
       {hasFoto(perfume) && (
         <Image
@@ -498,7 +923,7 @@ function PiramideComparada({
   ];
 
   return (
-    <div className="overflow-hidden rounded-sm border border-ink/10 bg-cream-soft/40">
+    <div className="overflow-hidden border border-ink/10 bg-cream-soft/40">
       <div className="border-b border-ink/10 px-5 py-4 md:px-8">
         <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
           Pirâmide olfativa
@@ -615,7 +1040,7 @@ function TabelaTecnica({ a, b }: { a: Perfume; b: Perfume }) {
   })();
 
   return (
-    <div className="overflow-hidden rounded-sm border border-ink/10 bg-cream-soft/40">
+    <div className="overflow-hidden border border-ink/10 bg-cream-soft/40">
       <div className="border-b border-ink/10 px-5 py-4 md:px-8">
         <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
           Ficha técnica

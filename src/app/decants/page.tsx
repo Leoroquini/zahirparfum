@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PageHero } from "@/components/layout/PageHero";
+import { DecantsHero } from "@/components/sections/DecantsHero";
 import { Decants } from "@/components/sections/Decants";
 import { KitsTrio } from "@/components/sections/KitsTrio";
 import { SelecaoDaSemana } from "@/components/sections/SelecaoDaSemana";
@@ -14,22 +14,10 @@ export const metadata: Metadata = {
 export default function DecantsPage() {
   return (
     <>
-      <PageHero
-        eyebrow="Decants · Antes de pertencer, conheça"
-        titulo={
-          <>
-            Você lembra do cheiro de quem te marcou.{" "}
-            <em className="italic text-amber/90">
-              Quem te encontra hoje, lembra do seu?
-            </em>
-          </>
-        }
-        descricao="Decant é como o cheiro vira o seu antes de virar gasto. Cinco ou dez mililitros do mesmo perfume original, tempo pra ele se misturar com a sua pele e mudar de personalidade ao longo do dia. Quando alguém pergunta o que é, você já testou todos os finais."
-        backgroundGradient="radial-gradient(ellipse at 60% 50%, rgba(200,155,60,0.12), transparent 60%)"
-      />
+      <DecantsHero />
 
       {/* FAQ rápido */}
-      <section className="section-veil-light border-b border-ink/5 px-6 py-16 md:px-12 md:py-24">
+      <section id="decants-faq" className="section-veil-light border-b border-ink/5 px-6 py-16 md:px-12 md:py-24">
         <div className="mx-auto max-w-[1440px]">
           <span className="text-[10px] font-sans uppercase tracking-[0.45em] text-amber">
             <span className="mr-3 inline-block h-px w-8 align-middle bg-amber" />

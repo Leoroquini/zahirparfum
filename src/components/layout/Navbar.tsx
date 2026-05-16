@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { BRAND } from "@/lib/brand";
@@ -40,10 +41,26 @@ export function Navbar() {
         ? NAV_LINKS_ELE
         : NAV_LINKS_RAIZ;
 
-  // Na LP raiz (vestíbulo), navbar só aparece quando rola pra baixo do hero.
-  // Hero é 100vh, então usa threshold maior pra esconder durante o vestíbulo.
-  const isRaiz = mundo === "raiz";
-  const scrollThreshold = isRaiz ? 600 : 40;
+  // Comportamento da navbar por contexto:
+  //
+  // 1. VESTÍBULO ("/"): completamente oculta até o usuário rolar 600px
+  //    (o vestíbulo é uma LP imersiva de escolha entre /ele e /ela).
+  // 2. HOMES IMERSIVAS ("/ele" e "/ela"): sempre presente, mas transparente
+  //    em cima do hero fullscreen — ganha fundo cream ao rolar.
+  // 3. PÁGINAS NEUTRAS (/ritual, /catalogo, /mapa, /compare, /manifesto…):
+  //    sempre presente, sempre com fundo cream/blur — não tem hero fullscreen
+  //    competindo pelo topo, então a navbar precisa estar visível desde o load.
+  const pathname = usePathname();
+  const isVestibulo = pathname === "/";
+  // Páginas com hero fullscreen onde a navbar deve ficar transparente em cima:
+  // homes de mundo + páginas de produto (frasco grande ocupa a viewport).
+  const isHomeImersiva =
+    pathname === "/ele" ||
+    pathname === "/ela" ||
+    pathname.startsWith("/perfume/") ||
+    pathname.startsWith("/ela/perfume/");
+  const scrollThreshold = isVestibulo ? 600 : 40;
+  const navSempreSolida = !isVestibulo && !isHomeImersiva;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > scrollThreshold);
@@ -74,9 +91,13 @@ export function Navbar() {
 
   // Em /, navbar fica oculta enquanto vestíbulo está visível
   // (early return DEPOIS de todos os hooks pra respeitar rules-of-hooks)
-  if (isRaiz && !scrolled && !menuOpen) {
+  if (isVestibulo && !scrolled && !menuOpen) {
     return null;
   }
+
+  // Sólida = com fundo cream/blur. Páginas neutras já nascem assim;
+  // homes imersivas (/ele, /ela) só ganham fundo após rolar; vestíbulo idem.
+  const solida = navSempreSolida || scrolled || menuOpen;
 
   return (
     <>
@@ -86,7 +107,7 @@ export function Navbar() {
         transition={{ duration: 0.9, delay: 0.2, ease: [0.19, 1, 0.22, 1] }}
         className={cn(
           "fixed inset-x-0 top-0 z-50 transition-all duration-500",
-          scrolled || menuOpen
+          solida
             ? "border-b border-ink/5 bg-cream/75 py-4 backdrop-blur-xl"
             : "py-6"
         )}

@@ -97,6 +97,16 @@ export function Ritual({ hideIntro = false }: { hideIntro?: boolean } = {}) {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
+  // Permite que outras seções (ex: RitualHero) iniciem o quiz sem prop drilling
+  useEffect(() => {
+    const onIniciar = () => handleIniciar();
+    window.addEventListener("zahir:ritual:iniciar", onIniciar);
+    return () => window.removeEventListener("zahir:ritual:iniciar", onIniciar);
+    // handleIniciar é estável o suficiente: lê estado via loadProgress + setters
+    // são referencialmente estáveis. Sem deps pra evitar reanexar a cada render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleIniciar = () => {
     setOpen(true);
     // Se tem progresso salvo, retoma dali

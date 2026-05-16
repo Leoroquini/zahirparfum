@@ -17,15 +17,15 @@ const EASE_OUT = [0.19, 1, 0.22, 1] as const;
  * campo `numero` do catálogo). NÃO reordena por destaque editorial
  * automático — é curadoria manual.
  */
-const FAVORITOS_NUMEROS_ELE = [1, 7, 14, 17, 26, 28, 31, 38];
+const FAVORITOS_NUMEROS_ELE = [1, 7, 14, 17, 25, 27, 30, 37];
 const FAVORITOS_NUMEROS_ELA = [1, 2, 3, 5, 8, 10, 11, 12];
 
 /**
  * Mix da raiz (LP unissex): 4 masc + 4 fem, curados manualmente (não
  * vem dos primeiros 4 de cada lista acima). Pedido do Leo em 2026-05-14:
- * tirar 14/28/31/38 do masc e usar 1-4 do feminino.
+ * tirar 14/27/30/37 do masc e usar 1-4 do feminino.
  */
-const FAVORITOS_NUMEROS_RAIZ_ELE = [1, 7, 17, 26];
+const FAVORITOS_NUMEROS_RAIZ_ELE = [1, 7, 17, 25];
 const FAVORITOS_NUMEROS_RAIZ_ELA = [1, 2, 3, 4];
 
 type FiltroChave =
