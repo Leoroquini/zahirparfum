@@ -170,6 +170,68 @@ não de reconstrução.
 
 ---
 
+## 7b. Segunda passada: componentes de marketing e coerência de frete/canal
+
+Auditados depois da primeira leva de limpeza. Resultado melhor do que o esperado — mas
+apareceram duas incoerências reais.
+
+### Frete: a regra codada nunca chega ao visitante (e isso é bom)
+
+`checkout-config.ts` define `R$ 25 fixo / grátis acima de R$ 400`. Rastreando os usos,
+`calcularFrete()` é chamado **em um único lugar**: `app/api/checkout/mercadopago/route.ts:119`
+— a rota do checkout dormente. **Nenhuma tela mostra esse número ao visitante.**
+
+O que o site realmente promete hoje, em `/entrega` e `/faq`, é: *"Calculamos por CEP depois que
+você envia a lista. O valor depende do endereço, peso e modalidade."* Isso é honesto e compatível
+com a operação manual. Não há promessa de frete fabricada em produção.
+
+### `FreteSPBanner.tsx` — código morto que contradiz a política real
+
+Anuncia *"Frete grátis · São Paulo capital · acima de R$ 99"*. Isso contradiz tanto o
+`checkout-config.ts` (grátis acima de R$ 400, Brasil todo) quanto o `/entrega` (frete calculado
+por CEP, sem valor prometido).
+
+**Não está renderizado em lugar nenhum** — `grep` não acha nenhum import. É código morto, então
+não chegou a enganar ninguém. Mas não pode ser ligado do jeito que está: seria exatamente a
+"condição que não existe na operação real" que o brief proíbe.
+
+→ **Decisão necessária do fundador:** a promoção de frete grátis em SP acima de R$ 99 existe
+de verdade? Se sim, `/entrega`, `/faq` e `checkout-config.ts` precisam refletir. Se não, o
+componente deve ser apagado.
+
+### Canal de pedido: as páginas institucionais dizem Instagram, a operação escolheu WhatsApp
+
+Contagem de menções:
+
+| Página | "Instagram" | "WhatsApp" |
+|---|---|---|
+| `/entrega` | 2 | **0** |
+| `/faq` | 2 | **0** |
+| `/como-comprar` | 6 | **0** |
+
+As três páginas que explicam como comprar instruem a pessoa a **enviar a lista pelo Instagram
+DM**. Mas `reserva-dm.ts` oferece os dois canais, e a decisão do fundador (15/08/2026) é que o
+canal único é o **WhatsApp**.
+
+O brief exige: *"escolha um único canal prioritário e deixe claro, antes de a pessoa montar a
+lista, o que acontecerá em seguida."* Hoje a pessoa lê "mande no Instagram" e encontra um botão
+de WhatsApp. → Precisa alinhar as três páginas + os CTAs.
+
+### `TrustBar.tsx` — aprovado
+
+Renderizado em todas as rotas exceto `/`. As quatro afirmações se sustentam:
+"Curadoria original / Fornecedores verificados" bate com `brand.ts`; "Decant pra testar" é real;
+"Troca garantida · 7 dias, art. 49 CDC" é direito legal, não promessa inventada; "Atendimento
+humano · 9h–22h" é consistente com o que a `/faq` já declara. Nada a mudar.
+
+### `ListaRetornoNudge.tsx` — aprovado com ressalva
+
+O toast "N fragrâncias esperando você" usa a lista real do próprio visitante — não é contador
+fabricado nem urgência inventada. Só a copy diz "enviar pro Instagram", que entra no
+realinhamento de canal acima.
+
+---
+
 ## 8. Riscos da execução
 
 1. **SEO** — unificar `/ela/*` sem redirect 301 mata URLs indexadas de produto, nota e curadoria.
