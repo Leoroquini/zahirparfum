@@ -686,6 +686,7 @@ export const CATALOGO: Perfume[] = [
     precoVenda: 299,
     precoDecant5Cent: 4490,
     precoDecant10Cent: 5990,
+    selecionadoSemana: true,
     ocasioes: ["noite", "outono", "inverno", "encontro"],
     notas: {
       topo: ["bergamota", "lavanda", "cardamomo"],
@@ -1256,7 +1257,6 @@ export const CATALOGO: Perfume[] = [
     precoVenda: 199,
     precoDecant5Cent: 3990,
     precoDecant10Cent: 5490,
-    selecionadoSemana: true,
     ocasioes: ["noite", "outono", "inverno", "encontros românticos"],
     notas: {
       topo: ["canela", "cardamomo", "gengibre"],
