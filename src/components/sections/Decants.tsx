@@ -217,31 +217,32 @@ export function Decants({
               <FrascoColuna
                 label="5ml"
                 tag="Decant"
-                priceLabel="A partir de"
-                price="R$ 25"
+                priceLabel="Pra"
+                price="Testar"
                 height={170}
                 tone="default"
                 delay={0.3}
+                footnote="Alguns dias na pele, o suficiente pra saber se é seu."
               />
               <FrascoColuna
                 label="10ml"
                 tag="Decant"
-                priceLabel="A partir de"
-                price="R$ 40"
+                priceLabel="Pra"
+                price="Conhecer"
                 height={220}
                 tone="highlight"
                 delay={0.5}
-                badge="Mais pedido"
-                footnote="Ideal para testar e usar várias vezes."
+                footnote="Semanas de uso, em ocasiões diferentes."
               />
               <FrascoColuna
                 label="100ml"
                 tag="Versão completa"
-                priceLabel=""
-                price="Frasco cheio"
+                priceLabel="Pra"
+                price="Possuir"
                 height={290}
                 tone="dim"
                 delay={0.7}
+                footnote="O frasco na estante, quando a escolha já está feita."
               />
             </div>
           </motion.div>

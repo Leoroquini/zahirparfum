@@ -86,9 +86,6 @@ export const events = {
   clickInstagram: (contexto: string) =>
     track("click_instagram", { contexto }),
 
-  // Newsletter
-  newsletterInscricao: () => track("newsletter_inscricao"),
-
   // Kit
   kitTrioAdicionado: (tipo: "estreia" | "colecao") =>
     track("kit_trio_adicionado", { tipo }),

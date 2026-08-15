@@ -162,25 +162,6 @@ export function KitsTrio({
           </div>
         </motion.div>
 
-        {/* Microcopy social proof */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.9, delay: 0.3 }}
-          className="mt-8 flex items-center justify-center gap-2 text-[10px] font-sans uppercase tracking-[0.35em] text-amber/85"
-        >
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            aria-hidden
-          >
-            <path d="M12 21s-7-4.5-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.5-9 9-9 9z" />
-          </svg>
-          Decants já experimentados por centenas de clientes em todo o Brasil
-        </motion.p>
       </div>
     </section>
   );
@@ -222,8 +203,7 @@ function KitCard({
       ) : (
         <div className="absolute left-1/2 top-0 z-10 -translate-x-1/2 translate-y-[-50%]">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-amber px-4 py-1.5 text-[9px] font-sans font-bold uppercase tracking-[0.3em] text-ink shadow-[0_8px_22px_-6px_rgba(140,107,38,0.55)]">
-            <span aria-hidden>★</span>
-            Mais escolhido
+            Pra usar, não só testar
           </span>
         </div>
       )}

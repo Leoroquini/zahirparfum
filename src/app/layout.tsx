@@ -11,7 +11,6 @@ import { UtmCapture } from "@/components/analytics/UtmCapture";
 import { ListaDrawer } from "@/components/ui/ListaDrawer";
 import { ToastStack } from "@/components/ui/ToastStack";
 import { BuscaShortcut } from "@/components/ui/BuscaShortcut";
-import { ExitIntentCapture } from "@/components/marketing/ExitIntentCapture";
 import { ListaRetornoNudge } from "@/components/marketing/ListaRetornoNudge";
 import { BRAND } from "@/lib/brand";
 
@@ -82,7 +81,6 @@ export default function RootLayout({
         <ListaDrawer />
         <ToastStack />
         <BuscaShortcut />
-        <ExitIntentCapture />
         <ListaRetornoNudge />
         <CookieBanner />
         <UtmCapture />

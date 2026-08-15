@@ -29,9 +29,6 @@ const ManifestoPreview = dynamic(() =>
     (m) => m.ManifestoPreview,
   ),
 );
-const Newsletter = dynamic(() =>
-  import("@/components/sections/Newsletter").then((m) => m.Newsletter),
-);
 
 export const metadata: Metadata = {
   title: "Zahir Parfums · Para Ele",
@@ -55,7 +52,6 @@ export default function HomeEle() {
       <ComparadorPreview />
       <Ritual />
       <ManifestoPreview />
-      <Newsletter />
     </>
   );
 }
