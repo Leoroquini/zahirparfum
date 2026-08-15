@@ -144,3 +144,51 @@ export const ARQUETIPOS: Record<string, string> = {
 export function arquetipoDe(slug: string): string | undefined {
   return ARQUETIPOS[slug];
 }
+
+/* ============================================================
+ * Linha de sensação da primeira dobra
+ * ============================================================ */
+
+/** Junta uma lista em português: "a, b e c". */
+function listarPt(itens: string[]): string {
+  if (itens.length === 0) return "";
+  if (itens.length === 1) return itens[0];
+  return `${itens.slice(0, -1).join(", ")} e ${itens[itens.length - 1]}`;
+}
+
+export type LinhaSensacao =
+  | { tipo: "arquetipo"; texto: string }
+  | { tipo: "ficha"; familia: string | null; ocasioes: string };
+
+/**
+ * A Arquitetura §4 exige "uma frase de sensação" na primeira dobra da ficha.
+ * Ela vem do ARQUETIPOS acima — mas hoje só os 41 SKUs masculinos e a
+ * Khamrah Qahwa têm entrada. Os outros 44 femininos não têm nenhuma, e o
+ * arquivo inteiro está escrito na voz masculina ("Usado pelo cara que…"),
+ * então reaproveitar não é opção: seria erro de conteúdo, não de gramática.
+ *
+ * Escrever os 44 arquétipos femininos é trabalho editorial do fundador.
+ * Inventá-los aqui seria fabricar conteúdo de produto, que o brief proíbe.
+ *
+ * Enquanto não existirem, esta função devolve uma linha montada APENAS com
+ * dado que já está no catálogo — família olfativa e ocasiões declaradas do
+ * próprio SKU. Nenhum adjetivo, nenhuma cena, nenhuma promessa. Assim que o
+ * arquétipo for escrito, ele passa a ter precedência automaticamente e o
+ * fallback some, sem mudar nada no componente.
+ *
+ * Devolve null quando o SKU não tem nem família nem ocasião — aí a ficha
+ * simplesmente não renderiza a linha, em vez de mostrar texto vazio.
+ */
+export function linhaDeSensacao(perfume: {
+  id: string;
+  familia: string | null;
+  ocasioes: string[];
+}): LinhaSensacao | null {
+  const arquetipo = ARQUETIPOS[perfume.id];
+  if (arquetipo) return { tipo: "arquetipo", texto: arquetipo };
+
+  const ocasioes = listarPt(perfume.ocasioes);
+  if (!perfume.familia && !ocasioes) return null;
+
+  return { tipo: "ficha", familia: perfume.familia, ocasioes };
+}

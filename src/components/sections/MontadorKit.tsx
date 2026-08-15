@@ -8,7 +8,11 @@ import { motion, AnimatePresence } from "motion/react";
 import { CATALOGO, type Perfume } from "@/data/catalogo";
 import { filtrarPorGenero } from "@/lib/genero";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
-import { precoDa, type VarianteReserva } from "@/lib/lista-store";
+import {
+  precoDa,
+  precoDefinido,
+  type VarianteReserva,
+} from "@/lib/lista-store";
 import {
   mensagemKitMontador,
   linkInstagram,
@@ -266,7 +270,11 @@ export function MontadorKit({
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
             {catalogoFiltrado.map((p) => {
               const variante = VARIANTE_POR_TAMANHO[tamanhoPadrao];
-              const preco = precoDa(p, variante);
+              // null quando o SKU não tem preço de decant definido no catálogo.
+              // Ver precoDefinido() em lib/lista-store.ts.
+              const preco = precoDefinido(p, variante)
+                ? precoDa(p, variante)
+                : null;
               const jaAdicionado = itens.some(
                 (i) => i.perfumeId === p.id && i.tamanho === tamanhoPadrao,
               );
@@ -322,9 +330,15 @@ export function MontadorKit({
                       <span className="text-[9px] font-sans uppercase tracking-[0.3em] text-cream/55">
                         {tamanhoPadrao}
                       </span>
-                      <span className="font-display text-base text-cream md:text-lg">
-                        {fmtPrecoBRL(preco)}
-                      </span>
+                      {preco !== null ? (
+                        <span className="font-display text-base text-cream md:text-lg">
+                          {fmtPrecoBRL(preco)}
+                        </span>
+                      ) : (
+                        <span className="text-[10px] italic leading-tight text-cream/70">
+                          a confirmar
+                        </span>
+                      )}
                     </div>
                   </div>
                   {/* Estado adicionado */}

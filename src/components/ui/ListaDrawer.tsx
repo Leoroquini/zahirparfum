@@ -9,6 +9,7 @@ import {
   removeItem,
   clearLista,
   labelDa,
+  precoDefinido,
   type ItemLista,
 } from "@/lib/lista-store";
 import { CATALOGO } from "@/data/catalogo";
@@ -33,7 +34,20 @@ export function ListaDrawer() {
   const [ajudaOpen, setAjudaOpen] = useState(false);
   const [pagandoMp, setPagandoMp] = useState(false);
 
-  const subtotal = items.reduce((sum, i) => sum + i.precoSnapshot, 0);
+  // Só soma o que tem preço definido no catálogo. Itens sem preço (decants de
+  // SKU que ainda não foi precificado) ficam de fora da conta e são contados
+  // à parte — somar o fallback calculado mostraria um subtotal que a operação
+  // não sustenta. Ver precoDefinido() em lib/lista-store.ts.
+  const itensSemPreco = items.filter((i) => {
+    const p = CATALOGO.find((c) => c.id === i.perfumeId);
+    return p ? !precoDefinido(p, i.variante) : false;
+  }).length;
+
+  const subtotal = items.reduce((sum, i) => {
+    const p = CATALOGO.find((c) => c.id === i.perfumeId);
+    if (p && !precoDefinido(p, i.variante)) return sum;
+    return sum + i.precoSnapshot;
+  }, 0);
   // Total/frete agora sao confirmados manualmente pelo atendimento.
   const total = subtotal;
 
@@ -233,12 +247,19 @@ export function ListaDrawer() {
                   <div className="mb-4 flex flex-col gap-1.5">
                     <div className="flex items-baseline justify-between gap-2 border-t border-ink/10 pt-2">
                       <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-ink/70">
-                        Subtotal
+                        {itensSemPreco > 0 ? "Parcial" : "Subtotal"}
                       </span>
                       <span className="font-display text-3xl font-light text-ink">
                         {fmtPrecoBRL(subtotal)}
                       </span>
                     </div>
+                    {itensSemPreco > 0 && (
+                      <p className="text-[10px] italic text-ink/70">
+                        {itensSemPreco === 1
+                          ? "1 item ainda sem preço definido — confirmamos no atendimento."
+                          : `${itensSemPreco} itens ainda sem preço definido — confirmamos no atendimento.`}
+                      </p>
+                    )}
                     <p className="text-[10px] italic text-ink/55">
                       Frete calculado pelo seu CEP e confirmado no atendimento, antes do pagamento.
                     </p>
@@ -383,9 +404,17 @@ function ListaItemRow({ item }: { item: ItemLista }) {
       </div>
 
       <div className="flex shrink-0 flex-col items-end gap-1.5 pt-0.5">
-        <span className="font-display text-lg font-light text-ink md:text-xl">
-          {fmtPrecoBRL(item.precoSnapshot)}
-        </span>
+        {precoDefinido(perfume, item.variante) ? (
+          <span className="font-display text-lg font-light text-ink md:text-xl">
+            {fmtPrecoBRL(item.precoSnapshot)}
+          </span>
+        ) : (
+          <span className="text-right text-[11px] italic leading-tight text-ink/65">
+            valor a
+            <br />
+            confirmar
+          </span>
+        )}
         <button
           type="button"
           onClick={() => removeItem(item.perfumeId, item.variante)}

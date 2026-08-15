@@ -60,6 +60,33 @@ export function precoDa(perfume: Perfume, variante: VarianteReserva): number {
   return base;
 }
 
+/**
+ * Diz se o preço desta variante existe DE VERDADE no catálogo, ou se
+ * `precoDa()` vai cair no cálculo automático.
+ *
+ * Isso importa porque o fallback de `precoDa()` (20%/30% do frasco, com pisos
+ * de R$ 25 e R$ 40) produz números que ninguém definiu. Hoje 44 dos 45 SKUs
+ * femininos não têm `precoDecant5Cent`/`precoDecant10Cent` — só a Khamrah
+ * Qahwa tem. No masculino falta só 1.
+ *
+ * Sem esta checagem o valor calculado não ficava só na tela: ele virava
+ * `precoSnapshot` no `addItem()` e era enviado ao cliente dentro da mensagem
+ * de reserva do WhatsApp, como se fosse preço fechado.
+ *
+ * É derivado do catálogo a cada leitura, não persistido — assim, no dia em
+ * que o fundador preencher os preços, as listas que já estão no localStorage
+ * dos visitantes passam a exibir valor sozinhas.
+ */
+export function precoDefinido(
+  perfume: Perfume,
+  variante: VarianteReserva,
+): boolean {
+  if (variante === "frasco") return perfume.precoVenda !== null;
+  if (variante === "decant-10") return perfume.precoDecant10Cent !== undefined;
+  if (variante === "decant-5") return perfume.precoDecant5Cent !== undefined;
+  return false;
+}
+
 export function labelDa(variante: VarianteReserva): string {
   if (variante === "frasco") return "Frasco cheio";
   if (variante === "decant-10") return "Decant 10ml";

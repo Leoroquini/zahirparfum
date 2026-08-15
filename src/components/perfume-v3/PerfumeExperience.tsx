@@ -6,8 +6,8 @@ import { motion } from "motion/react";
 import type { Perfume } from "@/data/catalogo";
 import { CATALOGO } from "@/data/catalogo";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
-import { arquetipoDe } from "@/data/arquetipos";
-import { addItem, useLista, precoDa } from "@/lib/lista-store";
+import { linhaDeSensacao } from "@/data/arquetipos";
+import { addItem, useLista, precoDa, precoDefinido } from "@/lib/lista-store";
 import { fmtPrecoBRL } from "@/lib/promo";
 import { toast } from "@/lib/toast-store";
 import { RelogioPele } from "./RelogioPele";
@@ -54,7 +54,8 @@ export function PerfumeExperience({ perfume }: Props) {
  * ============================================================ */
 
 function Ato2Encontro({ perfume }: { perfume: Perfume }) {
-  const arquetipo = arquetipoDe(perfume.id);
+  const sensacao = linhaDeSensacao(perfume);
+  const universo = getGenero(perfume) === "feminino" ? "Para ela" : "Para ele";
   const palavrasNome = perfume.nome.split(" ");
   const numero = String(perfume.numero).padStart(2, "0");
   const lista = useLista();
@@ -64,7 +65,11 @@ function Ato2Encontro({ perfume }: { perfume: Perfume }) {
   const jaNaListaFrasco = lista.some(
     (i) => i.perfumeId === perfume.id && i.variante === "frasco"
   );
-  const preco5 = perfume.precoVenda ? precoDa(perfume, "decant-5") : null;
+  // null = SKU sem precoDecant5Cent no catálogo. Não cai no cálculo automático:
+  // mostra "valor a confirmar", que é o que a operação sustenta hoje.
+  const preco5 = precoDefinido(perfume, "decant-5")
+    ? precoDa(perfume, "decant-5")
+    : null;
   const precoFrasco = perfume.precoVenda;
   // Promo individual do frasco (sobrescreve precoFrasco no display, mas mantem precoVenda como cheio)
   const precoFrascoPromo =
@@ -80,7 +85,7 @@ function Ato2Encontro({ perfume }: { perfume: Perfume }) {
     };
     toast.success(
       `${labels[variante]} na sua lista`,
-      "Confira a lista no canto direito pra finalizar via Instagram."
+      "Confira a lista no canto direito pra fechar pelo WhatsApp."
     );
   };
 
@@ -143,7 +148,7 @@ function Ato2Encontro({ perfume }: { perfume: Perfume }) {
             className="flex flex-wrap items-center gap-3"
           >
             <span className="text-[10px] font-sans font-medium uppercase tracking-[0.45em] text-amber-dim">
-              Nº {numero} · {perfume.marca ?? "Fragrância"}
+              Nº {numero} · {perfume.marca ?? "Fragrância"} · {universo}
             </span>
             {perfume.selecionadoSemana && (
               <span className="rounded-full border border-amber bg-amber/85 px-2.5 py-0.5 text-[9px] font-sans font-bold uppercase tracking-[0.28em] text-ink shadow-[0_4px_12px_-2px_rgba(140,107,38,0.45)]">
@@ -179,16 +184,37 @@ function Ato2Encontro({ perfume }: { perfume: Perfume }) {
             ))}
           </h1>
 
-          {/* Arquétipo */}
-          {arquetipo && (
+          {/* Frase de sensação — arquétipo editorial quando existe; senão,
+              família + ocasiões do próprio SKU. Ver linhaDeSensacao(). */}
+          {sensacao?.tipo === "arquetipo" && (
             <motion.blockquote
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 1.2, ease: EASE_OUT }}
               className="max-w-xl border-l-2 border-amber-dim/50 pl-5 font-display text-lg font-light italic leading-[1.45] text-ink/85 md:text-xl"
             >
-              {arquetipo}
+              {sensacao.texto}
             </motion.blockquote>
+          )}
+
+          {sensacao?.tipo === "ficha" && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 1.2, ease: EASE_OUT }}
+              className="flex max-w-xl flex-col gap-1.5 border-l-2 border-amber-dim/50 pl-5"
+            >
+              {sensacao.familia && (
+                <span className="font-display text-lg font-light leading-[1.35] text-ink/85 md:text-xl">
+                  {sensacao.familia}
+                </span>
+              )}
+              {sensacao.ocasioes && (
+                <span className="text-sm leading-relaxed text-ink/70">
+                  Para {sensacao.ocasioes}.
+                </span>
+              )}
+            </motion.div>
           )}
 
           {/* Inspirado em (se houver clone) */}
@@ -214,7 +240,7 @@ function Ato2Encontro({ perfume }: { perfume: Perfume }) {
           )}
 
           {/* CTA — Provar (decant 5ml) ou Possuir (frasco) */}
-          {preco5 !== null && precoFrasco !== null && (
+          {precoFrasco !== null && (
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -235,7 +261,9 @@ function Ato2Encontro({ perfume }: { perfume: Perfume }) {
                   aria-label={
                     jaNaLista5
                       ? "Decant de 5ml já está na sua lista"
-                      : `Provar Decant 5ml por ${fmtPrecoBRL(preco5)}`
+                      : preco5 !== null
+                        ? `Provar Decant 5ml por ${fmtPrecoBRL(preco5)}`
+                        : "Provar Decant 5ml, valor confirmado no atendimento"
                   }
                 >
                   <span className="flex flex-col gap-0.5 overflow-hidden">
@@ -243,8 +271,17 @@ function Ato2Encontro({ perfume }: { perfume: Perfume }) {
                       {jaNaLista5 ? "Na sua lista" : "Provar"}
                     </span>
                     <span className="truncate font-display text-lg font-light leading-tight md:text-xl">
-                      {jaNaLista5 ? "✓ Decant 5ml" : `Decant 5ml · ${fmtPrecoBRL(preco5)}`}
+                      {jaNaLista5
+                        ? "✓ Decant 5ml"
+                        : preco5 !== null
+                          ? `Decant 5ml · ${fmtPrecoBRL(preco5)}`
+                          : "Decant 5ml"}
                     </span>
+                    {!jaNaLista5 && preco5 === null && (
+                      <span className="truncate text-[10px] italic opacity-75">
+                        valor a confirmar
+                      </span>
+                    )}
                   </span>
                   {!jaNaLista5 && (
                     <span
@@ -560,15 +597,20 @@ function Ato6Veredicto({ perfume }: { perfume: Perfume }) {
     };
     toast.success(
       `${labels[variante]} na sua lista`,
-      "Confira a lista no canto direito pra finalizar via Instagram."
+      "Confira a lista no canto direito pra fechar pelo WhatsApp."
     );
   };
 
   if (perfume.precoVenda === null) return null;
 
-  // Preços via precoDa() — usa precoDecant5/10Cent quando definido por SKU
-  const preco5 = precoDa(perfume, "decant-5");
-  const preco10 = precoDa(perfume, "decant-10");
+  // null quando o SKU não tem precoDecant5Cent/10Cent — a carta mostra
+  // "valor a confirmar" em vez do número do cálculo automático.
+  const preco5 = precoDefinido(perfume, "decant-5")
+    ? precoDa(perfume, "decant-5")
+    : null;
+  const preco10 = precoDefinido(perfume, "decant-10")
+    ? precoDa(perfume, "decant-10")
+    : null;
   const precoFrasco = perfume.precoVenda;
 
   return (
@@ -629,7 +671,11 @@ function Ato6Veredicto({ perfume }: { perfume: Perfume }) {
           />
         </div>
 
-        {/* Prova social placeholder (vira real quando tiver dados) */}
+        {/* Linha factual de operação — o que acontece depois de adicionar à
+            lista. A Arquitetura §4 pede isso ligado ao fluxo real, e o fluxo
+            real é o WhatsApp. Cada afirmação aqui existe numa página
+            institucional: prazo de troca em /trocas-e-devolucoes (art. 49
+            CDC), frete e pagamento em /entrega e /faq. */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -638,13 +684,13 @@ function Ato6Veredicto({ perfume }: { perfume: Perfume }) {
           className="mt-16 flex flex-col items-center gap-4 text-center"
         >
           <div className="flex items-center gap-2 text-[10px] font-sans font-medium uppercase tracking-[0.4em] text-amber-dim">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-dim" />
+            <span className="h-1.5 w-1.5 rounded-full bg-amber-dim" />
             <span>Curadoria · Atendimento humano</span>
           </div>
           <p className="max-w-xl text-sm italic text-ink/75">
-            Cada reserva passa por contato direto via Instagram. Você confirma
+            Cada reserva passa por contato direto no WhatsApp. Você confirma
             tamanho, frete e forma de pagamento antes de qualquer envio.
-            Garantia de troca em 7 dias se chegar lacrado.
+            Frasco lacrado tem troca em 7 dias, pelo art. 49 do CDC.
           </p>
         </motion.div>
 
@@ -675,7 +721,7 @@ function Carta({
   titulo: string;
   subtitulo: string;
   descricao: string;
-  preco: number;
+  preco: number | null;
   onAdd: () => void;
   jaNaLista: boolean;
   delay: number;
@@ -728,9 +774,15 @@ function Carta({
           <span className="text-[10px] font-sans uppercase tracking-[0.35em] text-ink/65">
             Preço
           </span>
-          <span className="font-display text-3xl font-light text-ink md:text-4xl">
-            {fmtPrecoBRL(preco)}
-          </span>
+          {preco !== null ? (
+            <span className="font-display text-3xl font-light text-ink md:text-4xl">
+              {fmtPrecoBRL(preco)}
+            </span>
+          ) : (
+            <span className="text-right font-display text-lg font-light italic leading-tight text-ink/70">
+              a confirmar
+            </span>
+          )}
         </div>
 
         <button
