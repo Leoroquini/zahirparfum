@@ -37,7 +37,7 @@ export function DecantsResumo({
         "Alguns dias na pele. O suficiente pra saber se é seu antes de qualquer compromisso.",
       cta: "Montar com 5 ml",
       href: `${montarHref}?tamanho=5ml`,
-      aria: "Montar kit de decants de 5 ml",
+      aria: "Montar com 5 ml — kit de decants para testar",
       altura: 54,
       destaque: false,
     },
@@ -48,7 +48,7 @@ export function DecantsResumo({
         "Semanas de uso, em ocasiões e climas diferentes. Você vê o perfume no calor, no frio e no dia comum.",
       cta: "Montar com 10 ml",
       href: `${montarHref}?tamanho=10ml`,
-      aria: "Montar kit de decants de 10 ml",
+      aria: "Montar com 10 ml — kit de decants para conhecer",
       altura: 78,
       destaque: true,
     },
@@ -59,7 +59,7 @@ export function DecantsResumo({
         "A escolha já feita. O frasco entra na estante porque você já sabe como ele termina o dia.",
       cta: "Ver o catálogo",
       href: catalogoHref,
-      aria: "Ver frascos cheios no catálogo",
+      aria: "Ver o catálogo de frascos cheios",
       altura: 104,
       destaque: false,
     },
@@ -110,6 +110,13 @@ export function DecantsResumo({
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.9, delay: i * 0.1, ease: EASE_OUT }}
             >
+              {/*
+                aria-label SUBSTITUI o nome acessível calculado pelo conteúdo
+                do link. Por isso cada `aria` começa com o texto visível do CTA
+                ("Montar com 5 ml", "Ver o catálogo") — sem isso o comando de
+                voz "clicar em Montar com 5 ml" não encontra o alvo (WCAG 2.5.3,
+                Label in Name).
+              */}
               <Link
                 href={n.href}
                 aria-label={n.aria}
@@ -128,7 +135,7 @@ export function DecantsResumo({
                   {n.medida}
                 </span>
 
-                <h3 className="mt-2 font-display text-3xl font-light leading-tight text-ink transition-colors duration-500 group-hover:text-amber group-focus-visible:text-amber md:text-4xl">
+                <h3 className="mt-2 font-display text-3xl font-light leading-tight text-ink transition-colors duration-500 group-hover:text-amber-dim group-focus-visible:text-amber-dim md:text-4xl">
                   {n.titulo}
                 </h3>
 
@@ -165,7 +172,7 @@ export function DecantsResumo({
             Montar meu kit de decants
             <span
               aria-hidden
-              className="transition-transform duration-500 group-hover:translate-x-1"
+              className="transition-transform duration-500 group-hover:translate-x-1 group-focus-visible:translate-x-1"
             >
               →
             </span>

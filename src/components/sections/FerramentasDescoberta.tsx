@@ -28,12 +28,16 @@ export function FerramentasDescoberta({
   mundo = "ele",
 }: {
   mundo?: "ele" | "ela";
-} = {}) {
+}) {
   const isEla = mundo === "ela";
 
   // Rotas montadas no topo — nada de ternário solto no meio do JSX.
   const mapaHref = isEla ? "/ela/mapa" : "/mapa";
   const comparadorHref = isEla ? "/ela/comparador" : "/comparador";
+  // Sem espelho em /ela — as rotas /ela/compare e /ela/notas NÃO existem em
+  // src/app. /compare traz o próprio seletor de gênero (tabs "todos · ela ·
+  // ele") dentro do picker, então a visitante filtra na própria página; não é
+  // resultado misturado e silencioso como seria mandá-la pra /buscar.
   const compareHref = "/compare";
   const notasHref = "/notas";
 
@@ -134,19 +138,19 @@ function FerramentaCard({
     >
       <Link
         href={ferramenta.href}
-        className="group flex min-h-[88px] w-full items-start gap-4 rounded-sm border border-ink/10 bg-cream-soft/55 px-5 py-5 shadow-editorial transition-all duration-500 hover:-translate-y-1 hover:border-amber/50 hover:shadow-product focus-visible:-translate-y-1 focus-visible:border-amber/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber focus-visible:ring-offset-2 focus-visible:ring-offset-cream md:gap-6 md:px-7 md:py-6"
+        className="group flex min-h-[88px] w-full items-start gap-4 rounded-sm border border-ink/10 bg-cream-soft/55 px-5 py-5 shadow-editorial transition-all duration-500 hover:-translate-y-1 hover:border-amber/50 hover:shadow-product focus-visible:-translate-y-1 focus-visible:border-amber/50 focus-visible:shadow-product focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber focus-visible:ring-offset-2 focus-visible:ring-offset-cream md:gap-6 md:px-7 md:py-6"
       >
         {/* Numeral */}
         <span
           aria-hidden
-          className="shrink-0 pt-0.5 font-display text-lg italic tabular-nums text-amber/55 transition-colors duration-500 group-hover:text-amber md:text-xl"
+          className="shrink-0 pt-0.5 font-display text-lg italic tabular-nums text-amber/55 transition-colors duration-500 group-hover:text-amber group-focus-visible:text-amber md:text-xl"
         >
           {ferramenta.n}
         </span>
 
         {/* Conteúdo */}
         <span className="flex min-w-0 flex-1 flex-col gap-2">
-          <span className="font-display text-xl font-light leading-tight text-ink transition-colors duration-500 group-hover:text-amber-dim md:text-2xl">
+          <span className="font-display text-xl font-light leading-tight text-ink transition-colors duration-500 group-hover:text-amber-dim group-focus-visible:text-amber-dim md:text-2xl">
             {ferramenta.titulo}
           </span>
 
@@ -169,7 +173,7 @@ function FerramentaCard({
         {/* Seta */}
         <span
           aria-hidden
-          className="shrink-0 self-center text-amber transition-transform duration-500 group-hover:translate-x-1"
+          className="shrink-0 self-center text-amber transition-transform duration-500 group-hover:translate-x-1 group-focus-visible:translate-x-1"
         >
           →
         </span>

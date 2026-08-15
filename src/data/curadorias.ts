@@ -81,7 +81,7 @@ export const CURADORIAS: Curadoria[] = [
     titulo: "Noite que não Esquece",
     subtitulo: "Encontro, festa, evento marcante",
     descricaoHome:
-      "Magnetismo em frasco, doces masculinos, amadeirados intensos, orientais que ficam na memória. Fragrâncias feitas pra primeira impressão virar lembrança.",
+      "Magnetismo em frasco, doces marcantes, amadeirados intensos, orientais que ficam na memória. Fragrâncias feitas pra primeira impressão virar lembrança.",
     descricaoPage:
       "Jantar que importa, primeiro encontro, festa onde você quer ser lembrado, evento de gala. Curadoria de fragrâncias com performance alta, DNA sedutor ou sofisticado, e aquela qualidade de 'o que é esse cheiro?', a pergunta que deixa a noite memorável. Use com moderação: 2 borrifadas, não 6.",
     foto: "/curadorias/noite-que-nao-esquece.webp",

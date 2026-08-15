@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import Image from "next/image";
+import Link from "next/link";
 
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
@@ -86,12 +87,13 @@ export function HeroEla() {
               "0 1px 12px rgba(244, 233, 212, 0.95), 0 0 24px rgba(244, 233, 212, 0.7)",
           }}
         >
-          Perfume árabe pra mulher que sabe que cheirar bem
-          <br className="hidden md:block" />{" "}
-          não é só borrifar e sair —{" "}
+          Perfume árabe pra mulher que sabe que cheirar bem não é só
+          borrifar e sair —{" "}
           <em className="font-display italic text-ink">
             é decidir o que fica depois.
           </em>
+          <br className="hidden md:block" />{" "}
+          Prove na pele em decant de 5 ml antes de assumir o frasco.
         </motion.p>
 
         {/* CTAs */}
@@ -101,9 +103,11 @@ export function HeroEla() {
           transition={{ duration: 1.1, delay: 2.1, ease: EASE_OUT }}
           className="mt-14 flex flex-col items-center gap-4 md:flex-row md:gap-5"
         >
-          {/* Primário rosé glass */}
-          <a
-            href="#ritual"
+          {/* Primário rosé glass. CTA dominante do brief — "montar um kit
+              de decants". Era href="#ritual", âncora que morreu quando o
+              RitualEla saiu da home. */}
+          <Link
+            href="/ela/decants/montar"
             className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full border border-[rgba(176,122,82,0.55)] px-10 py-4 text-[11px] font-sans font-medium uppercase tracking-[0.32em] text-ink shadow-[0_10px_30px_-8px_rgba(74,21,24,0.4),inset_0_1px_0_rgba(255,243,220,0.55),inset_0_-1px_0_rgba(74,21,24,0.15)] backdrop-blur-xl transition-all duration-500 hover:border-[rgba(176,122,82,0.85)] hover:shadow-[0_14px_38px_-8px_rgba(74,21,24,0.55),inset_0_1px_0_rgba(255,243,220,0.75),inset_0_-1px_0_rgba(74,21,24,0.2)]"
             style={{
               background:
@@ -114,26 +118,27 @@ export function HeroEla() {
               aria-hidden
               className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-[rgba(255,243,220,0.45)] to-transparent transition-transform duration-1000 group-hover:translate-x-full"
             />
-            <span className="relative z-10">Fazer o Ritual</span>
+            <span className="relative z-10">Montar meu kit de decants</span>
             <span className="relative z-10 transition-transform duration-500 group-hover:translate-x-1">
               →
             </span>
-          </a>
+          </Link>
 
-          {/* Secundário cream */}
-          <a
-            href="#catalogo"
+          {/* Secundário cream. O brief define esta saída como
+              "não sei por onde começar" → Ritual. */}
+          <Link
+            href="/ela/ritual"
             className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full border border-ink/20 px-10 py-4 text-[11px] font-sans font-medium uppercase tracking-[0.32em] text-ink shadow-[0_8px_24px_-8px_rgba(42,42,40,0.18),inset_0_1px_0_rgba(255,255,255,0.7),inset_0_-1px_0_rgba(42,42,40,0.08)] backdrop-blur-xl transition-all duration-500 hover:border-[rgba(176,122,82,0.65)] hover:shadow-[0_12px_30px_-8px_rgba(74,21,24,0.3),inset_0_1px_0_rgba(255,243,220,0.85),inset_0_-1px_0_rgba(74,21,24,0.12)]"
             style={{
               background:
                 "linear-gradient(135deg, rgba(250,247,240,0.45) 0%, rgba(237,229,214,0.30) 100%)",
             }}
           >
-            <span className="relative z-10">Ver o Catálogo</span>
+            <span className="relative z-10">Não sei por onde começar</span>
             <span className="relative z-10 transition-transform duration-500 group-hover:translate-x-1">
               →
             </span>
-          </a>
+          </Link>
         </motion.div>
       </div>
 

@@ -39,6 +39,18 @@ export function TresComecos({ mundo = "ele" }: { mundo?: "ele" | "ela" }) {
    */
   const buscaComFormulario = !isEla;
 
+  /**
+   * PORTA 1 — a descrição precisa citar as perguntas QUE EXISTEM no quiz
+   * daquele mundo. Os dois questionários não são iguais:
+   *   quiz.ts     (ele) → ja-amei · hora · intensidade · veto · pele · orcamento
+   *   quiz-ela.ts (ela) → memoria · designer · percepcao · ocasiao · projecao · veto
+   * Só o masculino pergunta sobre pele. Texto fixo mentiria em /ela.
+   * "Seis perguntas" vale nos dois: PERGUNTAS.length === PERGUNTAS_ELA.length === 6.
+   */
+  const ritualDescricao = isEla
+    ? "Seis perguntas sobre os cheiros que te levam pra um lugar bom, os designers que você já amou, quando quer usar o perfume e o que te incomoda. No fim, um perfil olfativo com nome — e fragrâncias do acervo escolhidas pra ele, cada uma com o motivo da escolha."
+    : "Seis perguntas sobre o que você já amou, quando quer usar o perfume, como sua pele se comporta e o que você não suporta. No fim, um perfil olfativo com nome — e fragrâncias do acervo escolhidas pra ele, cada uma com o motivo da escolha.";
+
   return (
     <section
       id="tres-comecos"
@@ -76,7 +88,7 @@ export function TresComecos({ mundo = "ele" }: { mundo?: "ele" | "ela" }) {
             numero="01"
             kicker="Descobrir"
             titulo="Não sei por onde começar"
-            descricao="Seis perguntas sobre o que você já amou, quando quer usar o perfume, como sua pele se comporta e o que você não suporta. No fim, um perfil olfativo com nome — e fragrâncias do acervo escolhidas pra ele, cada uma com o motivo da escolha."
+            descricao={ritualDescricao}
             chips={["Seis perguntas", "Termina em recomendações"]}
             cta="Fazer o Ritual"
             href={ritualHref}
@@ -90,8 +102,8 @@ export function TresComecos({ mundo = "ele" }: { mundo?: "ele" | "ela" }) {
             numero="02"
             kicker="Testar"
             titulo="Quero testar antes de escolher"
-            descricao="Decant é o mesmo perfume original, fracionado num vial de 5ml ou 10ml. Você usa por dias, sente o que a sua pele faz com ele e só então decide se vale um frasco inteiro. É o menor compromisso possível com uma fragrância."
-            chips={["5ml ou 10ml", "Sem compra às cegas"]}
+            descricao="Decant é o mesmo perfume original, fracionado num vial de 5 ml ou 10 ml. Você usa por dias, sente o que a sua pele faz com ele e só então decide se vale um frasco inteiro. É o menor compromisso possível com uma fragrância."
+            chips={["5 ml ou 10 ml", "Sem compra às cegas"]}
             cta="Ver os decants"
             href={decantsHref}
             delay={0.08}
@@ -158,7 +170,7 @@ export function TresComecos({ mundo = "ele" }: { mundo?: "ele" | "ela" }) {
                       Buscar
                       <span
                         aria-hidden
-                        className="transition-transform duration-500 group-hover:translate-x-1"
+                        className="transition-transform duration-500 group-hover:translate-x-1 group-focus-visible:translate-x-1"
                       >
                         →
                       </span>
@@ -190,7 +202,7 @@ export function TresComecos({ mundo = "ele" }: { mundo?: "ele" | "ela" }) {
                     Abrir o catálogo completo
                     <span
                       aria-hidden
-                      className="transition-transform duration-500 group-hover:translate-x-1"
+                      className="transition-transform duration-500 group-hover:translate-x-1 group-focus-visible:translate-x-1"
                     >
                       →
                     </span>
@@ -266,7 +278,7 @@ function PortaCard({
     >
       <Link
         href={href}
-        className={`group relative flex h-full flex-col gap-5 rounded-sm border p-6 transition-all hover:-translate-y-1 hover:border-amber/50 hover:shadow-product focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber focus-visible:ring-offset-2 focus-visible:ring-offset-cream md:p-8 ${
+        className={`group relative flex h-full flex-col gap-5 rounded-sm border p-6 transition-all hover:-translate-y-1 hover:border-amber/50 hover:shadow-product focus-visible:-translate-y-1 focus-visible:border-amber/50 focus-visible:shadow-product focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber focus-visible:ring-offset-2 focus-visible:ring-offset-cream md:p-8 ${
           destaque
             ? "border-amber/40 bg-cream-soft ring-1 ring-amber/15 shadow-product md:py-10"
             : "border-ink/10 bg-cream-soft/60 shadow-editorial"
@@ -284,7 +296,7 @@ function PortaCard({
         <CabecaDaPorta numero={numero} kicker={kicker} />
 
         <h3
-          className={`font-display font-light leading-[1.1] text-ink transition-colors group-hover:text-amber-bright ${
+          className={`font-display font-light leading-[1.1] text-ink transition-colors group-hover:text-amber-dim group-focus-visible:text-amber-dim ${
             destaque ? "text-3xl md:text-4xl" : "text-2xl md:text-3xl"
           }`}
         >
@@ -316,7 +328,7 @@ function PortaCard({
           {cta}
           <span
             aria-hidden
-            className="transition-transform duration-500 group-hover:translate-x-1"
+            className="transition-transform duration-500 group-hover:translate-x-1 group-focus-visible:translate-x-1"
           >
             →
           </span>

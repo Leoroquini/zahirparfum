@@ -1,56 +1,55 @@
-import dynamic from "next/dynamic";
 import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
-
-const CatalogoHighlight = dynamic(() =>
-  import("@/components/sections/CatalogoHighlight").then(
-    (m) => m.CatalogoHighlight,
-  ),
-);
-const Decants = dynamic(() =>
-  import("@/components/sections/Decants").then((m) => m.Decants),
-);
-const KitsTrio = dynamic(() =>
-  import("@/components/sections/KitsTrio").then((m) => m.KitsTrio),
-);
-const MapaOlfativo = dynamic(() =>
-  import("@/components/sections/MapaOlfativo").then((m) => m.MapaOlfativo),
-);
-const ComparadorPreview = dynamic(() =>
-  import("@/components/sections/ComparadorPreview").then(
-    (m) => m.ComparadorPreview,
-  ),
-);
-const Ritual = dynamic(() =>
-  import("@/components/sections/Ritual").then((m) => m.Ritual),
-);
-const ManifestoPreview = dynamic(() =>
-  import("@/components/sections/ManifestoPreview").then(
-    (m) => m.ManifestoPreview,
-  ),
-);
+import { TresComecos } from "@/components/sections/TresComecos";
+import { DecantsResumo } from "@/components/sections/DecantsResumo";
+import { CatalogoHighlight } from "@/components/sections/CatalogoHighlight";
+import { FerramentasDescoberta } from "@/components/sections/FerramentasDescoberta";
+import { CuradoriasSection } from "@/components/sections/Curadorias";
+import { ManifestoPreview } from "@/components/sections/ManifestoPreview";
 
 export const metadata: Metadata = {
   title: "Zahir Parfums · Para Ele",
   description:
-    "Perfumaria árabe masculina. Madeira, especiaria, oud, couro. Decants pra experimentar antes do frasco cheio.",
+    "Encontre seu perfume árabe e teste na pele antes de investir no frasco. Decants de 5 ml e 10 ml, catálogo curado e ferramentas pra escolher com informação.",
 };
 
 /**
  * Home masculina /ele.
- * Ordem definida em 2026-05-12 (Leo): Curadorias removidas das homes,
- * KitsTrio mantido logo depois de Decants.
+ *
+ * Ordem definida pela Arquitetura §3 — a home ENCAMINHA, não substitui as
+ * páginas de profundidade:
+ *   1 Hero               proposta + CTA de decants
+ *   2 Três Começos       separa intenção: descobrir / testar / já sei
+ *   3 Decants (resumo)   os três níveis de compromisso
+ *   4 Curadoria curta    seleção de entrada do catálogo
+ *   5 Ferramentas        mapa, comparadores e notas como encaminhamento
+ *   6 Curadorias         quatro recortes por momento
+ *   7 Manifesto          a tese da casa, curto
+ *
+ * SAÍRAM DAQUI (continuam existindo nas próprias rotas):
+ *   MapaOlfativo (546 linhas), ComparadorPreview (452) e Ritual (1462) eram
+ *   renderizados inteiros nesta página. O brief: "Não exponha mapa,
+ *   comparador, curadorias, notas e catálogo como escolhas de primeira ordem
+ *   ao mesmo tempo." Agora entram como cards em FerramentasDescoberta.
+ *   Decants e KitsTrio também saíram — a explicação longa e os kits são
+ *   trabalho de /decants, e o brief proíbe repetir esses blocos.
+ *
+ * IMPORTS ESTÁTICOS, não dynamic(). A doc do Next 16
+ * (node_modules/next/dist/docs/01-app/02-guides/lazy-loading.md) diz:
+ * "When a Server Component dynamically imports a Client Component, automatic
+ * code splitting is currently not supported." Esta página é Server Component
+ * e todas as seções são "use client" — os dynamic() antigos não dividiam
+ * bundle nenhum, só adicionavam indireção.
  */
 export default function HomeEle() {
   return (
     <>
       <Hero />
+      <TresComecos mundo="ele" />
+      <DecantsResumo mundo="ele" />
       <CatalogoHighlight />
-      <Decants />
-      <KitsTrio />
-      <MapaOlfativo />
-      <ComparadorPreview />
-      <Ritual />
+      <FerramentasDescoberta mundo="ele" />
+      <CuradoriasSection />
       <ManifestoPreview />
     </>
   );

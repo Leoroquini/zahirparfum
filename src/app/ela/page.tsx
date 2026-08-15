@@ -1,39 +1,25 @@
-import dynamic from "next/dynamic";
 import { HeroEla } from "@/components/sections/HeroEla";
-
-const CatalogoHighlight = dynamic(() =>
-  import("@/components/sections/CatalogoHighlight").then(
-    (m) => m.CatalogoHighlight,
-  ),
-);
-const Decants = dynamic(() =>
-  import("@/components/sections/Decants").then((m) => m.Decants),
-);
-const KitsTrio = dynamic(() =>
-  import("@/components/sections/KitsTrio").then((m) => m.KitsTrio),
-);
-const MapaOlfativo = dynamic(() =>
-  import("@/components/sections/MapaOlfativo").then((m) => m.MapaOlfativo),
-);
-const ComparadorPreview = dynamic(() =>
-  import("@/components/sections/ComparadorPreview").then(
-    (m) => m.ComparadorPreview,
-  ),
-);
-const RitualEla = dynamic(() =>
-  import("@/components/sections/RitualEla").then((m) => m.RitualEla),
-);
-const ManifestoPreview = dynamic(() =>
-  import("@/components/sections/ManifestoPreview").then(
-    (m) => m.ManifestoPreview,
-  ),
-);
+import { TresComecos } from "@/components/sections/TresComecos";
+import { DecantsResumo } from "@/components/sections/DecantsResumo";
+import { CatalogoHighlight } from "@/components/sections/CatalogoHighlight";
+import { FerramentasDescoberta } from "@/components/sections/FerramentasDescoberta";
+import { CuradoriasSection } from "@/components/sections/Curadorias";
+import { ManifestoPreview } from "@/components/sections/ManifestoPreview";
 
 /**
- * Home feminina /ela.
- * Espelha a estrutura do /ele com componentes adaptados ao universo
- * feminino (HeroEla, RitualEla, ComparadorPreview/CatalogoHighlight com
- * prop mundo="ela", MapaOlfativo com eixos femininos).
+ * Home feminina /ela — espelho exato de /ele na estrutura, com os componentes
+ * recebendo mundo="ela" pra trocar rotas, copy e eixos do mapa.
+ *
+ * Ver o comentário de app/ele/page.tsx para a ordem da Arquitetura §3, o que
+ * saiu daqui e por que os imports são estáticos.
+ *
+ * RitualEla saiu da home junto com o Ritual masculino — continua sendo o
+ * motor de /ela/ritual, pra onde a primeira porta de TresComecos aponta.
+ *
+ * CuradoriasSection não recebe mundo: /curadoria/[slug] é hub editorial único,
+ * sem espelho em /ela — mesmo caso de /notas e /compare. Os quatro recortes
+ * puxam do catálogo inteiro, e a contagem no card reflete exatamente a página
+ * pra onde ele leva.
  *
  * Metadata definida em layout.tsx (server component irmão).
  */
@@ -41,12 +27,11 @@ export default function HomeEla() {
   return (
     <>
       <HeroEla />
+      <TresComecos mundo="ela" />
+      <DecantsResumo mundo="ela" />
       <CatalogoHighlight mundo="ela" />
-      <Decants mundo="ela" />
-      <KitsTrio mundo="ela" />
-      <MapaOlfativo mundo="ela" />
-      <ComparadorPreview mundo="ela" />
-      <RitualEla />
+      <FerramentasDescoberta mundo="ela" />
+      <CuradoriasSection />
       <ManifestoPreview mundo="ela" />
     </>
   );
