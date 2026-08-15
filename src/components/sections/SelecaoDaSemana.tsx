@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import { CATALOGO, type Perfume } from "@/data/catalogo";
 import { fotoSrc, hasFoto } from "@/lib/perfume-foto";
-import { rotaPerfume } from "@/lib/genero";
+import { rotaPerfume, filtrarPorGenero } from "@/lib/genero";
 import {
   KIT_ESTREIA,
   KIT_COLECAO,
@@ -17,11 +17,31 @@ import {
 const EASE_OUT = [0.19, 1, 0.22, 1] as const;
 
 /**
- * Hero da Seleção da Semana com lista visual dos 12 modelos agrupados
- * por marca. Usado na página /decants. Data dinâmica de próximo domingo.
+ * Hero da Seleção da Semana, agrupado por marca. Data dinâmica de próximo
+ * domingo.
+ *
+ * O componente filtra por mundo. Antes ele lia o CATALOGO inteiro, então
+ * /decants (masculino) exibia também os SKUs femininos marcados — clicar
+ * levava o visitante pra /ela/perfume/... no meio da jornada masculina.
+ *
+ * A contagem também é calculada, não escrita à mão: a copy dizia "12
+ * perfumes" enquanto havia 24 SKUs marcados no catálogo. Agora o número
+ * acompanha a curadoria sozinho e nunca desatualiza.
  */
-export function SelecaoDaSemana() {
-  const selecionados = CATALOGO.filter((p) => p.selecionadoSemana === true);
+export function SelecaoDaSemana({
+  mundo = "ele",
+}: {
+  mundo?: "ele" | "ela";
+}) {
+  const isEla = mundo === "ela";
+  const rotaMontar = isEla ? "/ela/decants/montar" : "/decants/montar";
+
+  const selecionados = filtrarPorGenero(
+    CATALOGO,
+    isEla ? "feminino" : "masculino",
+  ).filter((p) => p.selecionadoSemana === true);
+
+  const total = selecionados.length;
 
   // Agrupar por marca
   const porMarca = selecionados.reduce<Record<string, Perfume[]>>((acc, p) => {
@@ -63,12 +83,12 @@ export function SelecaoDaSemana() {
             <span className="h-px w-8 bg-amber" />
           </span>
           <h2 className="max-w-3xl font-display text-4xl font-light leading-[1.05] tracking-tight text-ink md:text-6xl">
-            12 perfumes curados,{" "}
+            {total} perfumes curados,{" "}
             <em className="italic text-amber/90">kits a partir de {fmtPrecoCent(KIT_ESTREIA.precoPromo)}.</em>
           </h2>
           <p className="max-w-2xl text-base leading-relaxed text-ink/75 md:text-lg">
-            Toda semana a curadoria seleciona doze modelos. Você monta um kit
-            de três decants e o preço promocional aplica sozinho.
+            Toda semana a curadoria escolhe um recorte do catálogo. Você monta
+            um kit de três decants e o preço promocional aplica sozinho.
           </p>
           <p className="text-[11px] uppercase tracking-[0.32em] text-wine/80">
             válido até {validade}
@@ -83,7 +103,7 @@ export function SelecaoDaSemana() {
           ].map((k) => (
             <Link
               key={k.tipo}
-              href={`/decants/montar?tamanho=${k.tamanho}`}
+              href={`${rotaMontar}?tamanho=${k.tamanho}`}
               className="group flex items-center justify-between gap-6 rounded-sm border border-amber/40 bg-cream-soft/70 p-6 backdrop-blur-sm transition-all hover:-translate-y-1 hover:border-amber hover:shadow-product md:p-8"
             >
               <div className="flex flex-col gap-1">
@@ -112,7 +132,7 @@ export function SelecaoDaSemana() {
         {/* CTA único */}
         <div className="mt-10 flex justify-center">
           <Link
-            href="/decants/montar"
+            href={rotaMontar}
             className="group inline-flex items-center gap-3 rounded-full bg-amber px-8 py-4 text-[11px] font-sans uppercase tracking-[0.3em] text-ink transition-all hover:bg-amber-bright"
           >
             Montar meu kit
@@ -122,10 +142,10 @@ export function SelecaoDaSemana() {
           </Link>
         </div>
 
-        {/* Lista dos 12 modelos por marca */}
+        {/* Lista dos modelos da semana, por marca */}
         <div className="mt-20 border-t border-ink/10 pt-12">
           <h3 className="mb-8 font-display text-2xl font-light text-ink md:text-3xl">
-            Os 12 modelos desta semana
+            Os {total} modelos desta semana
           </h3>
           <div className="flex flex-col gap-10">
             {ordemMarcas.map((marca) => (

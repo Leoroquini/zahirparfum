@@ -47,7 +47,7 @@ const CATEGORIAS = [
       },
       {
         p: "Posso trocar um decant já aberto?",
-        r: "Decant aberto não aceita troca por questão sanitária. Por isso existe, é o teste barato antes de investir no frasco cheio. Se você gostou, volta pro frasco; se não gostou, gastou R$ 25–40, não R$ 250.",
+        r: "Decant aberto não aceita troca por questão sanitária. Por isso existe, é o teste barato antes de investir no frasco cheio. Se você gostou, volta pro frasco; se não gostou, gastou uma fração do valor dele.",
       },
     ],
   },

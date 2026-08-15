@@ -3,6 +3,7 @@ import Link from "next/link";
 import { PageHero } from "@/components/layout/PageHero";
 import { Decants } from "@/components/sections/Decants";
 import { KitsTrio } from "@/components/sections/KitsTrio";
+import { SelecaoDaSemana } from "@/components/sections/SelecaoDaSemana";
 
 export const metadata: Metadata = {
   title: "Decants · Para Ela",
@@ -49,11 +50,11 @@ export default function DecantsElaPage() {
             />
             <Pergunta
               p="E se eu não gostar?"
-              r="É exatamente pra isso que o decant existe. Você testou, gastou R$ 25–40, descobriu que não é pra você. Melhor descobrir aqui do que depois de comprar o frasco inteiro."
+              r="É exatamente pra isso que o decant existe. Você testou por uma fração do frasco e descobriu que não é pra você. Melhor descobrir aqui do que depois de comprar o frasco inteiro."
             />
             <Pergunta
               p="Quanto custa?"
-              r="Decant 5ml a partir de R$ 25. Decant 10ml a partir de R$ 40. Kits de 3 (Estreia ou Coleção) têm preço promocional quando todos da Seleção da Semana."
+              r="O valor do decant varia por perfume e é confirmado no atendimento, junto com o frete, antes do pagamento. Kits de 3 (Estreia ou Coleção) têm preço promocional quando os três são da Seleção da Semana."
             />
             <Pergunta
               p="Frasco do decant é transparente?"
@@ -62,6 +63,10 @@ export default function DecantsElaPage() {
           </div>
         </div>
       </section>
+
+      {/* Seleção da Semana do mundo feminino — antes não existia aqui, e a
+          seleção feminina aparecia por engano na página masculina. */}
+      <SelecaoDaSemana mundo="ela" />
 
       <Decants hideIntro mundo="ela" />
 
