@@ -41,8 +41,6 @@ const FILTROS: { key: FiltroChave; label: string }[] = [
   { key: "amadeirado", label: "Amadeirado" },
   { key: "oriental", label: "Oriental" },
   { key: "doce", label: "Doce" },
-  { key: "assinatura", label: "Assinatura" },
-  { key: "mais-vendidos", label: "Mais vendidos" },
 ];
 
 /**
@@ -103,10 +101,6 @@ export function CatalogoHighlight({
           !familia.includes("baunilha") &&
           !familia.includes("doce")
         )
-          return false;
-        if (filtroAtivo === "assinatura" && p.destaque !== "curadoria")
-          return false;
-        if (filtroAtivo === "mais-vendidos" && p.destaque !== "mais-pedido")
           return false;
       }
 

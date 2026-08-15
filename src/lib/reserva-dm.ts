@@ -1,4 +1,9 @@
-import { type ItemLista, labelDa } from "@/lib/lista-store";
+import {
+  type ItemLista,
+  type VarianteReserva,
+  labelDa,
+  precoDefinido,
+} from "@/lib/lista-store";
 import { CATALOGO, type Perfume } from "@/data/catalogo";
 import { BRAND } from "@/lib/brand";
 import {
@@ -29,21 +34,38 @@ export function mensagemLista(itens: ItemLista[]): string {
     return `Oi, ZAHIR! Gostaria de conversar sobre perfumes do catálogo.`;
   }
 
+  // Itens cujo preço não está definido no catálogo entram como "a confirmar".
+  // Antes, o valor calculado pelo fallback de precoDa() ia na mensagem como se
+  // fosse preço fechado — o cliente recebia "R$ 30,00" num decant que a
+  // operação nunca precificou.
+  let aConfirmar = 0;
+  let somaConhecida = 0;
+
   const linhas = itens.map((item, i) => {
     const perfume = CATALOGO.find((p) => p.id === item.perfumeId);
     if (!perfume) return "";
     const variacao = labelDa(item.variante);
+    if (!precoDefinido(perfume, item.variante)) {
+      aConfirmar += 1;
+      return `${i + 1}. ${perfume.nome} (${variacao}), valor a confirmar`;
+    }
+    somaConhecida += item.precoSnapshot;
     return `${i + 1}. ${perfume.nome} (${variacao}), ${formatMoney(item.precoSnapshot)}`;
   });
 
-  const total = itens.reduce((sum, i) => sum + i.precoSnapshot, 0);
+  const linhaTotal =
+    aConfirmar === 0
+      ? `Total estimado: ${formatMoney(somaConhecida)}`
+      : somaConhecida > 0
+        ? `Parcial: ${formatMoney(somaConhecida)} — falta o valor de ${aConfirmar} ${aConfirmar === 1 ? "item" : "itens"}`
+        : `Preços a confirmar com vocês`;
 
   return [
     `Oi, ZAHIR! Quero reservar:`,
     ``,
     ...linhas,
     ``,
-    `Total estimado: ${formatMoney(total)}`,
+    linhaTotal,
     ``,
     `Pode me passar o valor com frete e as formas de pagamento?`,
   ].join("\n");
@@ -89,13 +111,36 @@ export function mensagemKitMontador(
     ].join("\n");
   }
 
-  const total = itens.reduce((sum, i) => sum + i.preco, 0);
+  // Kit sem gatilho de promo: lista item a item. Itens de SKU ainda não
+  // precificado entram como "valor a confirmar" em vez do número que o
+  // fallback de precoDa() calcularia.
+  let aConfirmar = 0;
+  let somaConhecida = 0;
+
+  const linhasComPreco = itens.map((it, i) => {
+    const variante: VarianteReserva =
+      it.tamanho === "10ml" ? "decant-10" : "decant-5";
+    if (!precoDefinido(it.perfume, variante)) {
+      aConfirmar += 1;
+      return `${linhasItens[i]} — valor a confirmar`;
+    }
+    somaConhecida += it.preco;
+    return `${linhasItens[i]} — ${formatMoney(it.preco)}`;
+  });
+
+  const linhaTotal =
+    aConfirmar === 0
+      ? `Total: ${formatMoney(somaConhecida)}`
+      : somaConhecida > 0
+        ? `Parcial: ${formatMoney(somaConhecida)} — falta o valor de ${aConfirmar} ${aConfirmar === 1 ? "item" : "itens"}`
+        : `Preços a confirmar com vocês`;
+
   return [
     `Oi, ZAHIR! Quero fechar este kit:`,
     ``,
-    ...linhasItens.map((l, i) => `${l} — ${formatMoney(itens[i].preco)}`),
+    ...linhasComPreco,
     ``,
-    `Total: ${formatMoney(total)}`,
+    linhaTotal,
     ``,
     `Pode confirmar o frete e a forma de pagamento?`,
   ].join("\n");

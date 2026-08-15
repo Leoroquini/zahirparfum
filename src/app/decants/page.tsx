@@ -38,7 +38,7 @@ export default function DecantsPage() {
             />
             <Pergunta
               p="E se eu não gostar?"
-              r="É exatamente pra isso que o decant existe. Você testou, gastou R$ 25–40, descobriu que não é pra você. Melhor descobrir aqui do que depois de comprar o frasco inteiro."
+              r="É exatamente pra isso que o decant existe. Você testou por uma fração do frasco e descobriu que não é pra você. Melhor descobrir aqui do que depois de comprar o frasco inteiro."
             />
             <Pergunta
               p="Se eu gostar, rola algum benefício pra migrar pro frasco?"
@@ -52,8 +52,8 @@ export default function DecantsPage() {
         </div>
       </section>
 
-      {/* Hero da Seleção da Semana (12 modelos + kits promo) */}
-      <SelecaoDaSemana />
+      {/* Seleção da Semana do mundo masculino + kits promo */}
+      <SelecaoDaSemana mundo="ele" />
 
       <Decants hideIntro />
 

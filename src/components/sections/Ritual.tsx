@@ -1291,12 +1291,6 @@ function CapturaContatoRitual({
   recomendacoes: RecomendacaoPerfume[];
   onAddLista: () => void;
 }) {
-  const [email, setEmail] = useState("");
-  const [emailState, setEmailState] = useState<
-    "idle" | "submitting" | "success" | "error"
-  >("idle");
-  const [emailError, setEmailError] = useState("");
-
   const mensagem = useMemo(() => {
     const linhas = [
       `Olá! Acabei de fazer o Ritual no site da Zahir.`,
@@ -1321,42 +1315,6 @@ function CapturaContatoRitual({
 
   const waUrl = linkWhatsApp(mensagem);
   const igUrl = linkInstagram(mensagem);
-
-  const onSubmitEmail = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const trimmed = email.trim();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
-      setEmailError("E-mail não parece válido");
-      setEmailState("error");
-      return;
-    }
-
-    setEmailState("submitting");
-    await new Promise((r) => setTimeout(r, 600));
-
-    try {
-      const existing = JSON.parse(
-        localStorage.getItem("zahir-interest") ?? "[]"
-      );
-      localStorage.setItem(
-        "zahir-interest",
-        JSON.stringify([
-          ...existing,
-          {
-            email: trimmed,
-            perfil: perfil.tituloPerfil,
-            perfumes: recomendacoes.map((r) => r.perfume.id),
-            at: Date.now(),
-          },
-        ])
-      );
-    } catch {
-      // silent
-    }
-
-    events.ritualEmailCapturado();
-    setEmailState("success");
-  };
 
   return (
     <div className="mt-6 flex flex-col gap-5 rounded-sm border border-ink/10 bg-cream/40 p-5 backdrop-blur-sm md:p-7">
@@ -1407,62 +1365,6 @@ function CapturaContatoRitual({
         Ou adicionar as 3 sugestões à minha lista de reserva
       </button>
 
-      {/* Email opcional pra cupom */}
-      <div className="mt-2 border-t border-ink/10 pt-5">
-        {emailState === "success" ? (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, ease: EASE_OUT }}
-            className="rounded-sm border border-amber/40 bg-amber/10 p-4 text-center"
-          >
-            <span className="text-[10px] font-sans uppercase tracking-[0.4em] text-amber">
-              Cupom liberado
-            </span>
-            <p className="mt-2 font-display text-lg font-light italic text-ink">
-              Use{" "}
-              <span className="not-italic font-normal text-amber tracking-wider">
-                RITUAL10
-              </span>{" "}
-              na primeira compra
-            </p>
-            <p className="mt-2 text-xs italic text-ink/70">
-              Mande o cupom junto com a reserva.
-            </p>
-          </motion.div>
-        ) : (
-          <form onSubmit={onSubmitEmail} className="flex flex-col gap-2">
-            <p className="text-center text-[10px] font-sans uppercase tracking-[0.35em] text-ink/65">
-              Ou pega 10% off pra primeira compra
-            </p>
-            <div className="flex flex-col gap-2 sm:flex-row">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  if (emailState === "error") setEmailState("idle");
-                }}
-                disabled={emailState === "submitting"}
-                placeholder="seu@email.com (opcional)"
-                className="flex-1 rounded-full border border-ink/15 bg-cream/60 px-5 py-2.5 text-sm text-ink placeholder:text-ink/55 focus:border-amber focus:outline-none disabled:opacity-50"
-              />
-              <button
-                type="submit"
-                disabled={emailState === "submitting" || !email}
-                className="rounded-full border border-ink/25 px-5 py-2.5 text-[10px] font-sans uppercase tracking-[0.3em] text-ink/80 transition-all hover:border-amber hover:text-amber disabled:opacity-50"
-              >
-                {emailState === "submitting" ? "Enviando…" : "Receber cupom"}
-              </button>
-            </div>
-            {emailState === "error" && (
-              <p className="text-xs italic" style={{ color: "#d88b8f" }}>
-                {emailError}
-              </p>
-            )}
-          </form>
-        )}
-      </div>
     </div>
   );
 }

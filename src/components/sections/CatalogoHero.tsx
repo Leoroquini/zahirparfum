@@ -199,92 +199,6 @@ export function CatalogoHero({
           </div>
         </div>
       </header>
-
-      {/* Tira de serviços (espelha referência) */}
-      <section className="bg-ink/95 px-6 py-6 text-cream md:px-12 md:py-7">
-        <div className="mx-auto grid max-w-[1440px] grid-cols-2 gap-5 md:grid-cols-4 md:gap-8">
-          <ServiceItem
-            titulo="Frete grátis"
-            sub="Para todo o Brasil acima de R$299"
-            icon={
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden
-              >
-                <rect x="1" y="6" width="14" height="11" rx="1" />
-                <path d="M15 9h4l3 4v4h-7z" />
-                <circle cx="6" cy="19" r="1.5" />
-                <circle cx="18" cy="19" r="1.5" />
-              </svg>
-            }
-          />
-          <ServiceItem
-            titulo="Até 3x sem juros"
-            sub="Parcele suas compras sem complicações"
-            icon={
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden
-              >
-                <rect x="3" y="5" width="18" height="14" rx="2" />
-                <path d="M3 10h18M7 15h4" />
-              </svg>
-            }
-          />
-          <ServiceItem
-            titulo="Amostras exclusivas"
-            sub="Em compras selecionadas acima de R$349"
-            icon={
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden
-              >
-                <path d="M12 3l2.4 5.2 5.6.6-4.2 3.9 1.2 5.6L12 15.6 6.9 18.3l1.2-5.6L4 8.8l5.6-.6z" />
-              </svg>
-            }
-          />
-          <ServiceItem
-            titulo="Embalagem premium"
-            sub="Cada detalhe pensado pra surpreender"
-            icon={
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden
-              >
-                <path d="M3 8h18v13H3zM3 8l3-5h12l3 5M12 8v13" />
-              </svg>
-            }
-          />
-        </div>
-      </section>
     </>
   );
 }
@@ -318,28 +232,6 @@ function Stat({ label, value }: { label: string; value: string }) {
       <span className="font-display text-2xl font-light text-cream md:text-3xl">
         {value}
       </span>
-    </div>
-  );
-}
-
-function ServiceItem({
-  titulo,
-  sub,
-  icon,
-}: {
-  titulo: string;
-  sub: string;
-  icon: React.ReactNode;
-}) {
-  return (
-    <div className="flex items-start gap-3">
-      <span className="mt-0.5 shrink-0 text-amber">{icon}</span>
-      <div className="flex min-w-0 flex-col">
-        <span className="text-[10px] font-sans uppercase tracking-[0.32em] text-amber">
-          {titulo}
-        </span>
-        <span className="text-[12px] leading-snug text-cream/70">{sub}</span>
-      </div>
     </div>
   );
 }

@@ -47,7 +47,7 @@ const CATEGORIAS = [
       },
       {
         p: "Posso trocar um decant já aberto?",
-        r: "Decant aberto não aceita troca por questão sanitária. Por isso existe, é o teste barato antes de investir no frasco cheio. Se você gostou, volta pro frasco; se não gostou, gastou R$ 25–40, não R$ 250.",
+        r: "Decant aberto não aceita troca por questão sanitária. Por isso existe, é o teste barato antes de investir no frasco cheio. Se você gostou, volta pro frasco; se não gostou, gastou uma fração do valor dele.",
       },
     ],
   },
@@ -56,7 +56,7 @@ const CATEGORIAS = [
     perguntas: [
       {
         p: "Por que não tem checkout no site?",
-        r: "Fase de lançamento. A gente escolheu fechar as primeiras vendas via Instagram pra manter contato direto com cada cliente, responder dúvida, sugerir alternativa, ajustar pedido antes de fechar. Checkout automatizado vem numa segunda fase.",
+        r: "Fase de lançamento. A gente escolheu fechar as primeiras vendas no WhatsApp pra manter contato direto com cada cliente, responder dúvida, sugerir alternativa, ajustar pedido antes de fechar. Se você preferir o Instagram, também atendemos por lá. Checkout automatizado vem numa segunda fase.",
       },
       {
         p: "Quais formas de pagamento?",
@@ -64,7 +64,7 @@ const CATEGORIAS = [
       },
       {
         p: "Minha compra fica registrada em algum lugar?",
-        r: "Fica. Cada pedido gera nota fiscal (emitida depois que o CNPJ for ativado, durante fase beta de lançamento, emitimos manualmente mediante pedido). Histórico do Instagram vale como comprovante de pedido.",
+        r: "Fica. Cada pedido gera nota fiscal (emitida depois que o CNPJ for ativado, durante fase beta de lançamento, emitimos manualmente mediante pedido). O histórico da conversa em que você fechou o pedido vale como comprovante.",
       },
     ],
   },
@@ -73,7 +73,7 @@ const CATEGORIAS = [
     perguntas: [
       {
         p: "Quanto custa o frete?",
-        r: "Calculamos por CEP depois que você envia a lista pelo DM. O valor depende do endereço, peso e modalidade escolhida. A regra é simples: frete real informado antes do pagamento.",
+        r: "Calculamos por CEP depois que você envia a lista pelo WhatsApp. O valor depende do endereço, peso e modalidade escolhida. A regra é simples: frete real informado antes do pagamento.",
       },
       {
         p: "Entregam em todo o Brasil?",
@@ -115,7 +115,7 @@ export default function FaqPage() {
             <em className="italic text-amber/90">estar se perguntando.</em>
           </>
         }
-        descricao="Se a sua dúvida não está aqui, chama no DM. Respondemos entre 9h e 22h, e a resposta geralmente leva alguns minutos."
+        descricao="Se a sua dúvida não está aqui, chama no WhatsApp. Respondemos entre 9h e 22h, e a resposta geralmente leva alguns minutos."
         backgroundGradient="radial-gradient(ellipse at 50% 50%, rgba(200,155,60,0.1), transparent 60%)"
       />
 

@@ -39,12 +39,12 @@ export default function EntregaPage() {
             <Bloco
               dest="São Paulo capital e Grande SP"
               val="2–4 dias úteis"
-              obs="Despacho via Correios PAC ou transportadora própria. Rastreamento enviado no DM."
+              obs="Despacho via Correios PAC ou transportadora própria. Rastreamento enviado na mesma conversa em que você fez a reserva."
             />
             <Bloco
               dest="Demais regiões do Brasil"
               val="3–10 dias úteis"
-              obs="Depende do CEP. Calculamos o frete exato depois que você envia a lista pelo Instagram, sem surpresa no fechamento."
+              obs="Depende do CEP. Calculamos o frete exato depois que você envia a lista pelo WhatsApp, sem surpresa no fechamento."
             />
           </div>
         </div>
@@ -93,10 +93,10 @@ export default function EntregaPage() {
             Rastreamento
           </span>
           <p className="mt-8 max-w-2xl text-base leading-relaxed text-ink/75 md:text-lg">
-            Assim que o pedido sai daqui, você recebe no Instagram (mesma DM
-            que fez a reserva) o código de rastreio + link direto pra
-            acompanhar. Se em algum momento parecer que está demorando, chama
-            na DM, a gente investiga com a transportadora.
+            Assim que o pedido sai daqui, você recebe no WhatsApp (na mesma
+            conversa em que fez a reserva) o código de rastreio + link direto
+            pra acompanhar. Se em algum momento parecer que está demorando,
+            é só chamar ali mesmo — a gente investiga com a transportadora.
           </p>
         </div>
       </section>
