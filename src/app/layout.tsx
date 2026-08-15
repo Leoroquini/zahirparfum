@@ -13,6 +13,7 @@ import { ToastStack } from "@/components/ui/ToastStack";
 import { BuscaShortcut } from "@/components/ui/BuscaShortcut";
 import { ListaRetornoNudge } from "@/components/marketing/ListaRetornoNudge";
 import { BRAND } from "@/lib/brand";
+import { siteUrl } from "@/lib/site";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -29,11 +30,8 @@ const inter = Inter({
   display: "swap",
 });
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://zahirparfums.com.br";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(siteUrl()),
   title: {
     default: `${BRAND.fullName}, ${BRAND.tagline}`,
     template: `%s · ${BRAND.fullName}`,

@@ -3,8 +3,9 @@ import { CATALOGO } from "@/data/catalogo";
 import { CURADORIAS } from "@/data/curadorias";
 import { NOTAS } from "@/data/notas";
 import { rotaPerfume } from "@/lib/genero";
+import { siteUrlCanonico } from "@/lib/site";
 
-const BASE = "https://zahirparfums.com.br";
+const BASE = siteUrlCanonico();
 
 /** Seções do mundo masculino (rotas na raiz). */
 const SECOES_ELE = [

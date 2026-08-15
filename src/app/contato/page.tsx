@@ -47,9 +47,9 @@ export default function ContatoPage() {
             />
             <CanalCard
               titulo="E-mail"
-              value="contato@zahirparfums.com.br"
+              value="contato@zahirparfum.com.br"
               descricao="Pra assuntos formais, parcerias, imprensa, jurídico. Respondemos em até 48h úteis."
-              href="mailto:contato@zahirparfums.com.br"
+              href="mailto:contato@zahirparfum.com.br"
               disabled
             />
           </div>

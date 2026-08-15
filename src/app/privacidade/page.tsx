@@ -132,10 +132,10 @@ export default function PrivacidadePage() {
             <p className="mt-4">
               Pra exercer qualquer desses direitos, envie e-mail pra{" "}
               <a
-                href="mailto:contato@zahirparfums.com.br"
+                href="mailto:contato@zahirparfum.com.br"
                 className="italic text-amber underline-offset-4 hover:underline"
               >
-                contato@zahirparfums.com.br
+                contato@zahirparfum.com.br
               </a>{" "}
               ou mensagem no Instagram, respondemos em até 15 dias úteis.
             </p>
