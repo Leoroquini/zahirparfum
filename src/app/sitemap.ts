@@ -2,10 +2,12 @@ import type { MetadataRoute } from "next";
 import { CATALOGO } from "@/data/catalogo";
 import { CURADORIAS } from "@/data/curadorias";
 import { NOTAS } from "@/data/notas";
+import { rotaPerfume } from "@/lib/genero";
 
 const BASE = "https://zahirparfums.com.br";
 
-const SECOES_DEDICADAS = [
+/** Seções do mundo masculino (rotas na raiz). */
+const SECOES_ELE = [
   "catalogo",
   "mapa",
   "ritual",
@@ -14,6 +16,21 @@ const SECOES_DEDICADAS = [
   "decants",
   "notas",
   "manifesto",
+];
+
+/**
+ * Seções do mundo feminino. Estavam TODAS fora do sitemap — o site inteiro
+ * de /ela era invisível pro Google no nível de seção, apesar de ter 45 SKUs.
+ * `curadorias` e `notas` não entram aqui: são hubs editoriais únicos, sem
+ * rota espelhada em /ela.
+ */
+const SECOES_ELA = [
+  "ela/catalogo",
+  "ela/mapa",
+  "ela/ritual",
+  "ela/comparador",
+  "ela/decants",
+  "ela/manifesto",
 ];
 
 const INSTITUCIONAIS = [
@@ -52,7 +69,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const secoes = SECOES_DEDICADAS.map((s) => ({
+  const secoes = [...SECOES_ELE, ...SECOES_ELA].map((s) => ({
     url: `${BASE}/${s}`,
     lastModified: now,
     changeFrequency: "weekly" as const,
@@ -66,8 +83,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
+  // rotaPerfume() manda cada SKU pra sua rota canônica: feminino →
+  // /ela/perfume/{slug}, masculino e unissex → /perfume/{slug}. Antes daqui
+  // saíam 86 URLs todas em /perfume/, inclusive as dos 45 femininos, cuja
+  // rota real é /ela/perfume/.
   const perfumes = CATALOGO.map((p) => ({
-    url: `${BASE}/perfume/${p.id}`,
+    url: `${BASE}${rotaPerfume(p)}`,
     lastModified: now,
     changeFrequency: "monthly" as const,
     priority: 0.8,
