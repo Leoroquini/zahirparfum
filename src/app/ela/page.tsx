@@ -28,9 +28,6 @@ const ManifestoPreview = dynamic(() =>
     (m) => m.ManifestoPreview,
   ),
 );
-const Depoimentos = dynamic(() =>
-  import("@/components/sections/Depoimentos").then((m) => m.Depoimentos),
-);
 const Newsletter = dynamic(() =>
   import("@/components/sections/Newsletter").then((m) => m.Newsletter),
 );
@@ -54,7 +51,6 @@ export default function HomeEla() {
       <ComparadorPreview mundo="ela" />
       <RitualEla />
       <ManifestoPreview mundo="ela" />
-      <Depoimentos />
       <Newsletter />
     </>
   );

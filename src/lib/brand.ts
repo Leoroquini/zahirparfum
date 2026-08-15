@@ -7,7 +7,7 @@ export const BRAND = {
   manifesto:
     "Perfumaria árabe pra quem quer cheirar bem — e saber por que cheira bem.",
   city: "São Paulo",
-  audience: "Perfumaria árabe masculina",
+  audience: "Perfumaria árabe para ele e para ela",
   sourcing:
     "Curadoria de perfumes árabes originais adquiridos com fornecedores nacionais e importadores parceiros.",
   payment:
