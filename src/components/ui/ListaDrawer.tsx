@@ -63,7 +63,7 @@ export function ListaDrawer() {
     window.open(url, "_blank", "noopener,noreferrer");
     toast.success(
       "Conversa aberta no WhatsApp",
-      "Confere a lista, envia e a gente responde em minutos."
+      "Confere a lista e envia. Respondemos das 9h às 22h."
     );
     setOpen(false);
   };
@@ -240,11 +240,11 @@ export function ListaDrawer() {
                       </span>
                     </div>
                     <p className="text-[10px] italic text-ink/55">
-                      Frete grátis em São Paulo capital acima de R$ 99. Demais regiões confirmamos no atendimento.
+                      Frete calculado pelo seu CEP e confirmado no atendimento, antes do pagamento.
                     </p>
                   </div>
                   <p className="mb-5 text-[11px] italic leading-relaxed text-ink/65">
-                    Atendimento humano pelo WhatsApp · Pix, cartão ou boleto após confirmação.
+                    Atendimento humano pelo WhatsApp · Pagamento por Pix, confirmado antes do envio.
                   </p>
 
                   <div className="flex flex-col gap-3">
@@ -260,7 +260,7 @@ export function ListaDrawer() {
                       </span>
                     </button>
                     <p className="-mt-1 text-center text-[9px] font-sans uppercase tracking-[0.3em] text-ink/55">
-                      Resposta em 10–20 min · 9h às 22h
+                      Respondemos entre 9h e 22h
                     </p>
 
                     {/* Alternativa: Instagram */}
@@ -481,7 +481,7 @@ function AjudaSection({
                   Falar direto
                 </span>
                 <p className="mt-1 text-[11px] italic text-ink/70">
-                  Atendimento das 9h às 22h · resposta em 10–20 min.
+                  Atendimento das 9h às 22h.
                 </p>
                 <div className="mt-3 flex flex-col gap-2">
                   <a

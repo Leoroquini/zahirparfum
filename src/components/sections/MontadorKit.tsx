@@ -164,7 +164,7 @@ export function MontadorKit({
       kitDetectado.tipo === "kit-promo"
         ? `${kitDetectado.kit.titulo} promocional enviado!`
         : "Conversa aberta no WhatsApp",
-      "Confere a lista, envia e a gente responde em minutos.",
+      "Confere a lista e envia. Respondemos das 9h às 22h.",
     );
   };
 
@@ -480,7 +480,7 @@ export function MontadorKit({
                 <TotalDisplay detect={kitDetectado} totalSomado={totalSomado} />
               </div>
               <p className="mb-4 text-[11px] italic leading-relaxed text-ink/60">
-                Frete grátis SP capital acima de R$ 99. Demais regiões confirmamos no atendimento.
+                Frete calculado pelo seu CEP e confirmado no atendimento, antes do pagamento.
               </p>
               <div className="flex flex-col gap-2">
                 <button
