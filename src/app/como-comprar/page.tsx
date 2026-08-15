@@ -6,7 +6,7 @@ import { BRAND } from "@/lib/brand";
 export const metadata: Metadata = {
   title: "Como comprar",
   description:
-    "Compra simples via Instagram e Pix. Cinco passos da escolha à entrega.",
+    "Compra simples via WhatsApp e Pix. Cinco passos da escolha à entrega.",
 };
 
 const PASSOS = [
@@ -17,8 +17,8 @@ const PASSOS = [
   },
   {
     n: "02",
-    t: "Reserva via Instagram",
-    d: "Clica em 'Reservar via Instagram' ou em 'Enviar lista via Instagram'. Abre um DM com a mensagem já pronta, você só confere e envia.",
+    t: "Reserva no WhatsApp",
+    d: "Clica em 'Reservar' ou em 'Enviar lista'. Abre a conversa no WhatsApp com a mensagem já pronta — você só confere e envia. Se preferir o Instagram, o mesmo botão aparece como alternativa.",
   },
   {
     n: "03",
@@ -48,7 +48,7 @@ export default function ComoComprarPage() {
             <em className="italic text-amber/90">à porta de casa.</em>
           </>
         }
-        descricao="Por enquanto a gente fecha tudo via Instagram. É um contato humano no meio da transação, não um bot, não um checkout genérico. Dá pra perguntar, ajustar, trocar tamanho, pedir conselho antes de fechar."
+        descricao="Por enquanto a gente fecha tudo no WhatsApp. É um contato humano no meio da transação, não um bot, não um checkout genérico. Dá pra perguntar, ajustar, trocar tamanho, pedir conselho antes de fechar."
         backgroundGradient="radial-gradient(ellipse at 40% 50%, rgba(200,155,60,0.1), transparent 60%)"
       />
 
@@ -120,16 +120,25 @@ export default function ComoComprarPage() {
             </Link>
           </div>
           <p className="mt-3 text-xs italic text-ink/65">
-            Alguma dúvida? Chama na{" "}
+            Alguma dúvida? Chama no{" "}
             <a
-              href={`https://instagram.com/${BRAND.handles.instagram}`}
+              href={`https://wa.me/${BRAND.whatsapp.number}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-amber underline-offset-4 hover:underline"
             >
-              DM do Instagram
+              WhatsApp {BRAND.whatsapp.display}
             </a>{" "}
-           , respondemos em minutos.
+            — respondemos entre 9h e 22h. Também dá pra chamar na{" "}
+            <a
+              href={`https://instagram.com/${BRAND.handles.instagram}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-ink/75 underline-offset-4 hover:text-amber hover:underline"
+            >
+              DM do Instagram
+            </a>
+            .
           </p>
         </div>
       </section>
